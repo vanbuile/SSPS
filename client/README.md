@@ -1,3 +1,9 @@
+# cài thêm 
+npm i react-icons
+npm i recharts
+npm i date-fns
+npm i classnames
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
