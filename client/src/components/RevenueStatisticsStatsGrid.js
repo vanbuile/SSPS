@@ -21,7 +21,7 @@ const dataStatsGrid = [
 		incon: <IoShareSocialSharp className="text-2xl text-white" />
 	},
 	{
-		name: 'Số lược bán',
+		name: 'Số lượt bán',
 		total: 500,
 		incTotal: 20,
 		incon: <IoBagCheck className="text-2xl text-white" />

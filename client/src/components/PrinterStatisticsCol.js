@@ -4,44 +4,44 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 const data = [
   {
     name: 'Máy in A',
-    uv: 4000,
-    pv: 2400,
+    pages_print: 4000,
+    pages_buy: 2400,
     amt: 2400,
   },
   {
     name: 'Máy in B',
-    uv: 3000,
-    pv: 1398,
+    pages_print: 3000,
+    pages_buy: 1398,
     amt: 2210,
   },
   {
     name: 'Máy in C',
-    uv: 2000,
-    pv: 9800,
+    pages_print: 2000,
+    pages_buy: 9800,
     amt: 2290,
   },
   {
     name: 'Máy in D',
-    uv: 2780,
-    pv: 3908,
+    pages_print: 2780,
+    pages_buy: 3908,
     amt: 2000,
   },
   {
     name: 'Máy in E',
-    uv: 1890,
-    pv: 4800,
+    pages_print: 1890,
+    pages_buy: 4800,
     amt: 2181,
   },
   {
     name: 'Máy in F',
-    uv: 2390,
-    pv: 3800,
+    pages_print: 2390,
+    pages_buy: 3800,
     amt: 2500,
   },
   {
     name: 'Máy in G',
-    uv: 3490,
-    pv: 4300,
+    pages_print: 3490,
+    pages_buy: 4300,
     amt: 2100,
   },
 ];
@@ -58,7 +58,7 @@ export default function  PrinterStatisticsCol() {
                     margin={{
                     top: 0,
                     right: 10,
-                    left: -5,
+                    left: 0,
                     bottom: 5,
                     }}
                     stackOffset="sign"
@@ -67,12 +67,12 @@ export default function  PrinterStatisticsCol() {
                     barCategoryGap={1}
                 >
                     <XAxis type="number" />
-                    <YAxis type="category"  padding={{ left: 15}} dataKey="name"/>
+                    <YAxis type="category" dataKey="name"/>
                     <Tooltip />
                     <Legend />
                     <CartesianGrid strokeDasharray="3 3" />
-                    <Bar dataKey="pv" fill="#8884d8" stackId="stack" />
-                    <Bar dataKey="uv" fill="#82ca9d" stackId="stack" />
+                    <Bar dataKey="pages_buy" name='số giấy còn' fill="#8884d8" stackId="stack" />
+                    <Bar dataKey="pages_print" name='số giấy đã in' fill="#82ca9d" stackId="stack" />
                 </BarChart>
                 </ResponsiveContainer>
             </div>

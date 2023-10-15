@@ -107,7 +107,7 @@ export default function RecentOrders() {
 
 		<div className="bg-white px-4 pt-3 pb-4 rounded-sm border border-gray-200 flex-1">
 
-			<strong className="text-gray-700 font-medium">Sinh Viên In nhiều nhất tháng</strong>
+			<strong className="text-gray-700 font-medium">Sinh viên mua giấy</strong>
 			<div className="border-x border-gray-200 rounded-sm mt-3">
 				<table className="w-full text-gray-700">
 					<thead class="bg-gradient-to-tr from-indigo-600 to-purple-600 text-white font-bold text-md">
@@ -135,10 +135,10 @@ export default function RecentOrders() {
 					</tbody>
 				</table>
 				<nav class="flex items-center justify-between pt-4" aria-label="Table navigation">
-					<span class="text-sm font-normal text-gray-500 dark:text-gray-400">Showing <span class="font-semibold text-gray-900 dark:text-white">1-10</span> of <span class="font-semibold text-gray-900 dark:text-white">1000</span></span>
+					<span class="text-sm font-normal text-gray-500 dark:text-gray-400">Số lượng <span class="font-semibold text-gray-900 dark:text-white">1-10</span> của <span class="font-semibold text-gray-900 dark:text-white">1000</span></span>
 					<ul class="inline-flex -space-x-px text-sm h-8">
 						<li>
-							<a href="#" class="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+							<a href="#" class="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Sau</a>
 						</li>
 						<li>
 							<a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
@@ -156,7 +156,7 @@ export default function RecentOrders() {
 							<a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
 						</li>
 						<li>
-							<a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+							<a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Trước</a>
 						</li>
 					</ul>
 				</nav>

@@ -1,8 +1,8 @@
-# cài thêm 
-npm i react-icons
-npm i recharts
-npm i date-fns
-npm i classnames
+## cài thêm 
+##npm i react-icons
+##npm i recharts
+##npm i date-fns
+##npm i classnames
 
 # Getting Started with Create React App
 
