@@ -1,4 +1,5 @@
 
+/*aaaaa*/
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import imageBK from '../../assets/images/BK.jpg'
@@ -7,7 +8,7 @@ import classNames from 'classnames'
 import { Link, useLocation } from 'react-router-dom'
 
 const navigation = [
-  { key: 'Home', label: 'trang chủ', path: '/'},
+  { key: 'Home', label: 'Trang chủ', path: '/'},
   { key: 'Print', label: 'In ấn', path: '/print'},
   { key: 'Buy', label: 'Mua', path: '/buy'},
   { key: 'Share', label: 'Chia sẻ', path: '/shared'},
@@ -16,10 +17,10 @@ const navigation = [
 
 export default function Example() {
   return (
-    <Disclosure as="nav" className="bg-white">
+    <Disclosure as="nav" className=" bg-white sticky top-0 ">
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 ">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
@@ -42,7 +43,7 @@ export default function Example() {
                   />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
+                  <div className="flex">
                     {navigation.map((link) => (
                   <SidebarLink key={link.key} link={link} />
                 ))}
@@ -144,7 +145,7 @@ export default function Example() {
 }
 
 const linkClass =
-	'flex items-center gap-2 font-light px-3 py-2 hover:bg-neutral-700 hover:no-underline active:bg-neutral-600 rounded-sm text-base'
+	'flex items-center hover:text-white font-light px-3 py-2 hover:bg-neutral-700 hover:no-underline active:bg-neutral-600 px-7 rounded-sm text-base transition-all duration-350 ease-in-out'
 
 function SidebarLink({ link }) {
 	const { pathname } = useLocation()
@@ -152,7 +153,7 @@ function SidebarLink({ link }) {
 	return (
 		<Link
 			to={link.path}
-			className={classNames(pathname === link.path ? 'bg-gray-200 text-3xl font-medium text-gray-900 dark:text-white' : ' text-3xl font-medium text-gray-900 dark:text-white', linkClass)}
+			className={classNames(pathname === link.path ? 'bg-gray-200 text-3xl font-medium text-gray-600 dark:text-white' : ' text-3xl font-medium text-gray-900 dark:text-white', linkClass)}
 		>
 			<span className="text-xl">{link.icon}</span>
 			{link.label}

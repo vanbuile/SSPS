@@ -17,7 +17,9 @@ import RevenueStatistics from './pages/admin/RevenueStatistics';
 
 export default function App() {
   return (
-
+      <>
+      
+      
       <Routes>
           <Route path="/admin/" element={<LayoutAdmin />}>
               <Route index element={<homeAdmin />} />
@@ -36,5 +38,6 @@ export default function App() {
           </Route>
           <Route path='*' element={<Error />} />
       </Routes>
+      </>
   );
 }
