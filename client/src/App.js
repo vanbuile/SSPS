@@ -33,7 +33,7 @@ export default function App() {
             <Route index element={<Home />} />
             <Route path='print' element={<Print />} />
             <Route path='shared' element={<Shared />} />
-            <Route path='buy' element={<Buy />} />
+            <Route path='buy' element={<Buy  />} />
             <Route path='login' element={<Login />} />
           </Route>
           <Route path='*' element={<Error />} />
