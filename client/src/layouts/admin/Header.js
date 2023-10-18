@@ -3,6 +3,8 @@ import { Menu, Popover, Transition } from '@headlessui/react'
 import { HiOutlineBell, HiOutlineSearch, HiOutlineChatAlt } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
+import { Link } from 'react-router-dom'
+import imageBK from '../../assets/images/BK.png'
 
 
 
@@ -11,14 +13,15 @@ export default function Header() {
 	const navigate = useNavigate()
 
 	return (
-		<div className="bg-white h-16 px-4 flex items-center border-b border-gray-200 justify-between">
-			<div className="relative">
-				<HiOutlineSearch fontSize={20} className="text-gray-400 absolute top-1/2 left-3 -translate-y-1/2" />
-				<input
-					type="text"
-					placeholder="Search..."
-					className="text-sm focus:outline-none active:outline-none border border-gray-300 w-[24rem] h-10 pl-11 pr-4 rounded-sm"
-				/>
+		<div className="bg-mainBlue h-16 px-4 flex items-center border-b border-gray-200 justify-between">
+			<div className="flex items-center py-3">
+				<Link to='/admin'>
+					<img src={imageBK} alt='imageBK' width={50} height={50}></img>
+				</Link>
+				<Link to='/admin'>
+					<p className="text-white text-sm ">HỆ THỐNG SSPS</p>
+					<p className="text-white text-sm ">TRƯỜNG ĐẠI HỌC BÁCH KHOA - ĐHQG TPHCM</p>
+				</Link>
 			</div>
 			<div className="flex items-center gap-2 mr-2">
 				<Popover className="relative">
@@ -27,7 +30,7 @@ export default function Header() {
 							<Popover.Button
 								className={classNames(
 									open && 'bg-gray-100',
-									'group inline-flex items-center rounded-sm p-1.5 text-gray-700 hover:text-opacity-100 focus:outline-none active:bg-gray-100'
+									'group inline-flex items-center rounded-sm p-1.5 text-white hover:text-opacity-100 focus:outline-none active:bg-gray-100'
 								)}
 							>
 								<HiOutlineChatAlt fontSize={24} />
@@ -57,7 +60,7 @@ export default function Header() {
 							<Popover.Button
 								className={classNames(
 									open && 'bg-gray-100',
-									'group inline-flex items-center rounded-sm p-1.5 text-gray-700 hover:text-opacity-100 focus:outline-none active:bg-gray-100'
+									'group inline-flex items-center rounded-sm p-1.5 text-white hover:text-opacity-100 focus:outline-none active:bg-gray-100'
 								)}
 							>
 								<HiOutlineBell fontSize={24} />
