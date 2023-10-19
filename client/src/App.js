@@ -2,6 +2,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./layouts/header/layout";
 import Home from "./pages/home/home";
 
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "./layouts/header/layout";
+import Home from "./pages/home/home";
+
 import Print from "./pages/print/print";
 import Shared from "./pages/shared/shared";
 import Buy from "./pages/buy/buy";
