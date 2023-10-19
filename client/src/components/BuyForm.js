@@ -12,10 +12,8 @@ import vnpayimage from "../assets/images/vnpay.png";
 import vnpaycheckimage from "../assets/images/vnpaycheck.png";
 import momoimage from "../assets/images/momo.png";
 import momocheckimage from "../assets/images/momocheck.png";
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-
-
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 const data = [{ name: "Nguyễn Văn An", email: "an.nguyen@hcmutedu.vn" }];
 BuyForm.propTypes = {
@@ -38,7 +36,9 @@ function BuyForm(props) {
   };
   const handleSubmit = (values) => {
     console.log("values: ", values);
+    console.log("paymethod: ", paymethod);
     openModal();
+    
   };
   let [isOpen, setIsOpen] = useState(false);
   function closeModal() {
@@ -49,6 +49,10 @@ function BuyForm(props) {
   function openModal() {
     setIsOpen(true);
   }
+  const [paymethod, setPaymethod] = useState("vnpay");
+  const handleChange = (event) => {
+    setPaymethod(event.target.value);
+  };
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -162,21 +166,32 @@ function BuyForm(props) {
                 <RadioGroup
                   row
                   aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group"
+                  name="paymethod"
+                  value={paymethod}
+                  onChange={handleChange}
                 >
                   <FormControlLabel
-                    value="female"
-                    control={<Radio icon={<img src={vnpayimage} height={60} width={60} />} checkedIcon={<img src={vnpaycheckimage} height={60} width={60} />} />}
-                    
-                    
+                    value="vnpay"
+                    control={
+                      <Radio
+                        icon={<img src={vnpayimage} height={60} width={60} />}
+                        checkedIcon={
+                          <img src={vnpaycheckimage} height={60} width={60} />
+                        }
+                      />
+                    }
                   />
                   <FormControlLabel
-                    value="male"
-                    control={<Radio icon={<img src={momoimage} height={60} width={60} />}checkedIcon={<img src={momocheckimage} height={60} width={60} />}/>}
-                    
-                    
+                    value="momo"
+                    control={
+                      <Radio
+                        icon={<img src={momoimage} height={60} width={60} />}
+                        checkedIcon={
+                          <img src={momocheckimage} height={60} width={60} />
+                        }
+                      />
+                    }
                   />
-
                 </RadioGroup>
               </div>
               <div className="flex flex-col">
