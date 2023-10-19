@@ -13,7 +13,9 @@ import HomeAdmin from "./pages/admin/homeAdmin";
 import PrinterAdmin from "./pages/admin/printerAdmin";
 import PaperAdmin from "./pages/admin/paperAdmin";
 import RevenueStatistics from "./pages/admin/RevenueStatistics";
-import Paymentcheck from "./pages/buy/paymentcheck";
+import AddingType from "./pages/admin/AddingType";
+import RemovingType from "./pages/admin/RemovingType";
+import AdjustingDefaultPageNum from "./pages/admin/AdjustingDefaultPageNum";
 
 export default function App() {
   return (
@@ -26,6 +28,12 @@ export default function App() {
           <Route path="paperAdmin" element={<PaperAdmin />} />
           <Route path="PrinterStatistics" element={<PrinterStatistics />} />
           <Route path="RevenueStatistics" element={<RevenueStatistics />} />
+          <Route path="AddingType" element={<AddingType />} />
+          <Route path="RemovingType" element={<RemovingType />} />
+          <Route
+            path="AdjustingDefaultPageNum"
+            element={<AdjustingDefaultPageNum />}
+          />
         </Route>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
