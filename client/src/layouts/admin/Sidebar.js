@@ -11,10 +11,7 @@ import {
 	HiOutlineQuestionMarkCircle,
 	HiOutlineCog,
 	HiOutlineLogout,
-	HiOutlineDocumentDuplicate
 } from 'react-icons/hi'
-import {FaMinusCircle, FaPlusCircle} from 'react-icons/fa'
-
 
 const DASHBOARD_SIDEBAR_LINKS = [
 	{
@@ -46,24 +43,6 @@ const DASHBOARD_SIDEBAR_LINKS = [
 		label: 'Thống kê doanh thu',
 		path: '/admin/RevenueStatistics',
 		icon: <HiOutlineChartPie />
-	},
-	{
-		key: 'AddingType',
-		label: 'Thêm kiểu file',
-		path: '/admin/AddingType',
-		icon: <FaPlusCircle />
-	},
-	{
-		key: 'RemovingType',
-		label: 'Xóa kiểu file',
-		path: '/admin/RemovingType',
-		icon: <FaMinusCircle />
-	},
-	{
-		key: 'AdjustingDefaultPageNum',
-		label: 'Điều chỉnh số lượng trang in',
-		path: '/admin/AdjustingDefaultPageNum',
-		icon: <HiOutlineDocumentDuplicate />
 	}
 ]
 
