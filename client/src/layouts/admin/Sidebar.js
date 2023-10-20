@@ -28,7 +28,7 @@ const DASHBOARD_SIDEBAR_LINKS = [
 	},
 	{
 		key: 'paper',
-		label: 'Giấy in',
+		label: 'Cập nhật kiểu file và số lượng giấy in',
 		path: '/admin/paperAdmin',
 		icon: <HiOutlineDocument />
 	},
