@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { FaPrint } from 'react-icons/fa';
+import { FaPrint, FaTrash } from 'react-icons/fa';
 import { FaDownload } from 'react-icons/fa';
 import { FaComment } from 'react-icons/fa';
 import { FaStar } from 'react-icons/fa';
@@ -11,8 +11,8 @@ export default function Detail() {
   const rating = 3; // Change this to your actual rating
   const maxRating = 5; // Change this to your maximum rating
   const article = {
-    title: "Sample Article",
-    description: "This is a sample article description. ",
+    title: "Nguyên lý về mối liên hệ phổ biến",
+    description: "Phép biện chứng duy vật được xây dựng trên cơ sở một hệ thống những nguyên lý,những phạm trù cơ bản, những quy luật phổ biến phản ánh đúng đắn hiện thực.........biến phản ánh  ",
   };
   const comments = [
     { id: 1, text: "Comment 1", date:"Fri,October 20, 2023"},
@@ -69,7 +69,7 @@ export default function Detail() {
     {
         borderBottom: "2px solid rgba(15,108,191,10%)", 
         padding: "10px",
-        margin:"10px",
+        margin:"30px 10px 30px 10px",
         display: "flex",
        justifyContent: "space-between", 
     },
@@ -84,8 +84,32 @@ export default function Detail() {
     commentDate: {
       marginLeft: "10px", // Adds some space to the left of the date
     },
+    commentInput: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-end",
+    },
+    commentTextarea: {
+      width: "100%",
+      borderRadius: "15px",
+      padding: "15px",
+      margin: "15px",
+      border: "1px solid gray",
+    },
+    sendButton: {
+      backgroundColor: "#0F6CBF",
+      color: "white",
+      border: "none",
+      borderRadius: "5px",
+      padding: "10px 20px",
+      cursor: "pointer",
+      marginRight:"15px",
+    },
   };
-
+  const handleSendComment = () => {
+    // Implement your comment logic here
+    console.log("Sending a comment...");
+  };
   // Function to handle downloading the article
   const handleDownload = () => {
     // Implement your download logic here
@@ -94,6 +118,10 @@ export default function Detail() {
 
   // Function to handle commenting
   const handleComment = () => {
+    // Implement your comment logic here
+    console.log("Commenting on the article...");
+  };
+  const handleDelete = () => {
     // Implement your comment logic here
     console.log("Commenting on the article...");
   };
@@ -122,6 +150,9 @@ export default function Detail() {
             <button onClick={handleRate} style={styles.button}>
               <FaPrint />
             </button>
+            <button onClick={handleDelete} style={styles.button}>
+              <FaTrash />
+            </button>
             <button onClick={handleComment} style={styles.button}>
               <FaComment />
             </button>
@@ -137,11 +168,20 @@ export default function Detail() {
               ))}
             </div>
           </div>
-
         </div>
       </div>
       <div style={styles.comment}>
         <h3 style={{fontWeight:"bold",fontSize:"150%"}}>Comments</h3>
+        <div style={styles.commentInput}> 
+            <textarea
+              style={styles.commentTextarea}
+              placeholder="Write your comment..."
+            />
+            <button onClick={handleSendComment} style={styles.sendButton}>
+              Send
+            </button>
+        </div>
+        <h3 style={{fontWeight:"bold",fontSize:"150%"}}>Các bình luận khác</h3>
         <ul>
           {comments.map((comment) => (
             <li key={comment.id} style={styles.commentlist}>
