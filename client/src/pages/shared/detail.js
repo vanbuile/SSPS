@@ -8,16 +8,21 @@ import { FaStar } from 'react-icons/fa';
 import { FaBackward } from "react-icons/fa";
 export default function Detail() {
   const { articleId } = useParams();
-  const rating = 4; // Change this to your actual rating
+  const rating = 3; // Change this to your actual rating
   const maxRating = 5; // Change this to your maximum rating
   const article = {
     title: "Sample Article",
     description: "This is a sample article description. ",
   };
   const comments = [
-    { id: 1, text: "Comment 1" },
-    { id: 2, text: "Comment 2" },
-    { id: 3, text: "Comment 3" },
+    { id: 1, text: "Comment 1", date:"Fri,October 20, 2023"},
+    { id: 2, text: "Comment 2",date:"Fri,October 20, 2023" },
+    { id: 3, text: "Comment 3", date:"Fri,October 20, 2023" },
+    { id: 4, text: "Comment 3", date:"Fri,October 20, 2023" },
+    { id: 5, text: "Comment 3", date:"Fri,October 20, 2023"},
+    { id: 6, text: "Comment 3", date:"Fri,October 20, 2023" },
+    { id: 7, text: "Comment 3", date:"Fri,October 20, 2023" },
+    { id: 8, text: "Comment 3", date:"Fri,October 20, 2023" },
   ];
   const styles = {
     frame: {
@@ -64,11 +69,20 @@ export default function Detail() {
     {
         borderBottom: "2px solid rgba(15,108,191,10%)", 
         padding: "10px",
+        margin:"10px",
+        display: "flex",
+       justifyContent: "space-between", 
     },
     rating: {
       display: "flex",
       justifyContent: "flex-end",
       alignItems: "center",
+    },
+    commentText: {
+      flex: 1, // Takes up available space (pushes date to the right)
+    },
+    commentDate: {
+      marginLeft: "10px", // Adds some space to the left of the date
     },
   };
 
@@ -130,7 +144,11 @@ export default function Detail() {
         <h3 style={{fontWeight:"bold",fontSize:"150%"}}>Comments</h3>
         <ul>
           {comments.map((comment) => (
-            <li key={comment.id} style={styles.commentlist}>{comment.text}</li>
+            <li key={comment.id} style={styles.commentlist}>
+              {comment.text}
+              <br></br>
+              <span style={{color:"gray",fontSize:"60%"}}>{comment.date}</span>
+            </li>
           ))}
         </ul>
       </div>
