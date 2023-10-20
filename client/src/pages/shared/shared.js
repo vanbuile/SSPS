@@ -1,45 +1,66 @@
 import React, { useState } from "react";
-import searchIcon from "../../assets/images/search_icon.png";
-import filterIcon from "../../assets/images/filter.png";
+import { Link } from 'react-router-dom';
+import { FaSearch } from 'react-icons/fa';
+import { FaFilter } from 'react-icons/fa';
 export default function Shared() {
   const [isInputFocused, setInputFocused] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState(""); 
   const articles = [
     {
-      title: "File 1",
-      description: "Mo ta" },
+      title: "Nguyên lý về mối liên hệ phổ biến",
+      description: "Phép biện chứng duy vật được xây dựng trên cơ sở một hệ thống những nguyên lý,những phạm trù cơ bản, những quy luật phổ biến phản ánh đúng đắn hiện thực.........biến phản ánh " },
     {
-      title: "Bài 2",
-      description: "Mô tả  2",
+      title: "Ôn tập cuối kì",
+      description: "Môn này năm học hk222",
     },
     {
-      title: "Bài 3",
-      description: "Mô tả 3",
+      title: "Hóa học vô cơ (Chem2022)",
+      description: "Một lượng nhỏ khí hydrogen có thể hoà tan trong hầu hết kim loại nóng chảy vì hydrogen có kích thước bé nên có thể xâm nhập vào các thể tích trống của kim loại",
     },
     {
-      title: "Bài 3",
-      description: "Mô tả 3",
+      title: "Nguyên lý về mối liên hệ phổ biến",
+      description: "Phép biện chứng duy vật được xây dựng trên cơ sở một hệ thống những nguyên lý,những phạm trù cơ bản, những quy luật phổ biến phản ánh đúng đắn hiện thực." },
+    {
+      title: "Ôn tập cuối kì",
+      description: "Môn này năm học hk222",
     },
     {
-      title: "Bài 3",
-      description: "Mô tả 3",
+      title: "Hóa học vô cơ (Chem2022)",
+      description: "Một lượng nhỏ khí hydrogen có thể hoà tan trong hầu hết kim loại nóng chảy vì hydrogen có kích thước bé nên có thể xâm nhập vào các thể tích trống của kim loại",
     },
     {
-      title: "Bài 3",
-      description: "Mô tả 3",
+      title: "Nguyên lý về mối liên hệ phổ biến",
+      description: "Phép biện chứng duy vật được xây dựng trên cơ sở một hệ thống những nguyên lý,những phạm trù cơ bản, những quy luật phổ biến phản ánh đúng đắn hiện thực." },
+    {
+      title: "Ôn tập cuối kì",
+      description: "Môn này năm học hk222",
     },
     {
-      title: "Bài 3",
-      description: "Mô tả 3",
+      title: "Hóa học vô cơ (Chem2022)",
+      description: "Một lượng nhỏ khí hydrogen có thể hoà tan trong hầu hết kim loại nóng chảy vì hydrogen có kích thước bé nên có thể xâm nhập vào các thể tích trống của kim loại",
     },
     {
-      title: "Bài 3",
-      description: "Mô tả 3",
+      title: "Nguyên lý về mối liên hệ phổ biến",
+      description: "Phép biện chứng duy vật được xây dựng trên cơ sở một hệ thống những nguyên lý,những phạm trù cơ bản, những quy luật phổ biến phản ánh đúng đắn hiện thực." },
+    {
+      title: "Ôn tập cuối kì",
+      description: "Môn này năm học hk222",
     },
     {
-      title: "Bài 3",
-      description: "Mô tả 3",
+      title: "Hóa học vô cơ (Chem2022)",
+      description: "Một lượng nhỏ khí hydrogen có thể hoà tan trong hầu hết kim loại nóng chảy vì hydrogen có kích thước bé nên có thể xâm nhập vào các thể tích trống của kim loại",
+    },
+    {
+      title: "Nguyên lý về mối liên hệ phổ biến",
+      description: "Phép biện chứng duy vật được xây dựng trên cơ sở một hệ thống những nguyên lý,những phạm trù cơ bản, những quy luật phổ biến phản ánh đúng đắn hiện thực." },
+    {
+      title: "Ôn tập cuối kì",
+      description: "Môn này năm học hk222",
+    },
+    {
+      title: "Hóa học vô cơ (Chem2022)",
+      description: "Một lượng nhỏ khí hydrogen có thể hoà tan trong hầu hết kim loại nóng chảy vì hydrogen có kích thước bé nên có thể xâm nhập vào các thể tích trống của kim loại",
     },
   ];
   const styles = {
@@ -134,7 +155,7 @@ export default function Shared() {
     <div style={{ display: "block", justifyContent: "center" }}>
       <div style={styles.topframe}>
         <div style={styles.search}>
-          <img src={searchIcon} alt="Search" style={styles.searchIcon} />
+          <FaSearch style={styles.searchIcon} />
           <input
             style={styles.searchInput}
             placeholder="Tìm kiếm tài liệu bạn cần ..."
@@ -143,7 +164,7 @@ export default function Shared() {
           />
         </div>
         <div style={styles.filterButton} onClick={() => setIsFilterOpen(!isFilterOpen)}>
-          <img src={filterIcon} alt="Filter" style={styles.filterIcon} /> Filter
+          <FaFilter style={styles.filterIcon} /> Filter
         </div>
       </div>
       <div style={styles.filterDialog}>
@@ -163,8 +184,10 @@ export default function Shared() {
       <div style={styles.content}>
       {articles.map((article, index) => (
         <div key={index} style={styles.article}>
-          <h1 style={{color:"#0F6CBF",fontSize:"150%"}}>{article.title}</h1>
-          <p>{article.description}</p>
+          <h2 style={{ color: "#0F6CBF", fontSize: "150%", paddingBottom:"5px"}}>
+            <Link to={'/detail'}>{article.title}</Link>
+          </h2>
+          <p style={{color:"gray"}}>{article.description}</p>
         </div>
       ))}
     </div>
