@@ -38,7 +38,6 @@ function BuyForm(props) {
     console.log("values: ", values);
     console.log("paymethod: ", paymethod);
     openModal();
-    
   };
   let [isOpen, setIsOpen] = useState(false);
   function closeModal() {
