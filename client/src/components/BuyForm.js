@@ -4,10 +4,16 @@ import TextFieldInput from "./TextFieldInput";
 import { Button } from "@mui/material";
 import { useForm, FormProvider } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { set } from "date-fns";
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
-import checkImage from "../assets/images/check.png"
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, useState } from "react";
+import checkImage from "../assets/images/check.png";
+import { Radio } from "@mui/material";
+import vnpayimage from "../assets/images/vnpay.png";
+import vnpaycheckimage from "../assets/images/vnpaycheck.png";
+import momoimage from "../assets/images/momo.png";
+import momocheckimage from "../assets/images/momocheck.png";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 const data = [{ name: "Nguyễn Văn An", email: "an.nguyen@hcmutedu.vn" }];
 BuyForm.propTypes = {
@@ -25,21 +31,27 @@ function BuyForm(props) {
   const navigate = useNavigate();
   const navigateToCheck = () => {
     setTimeout(() => {
-    navigate("/");}, 500);
+      navigate("/");
+    }, 500);
   };
   const handleSubmit = (values) => {
     console.log("values: ", values);
+    console.log("paymethod: ", paymethod);
     openModal();
   };
   let [isOpen, setIsOpen] = useState(false);
   function closeModal() {
-    setIsOpen(false)
+    setIsOpen(false);
     navigateToCheck();
   }
 
   function openModal() {
-    setIsOpen(true)
+    setIsOpen(true);
   }
+  const [paymethod, setPaymethod] = useState("vnpay");
+  const handleChange = (event) => {
+    setPaymethod(event.target.value);
+  };
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -68,7 +80,12 @@ function BuyForm(props) {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="flex flex-col h-full max-h-96 w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all items-center">
-                  <img src={checkImage} height={60} width={60} className=" mb-4"/>
+                  <img
+                    src={checkImage}
+                    height={60}
+                    width={60}
+                    className=" mb-4"
+                  />
                   <Dialog.Title
                     as="h3"
                     className="text-4xl font-medium leading-6 text-green-600 text-center mb-4"
@@ -76,8 +93,10 @@ function BuyForm(props) {
                     Thanh toán thành công
                   </Dialog.Title>
                   <div className="mt-2">
-                    <p className="text-lg text-gray-600 text-center" >
-                      Giao dịch thanh toán của bạn đã được xác nhận thành công. <br/>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!
+                    <p className="text-lg text-gray-600 text-center">
+                      Giao dịch thanh toán của bạn đã được xác nhận thành công.{" "}
+                      <br />
+                      Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!
                     </p>
                   </div>
 
@@ -142,6 +161,39 @@ function BuyForm(props) {
                 />
               </div>
               <div className="flex flex-col">
+                <span className=" font-semibold">Phương thức thanh toán</span>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="paymethod"
+                  value={paymethod}
+                  onChange={handleChange}
+                >
+                  <FormControlLabel
+                    value="vnpay"
+                    control={
+                      <Radio
+                        icon={<img src={vnpayimage} height={60} width={60} />}
+                        checkedIcon={
+                          <img src={vnpaycheckimage} height={60} width={60} />
+                        }
+                      />
+                    }
+                  />
+                  <FormControlLabel
+                    value="momo"
+                    control={
+                      <Radio
+                        icon={<img src={momoimage} height={60} width={60} />}
+                        checkedIcon={
+                          <img src={momocheckimage} height={60} width={60} />
+                        }
+                      />
+                    }
+                  />
+                </RadioGroup>
+              </div>
+              <div className="flex flex-col">
                 <Button
                   variant="contained"
                   type="submit"
@@ -149,7 +201,6 @@ function BuyForm(props) {
                   size="large"
                   style={{ width: 300 }}
                   form="buyForm"
-                
                 >
                   Mua thêm
                 </Button>
