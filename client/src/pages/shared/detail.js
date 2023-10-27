@@ -6,30 +6,32 @@ import { FaDownload } from 'react-icons/fa';
 import { FaComment } from 'react-icons/fa';
 import { FaStar } from 'react-icons/fa';
 import { FaBackward } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
 export default function Detail() {
   const { articleId } = useParams();
   const rating = 3; // Change this to your actual rating
   const maxRating = 5; // Change this to your maximum rating
   const article = {
+    user:"Nguyễn Ngọc Bảo Châu - 2110842",
     title: "Nguyên lý về mối liên hệ phổ biến",
     description: "Phép biện chứng duy vật được xây dựng trên cơ sở một hệ thống những nguyên lý,những phạm trù cơ bản, những quy luật phổ biến phản ánh đúng đắn hiện thực.........biến phản ánh  ",
   };
   const comments = [
-    { id: 1, text: "Comment 1", date:"Fri,October 20, 2023"},
-    { id: 2, text: "Comment 2",date:"Fri,October 20, 2023" },
-    { id: 3, text: "Comment 3", date:"Fri,October 20, 2023" },
-    { id: 4, text: "Comment 3", date:"Fri,October 20, 2023" },
-    { id: 5, text: "Comment 3", date:"Fri,October 20, 2023"},
-    { id: 6, text: "Comment 3", date:"Fri,October 20, 2023" },
-    { id: 7, text: "Comment 3", date:"Fri,October 20, 2023" },
-    { id: 8, text: "Comment 3", date:"Fri,October 20, 2023" },
+    { id: 1, text: "Comment 1", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê"},
+    { id: 2, text: "Comment 2", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
+    { id: 3, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
+    { id: 4, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
+    { id: 5, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê"},
+    { id: 6, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
+    { id: 7, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
+    { id: 8, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
   ];
   const styles = {
     frame: {
       border:"1px solid #0f6cbf",
       margin: "20px 80px 20px 80px",
       borderRadius: "15px",
-      backgroundColor: "#CEE8FF",
+      backgroundColor: "#E2ECFF",
       padding: "40px",
       display: "flex",
       flexDirection: "column",
@@ -47,6 +49,11 @@ export default function Detail() {
     },
     description: {
       color: "gray",
+    },
+    user: {
+      marginTop:"20px",
+      color: "gray",
+      fontSize:"12px",
     },
     buttonFrame: {
       display: "flex",
@@ -92,8 +99,8 @@ export default function Detail() {
     commentTextarea: {
       width: "100%",
       borderRadius: "15px",
-      padding: "15px",
-      margin: "15px",
+      padding: "15px 0 15px 15px",
+      margin: "20px 0 20px 20px",
       border: "1px solid gray",
     },
     sendButton: {
@@ -117,11 +124,11 @@ export default function Detail() {
   };
 
   // Function to handle commenting
-  const handleComment = () => {
+  const handleDelete = () => {
     // Implement your comment logic here
     console.log("Commenting on the article...");
   };
-  const handleDelete = () => {
+  const handleView = () => {
     // Implement your comment logic here
     console.log("Commenting on the article...");
   };
@@ -142,8 +149,12 @@ export default function Detail() {
           <div>
             <h2 style={styles.title}>{article.title}</h2>
             <p style={styles.description}>{article.description}</p>
+            <p style={styles.user}>{article.user}</p>
           </div>
           <div style={styles.buttonFrame}>
+            <button onClick={handleView} style={styles.button}>
+              <FaEye />
+            </button>
             <button onClick={handleDownload} style={styles.button}>
               <FaDownload />
             </button>
@@ -152,9 +163,6 @@ export default function Detail() {
             </button>
             <button onClick={handleDelete} style={styles.button}>
               <FaTrash />
-            </button>
-            <button onClick={handleComment} style={styles.button}>
-              <FaComment />
             </button>
             <div style={styles.rating}>
               {Array.from({ length: maxRating }, (_, index) => (
@@ -171,7 +179,7 @@ export default function Detail() {
         </div>
       </div>
       <div style={styles.comment}>
-        <h3 style={{fontWeight:"bold",fontSize:"150%"}}>Comments</h3>
+        <h3 style={{fontWeight:"bold",fontSize:"150%"}}>Comment</h3>
         <div style={styles.commentInput}> 
             <textarea
               style={styles.commentTextarea}
@@ -187,7 +195,7 @@ export default function Detail() {
             <li key={comment.id} style={styles.commentlist}>
               {comment.text}
               <br></br>
-              <span style={{color:"gray",fontSize:"60%"}}>{comment.date}</span>
+              <span style={{color:"gray",fontSize:"60%"}}>{comment.date}<br/>{comment.user}</span>
             </li>
           ))}
         </ul>

@@ -7,7 +7,7 @@ export default function Shared() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState(""); 
   const articles = [
-    {
+    { 
       title: "Nguyên lý về mối liên hệ phổ biến",
       description: "Phép biện chứng duy vật được xây dựng trên cơ sở một hệ thống những nguyên lý,những phạm trù cơ bản, những quy luật phổ biến phản ánh đúng đắn hiện thực.........biến phản ánh " },
     {
@@ -89,6 +89,7 @@ export default function Shared() {
     searchIcon: {
       marginRight: "10px",
       width: "3%",
+      color:"gray",
     },
     filterButton: {
       marginLeft: "10px",
@@ -184,7 +185,7 @@ export default function Shared() {
       <div style={styles.content}>
       {articles.map((article, index) => (
         <div key={index} style={styles.article}>
-          <h2 style={{ color: "#0F6CBF", fontSize: "150%", paddingBottom:"5px"}}>
+          <h2 style={{ color: "#0F6CBF", fontSize: "120%", paddingBottom:"5px"}}>
             <Link to={'/detail'}>{article.title}</Link>
           </h2>
           <p style={{color:"gray"}}>{article.description}</p>
