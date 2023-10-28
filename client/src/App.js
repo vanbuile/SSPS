@@ -3,6 +3,7 @@ import Layout from "./layouts/header/layout";
 import Home from "./pages/home/home";
 import Print from "./pages/print/print";
 import Shared from "./pages/shared/shared";
+import Detail from "./pages/shared/detail";
 import Buy from "./pages/buy/buy";
 import Login from "./pages/login/login";
 import Error from "./pages/error/error";
@@ -29,6 +30,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="print" element={<Print />} />
           <Route path="shared" element={<Shared />} />
+          <Route path="detail" element={<Detail />} />
           <Route path="buy" element={<Buy />} />
           <Route path="login" element={<Login />} />
         </Route>
