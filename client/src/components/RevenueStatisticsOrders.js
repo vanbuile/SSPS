@@ -54,51 +54,6 @@ const recentOrderData = [
 		number_pager: 25,
 		id_print: '3',
 		state: 0
-	},
-	{
-		id: '2113928',
-		student: 'Đào Duy Long',
-		hour: '12/13',
-		date: '25/10/2023',
-		number_pager: 25,
-		id_print: '3',
-		state: 0
-	},
-	{
-		id: '2113928',
-		student: 'Đào Duy Long',
-		hour: '12/13',
-		date: '25/10/2023',
-		number_pager: 25,
-		id_print: '3',
-		state: 1
-	},
-	{
-		id: '2113928',
-		student: 'Đào Duy Long',
-		hour: '12/13',
-		date: '25/10/2023',
-		number_pager: 25,
-		id_print: '3',
-		state: 1
-	},
-	{
-		id: '2113928',
-		student: 'Đào Duy Long',
-		hour: '12/13',
-		date: '25/10/2023',
-		number_pager: 25,
-		id_print: '3',
-		state: 0
-	},
-	{
-		id: '2113928',
-		student: 'Đào Duy Long',
-		hour: '12/13',
-		date: '25/10/2023',
-		number_pager: 25,
-		id_print: '3',
-		state: 0
 	}
 ]
 
@@ -123,7 +78,7 @@ export default function RecentOrders() {
 					<tbody>
 						{/* bg-yellow-300 */}
 						{recentOrderData.map((order) => (
-							<tr key={order.id} class= {order.state === 1 ? "bg-yellow-300 border-b": "bg-green-400 border-b"}>
+							<tr key={order.id} class= {order.state === 1 ? "border-b": "border-b"}>
 								<td class="text-sm text-gray-900  font-bold px-6 py-4 whitespace-nowrap">#{order.id}</td>
 								<td class="text-sm text-gray-900 font-bold px-6 py-4 whitespace-nowrap">{order.student}</td>
 								<td class="text-sm text-gray-900 font-bold px-6 py-4 whitespace-nowrap">{order.hour}</td>
