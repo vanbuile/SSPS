@@ -32,6 +32,7 @@ export default function AdjustingDefaultPageNumForm() {
     };
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
     const [quantity, setQuantity] = useState("100"); // default là 100
     const [days, setDays] = useState("3"); // default là 3
     const selectInputs = [
@@ -59,16 +60,21 @@ export default function AdjustingDefaultPageNumForm() {
     const closeModal = () => {
         setIsModalOpen(false);
     };
-    const modalButton = (label) => {
-        return (
-            <button className="bg-[#0F6CBF] text-[#F5F5F5] px-4 py-2 rounded-md m-4" onClick={closeModal}>
-                {label}
-            </button>
-        );
+    const confirmUpdate = () => {
+        setIsChecked(true); // Show the success message
+        closeModal(); // Close the modal
     };
+    const modalButton = (label, onClick) => (
+        <button
+            className="bg-[#0F6CBF] text-[#F5F5F5] px-4 py-2 rounded-md m-4"
+            onClick={onClick}
+        >
+            {label}
+        </button>
+    );
     return (
-        <div className="ml-20 mr-20 mb-10 mt-10 bg-[#F5F5F5] rounded-[40px] pt-3 pb-4 border-2 border-[#0F6CBF] flex-1 text-center text-[30px]">
-            <strong id="form-title" className="text-[#374151] text-[40px]">Cập nhật số lượng trang in mặc định cho mỗi sinh viên và ngày cập nhật thay đổi</strong>
+        <div className="mb-10 mt-10 bg-[#F5F5F5] pt-3 pb-4 border-2 border-[#0F6CBF] flex-1 text-center text-[20px]">
+            <strong id="form-title" className="text-[#374151] text-[20px]">Cập nhật số lượng trang in mặc định cho mỗi sinh viên và ngày cập nhật thay đổi</strong>
             <hr className="border-[#0F6CBF] w-full my-4" />
             <div id="form-select" className="grid grid-rows-2 gap-4">
                 <div className="col-span-1 grid grid-cols-2 gap-4 flex justify-between items-center mt-4">
@@ -94,11 +100,20 @@ export default function AdjustingDefaultPageNumForm() {
                         <h2 className="text-xl font-bold m-4">Xác nhận</h2>
                         <hr className="border-[#0F6CBF] w-full my-4" />
                         <div className="flex justify-end">
-                            <a href={`UpdatePageNum?quantity=${quantity}&days=${days}`}>
-                                {modalButton("Xác nhận")}
+                            <a>
+                                {modalButton("Xác nhận", confirmUpdate)}
                             </a>
-                            {modalButton("Hủy")}
+                            {modalButton("Hủy",closeModal)}
                         </div>
+                    </div>
+                </div>
+            )}
+            {isChecked && (
+                <div id="confirm" className="fixed inset-0 flex items-center justify-center z-50">
+                    <div className="bg-white border-2 border-[#0F6CBF] shadow-lg">
+                        <h2 className="text-xl font-bold m-4">Cập nhật thành công</h2>
+                        <hr className="border-[#0F6CBF] w-full my-4" />
+                        {modalButton("Đóng", () => setIsChecked(false))}
                     </div>
                 </div>
             )}
