@@ -1,0 +1,11 @@
+const express = require("express");
+const router = express.Router();
+const {ShowListPrinter, AddNewPrinter, EditOldPrinter, DeleteOldPrinter} = require('../service/printAdmin');
+
+
+router.get('/', ShowListPrinter);
+router.post('/add', AddNewPrinter);
+router.post('/edit/', EditOldPrinter);
+router.get('/delete/:id', DeleteOldPrinter);
+
+module.exports = router
