@@ -145,7 +145,6 @@ export default function DeletePrinter({ printer }) {
             </div>
           </Dialog>
         </Transition>
-    
     </>
   )
 }
