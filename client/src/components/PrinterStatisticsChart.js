@@ -1,61 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import APIs from '../util/API';
+
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const data = [
-  {
-    name: 'Tuần 1',
-    print1: 2400,
-    print2: 6400,
-	print3: 2400,
-	print4: 7400
-  },
-  {
-    name: 'Tuần 2',
-    print1: 1398,
-    print2: 2210,
-	print3: 2400,
-	print4: 5400
-  },
-  {
-    name: 'Tuần 3',
-    print1: 9800,
-    print2: 2290,
-	print3: 2400,
-	print4: 5400
-  },
-  {
-    name: 'Tuần 4',
-    print1: 3908,
-    print2: 2000,
-	print3: 2400,
-	print4: 5400
-  },
-  {
-    name: 'Tuần 5',
-    print1: 1398,
-    print2: 2210,
-	print3: 3400,
-	print4: 5400
-  },
-  {
-    name: 'Tuần 6',
-    print1: 9800,
-    print2: 2290,
-	print3: 4400,
-	print4: 5400
-  },
-  {
-    name: 'Tuần 7',
-    print1: 3908,
-    print2: 2000,
-	print3: 3400,
-	print4: 5400
-  }
-];
+
 
   
-export default function TransactionChart() {
-	data.map(name => name.total = name.print1 + name.print2 + name.print3 + name.print4);
+export default function TransactionChart(props) {
+	const [data, setdata] = useState(null);
+
+	useEffect(() => {
+		// Hàm fetchApiData sử dụng Axios để gửi yêu cầu GET đến API
+		const fetchApiData = async () => {
+		  try {
+			  const response = await axios.get(APIs.APIadminPrinterStatistics + '/TransactionChart');
+			  setdata(response.data);
+		  } catch (error) {
+			console.error('Error fetching data:', error);
+		  }
+		};
+	
+		// Gọi hàm fetchApiData khi component được mount
+		fetchApiData();
+	  }, []); // [] đảm bảo useEffect chỉ chạy một lần khi component được mount
+	  if (!data) return <></>;
+
+
+	const keysArray = Object.keys(data[0]).slice(1, -1);
+	const valuesArray = ["#82ca9d", "#d0021b", "#37d67a", "#2ccce4","#82ca9d", "#d0021b", "#37d67a", "#2ccce4","#82ca9d", "#d0021b", "#37d67a", "#2ccce4"];
+	const namePrint = {};
+
+	keysArray.forEach((key, index) => {namePrint[key] = valuesArray[index]});
 
 	return (
 		<div className="h-[22rem] bg-white p-4 rounded-sm border border-gray-200 flex flex-col flex-1">
@@ -79,10 +55,11 @@ export default function TransactionChart() {
 					<Tooltip />
 					<Legend />
 					<Line type="monotone" dataKey="total" stroke="#8884d8" strokeWidth={3} activeDot={{ r: 8 }} />
-					<Line type="monotone" dataKey="print1" stroke="#82ca9d" strokeWidth={2} strokeDasharray="5 5" />
+					{Object.entries(namePrint).map(([key, value]) => <Line type="monotone" dataKey={key} stroke={value} strokeWidth={2} strokeDasharray="5 5" />)}
+					{/* <Line type="monotone" dataKey="print1" stroke="#82ca9d" strokeWidth={2} strokeDasharray="5 5" />
 					<Line type="monotone" dataKey="print2" stroke="#d0021b" strokeWidth={2} strokeDasharray="5 5" />
 					<Line type="monotone" dataKey="print3" stroke="#37d67a" strokeWidth={2} strokeDasharray="5 5" />
-					<Line type="monotone" dataKey="print4" stroke="#2ccce4" strokeWidth={2} strokeDasharray="5 5" />
+					<Line type="monotone" dataKey="print4" stroke="#2ccce4" strokeWidth={2} strokeDasharray="5 5" /> */}
 				</LineChart>
 			</ResponsiveContainer>
 			</div>

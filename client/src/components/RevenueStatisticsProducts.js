@@ -1,37 +1,39 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import APIs from '../util/API';
+
 import classNames from 'classnames'
-import React from 'react'
 import { Link } from 'react-router-dom'
 
-const popularProducts = [
-	{
-		id: '1',
-		name: 'Đào Duy long',
-		product_thumbnail: 'https://source.unsplash.com/100x100?macbook',
-		hours: '2h45p',
-		states: 0
-	},
-	{
-		id: '1',
-		name: 'Đào Duy long',
-		product_thumbnail: 'https://source.unsplash.com/100x100?macbook',
-		hours: '0',
-		states: 1
-	},
-	{
-		id: '1',
-		name: 'Đào Duy long',
-		product_thumbnail: 'https://source.unsplash.com/100x100?macbook',
-		hours: '3h45p',
-		states: 0
-	}
-]
+
 
 function PopularProducts() {
+	const [data, setdata] = useState(null);
+
+	useEffect(() => {
+		// Hàm fetchApiData sử dụng Axios để gửi yêu cầu GET đến API
+		const fetchApiData = async () => {
+		  try {	
+			  const response = await axios.get(APIs.APIadminRevenueStatistics + '/PopularProducts');
+			  setdata(response.data);
+		  } catch (error) {
+			console.error('Error fetching data:', error);
+		  }
+		};
+	
+		// Gọi hàm fetchApiData khi component được mount
+		fetchApiData();
+	  }, []); // [] đảm bảo useEffect chỉ chạy một lần khi component được mount
+	  if (!data) return <></>;
+
+
+
+
 	return (
 		<div className="w-[20rem] bg-white p-4 rounded-sm border border-gray-200">
 			<strong className="text-gray-700 font-medium">Sinh Viên mới truy cập</strong>
 			<div className="mt-4 flex flex-col gap-3">
-				{popularProducts.map((product) => (
+				{data.map((product) => (
 					<Link
 						key={product.id}
 						to={`/product/${product.id}`}

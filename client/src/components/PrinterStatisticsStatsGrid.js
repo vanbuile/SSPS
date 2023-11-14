@@ -1,33 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import APIs from '../util/API';
+
 import { IoShareSocialSharp, IoHammer, IoDocumentsSharp, IoPrintSharp} from 'react-icons/io5'
-
-const dataStatsGrid = [
-	{
-		name: 'Tổng số giấy sử dụng HK231',
-		total: 1058,
-		incTotal: 343,
-		incon: <IoDocumentsSharp className="text-2xl text-white" />
-	},
-	{
-		name: 'Số lần hoạt động máy in ngày',
-		total: 542,
-		incTotal: 343,
-		incon: <IoPrintSharp className="text-2xl text-white" />
-	},
-	{
-		name: 'Sô lượng tài liệu share',
-		total: 54232,
-		incTotal: -343,
-		incon: <IoShareSocialSharp className="text-2xl text-white" />
-	},
-	{
-		name: 'Số lần bảo trì',
-		total: 5,
-		incTotal: 1,
-		incon: <IoHammer className="text-2xl text-white" />
-	}
-]
-
 
 function Icon(props)
 {
@@ -48,10 +23,32 @@ function Icon(props)
 	);
 }
 
-export default function DashboardStatsGrid() {
+export default function DashboardStatsGrid(props) {
+	const [data, setdata] = useState(null);
+
+	useEffect(() => {
+	  // Hàm fetchApiData sử dụng Axios để gửi yêu cầu GET đến API
+	  const fetchApiData = async () => {
+		try {
+			const response = await axios.get(APIs.APIadminPrinterStatistics + '/total');
+			setdata(response.data);
+		} catch (error) {
+		  console.error('Error fetching data:', error);
+		}
+	  };
+  
+	  // Gọi hàm fetchApiData khi component được mount
+	  fetchApiData();
+	}, []); // [] đảm bảo useEffect chỉ chạy một lần khi component được mount
+	if (!data) return <></>;
+	data[0].incon = <IoDocumentsSharp className="text-2xl text-white" />
+	data[1].incon = <IoPrintSharp className="text-2xl text-white" />
+	data[2].incon = <IoShareSocialSharp className="text-2xl text-white" />
+	data[3].incon = <IoHammer className="text-2xl text-white" />
+
 	return (
 		<div className="flex gap-4">
-			{dataStatsGrid.map(x => <Icon data = {x} />)}
+			{data.map(x => <Icon data = {x} />)}
 		</div>
 	)
 }

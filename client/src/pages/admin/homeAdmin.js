@@ -9,3 +9,15 @@ export default function homeAdmin() {
 		</div>
 	)
 }
+
+
+// import homeBK from '../../assets/images/homeBK.jpg'
+
+// export default function homeAdmin() {
+//   return (
+//     <img
+//     src={homeBK}
+//     alt="Your Company"
+//   />
+//   );
+// }

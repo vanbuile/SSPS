@@ -1,53 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import APIs from '../util/API';
+
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const data = [
-  {
-    name: 'Máy in A',
-    pages_print: 4000,
-    pages_buy: 2400,
-    amt: 2400,
-  },
-  {
-    name: 'Máy in B',
-    pages_print: 3000,
-    pages_buy: 1398,
-    amt: 2210,
-  },
-  {
-    name: 'Máy in C',
-    pages_print: 2000,
-    pages_buy: 9800,
-    amt: 2290,
-  },
-  {
-    name: 'Máy in D',
-    pages_print: 2780,
-    pages_buy: 3908,
-    amt: 2000,
-  },
-  {
-    name: 'Máy in E',
-    pages_print: 1890,
-    pages_buy: 4800,
-    amt: 2181,
-  },
-  {
-    name: 'Máy in F',
-    pages_print: 2390,
-    pages_buy: 3800,
-    amt: 2500,
-  },
-  {
-    name: 'Máy in G',
-    pages_print: 3490,
-    pages_buy: 4300,
-    amt: 2100,
-  },
-];
 
 
-export default function  PrinterStatisticsCol() {
+
+export default function  PrinterStatisticsCol(props) {
+	const [data, setdata] = useState(null);
+
+	useEffect(() => {
+	  // Hàm fetchApiData sử dụng Axios để gửi yêu cầu GET đến API
+	  const fetchApiData = async () => {
+		try {
+			const response = await axios.get(APIs.APIadminPrinterStatistics + '/PrinterStatisticsCol');
+			setdata(response.data);
+		} catch (error) {
+		  console.error('Error fetching data:', error);
+		}
+	  };
+  
+	  // Gọi hàm fetchApiData khi component được mount
+	  fetchApiData();
+	}, []); // [] đảm bảo useEffect chỉ chạy một lần khi component được mount
+	if (!data) return <></>;
+
+
+
     return (
 		<div className="w-[20rem] h-[22rem] bg-white p-4 rounded-sm border border-gray-200 flex flex-col">
 			<strong className="text-gray-700 font-medium">Máy In</strong>

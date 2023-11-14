@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {ShowListPrinter, AddNewPrinter, EditOldPrinter, DeleteOldPrinter} = require('../service/printAdmin');
+const {ShowListPrinter, AddNewPrinter, EditOldPrinter, DeleteOldPrinter} = require('../PersistenceLayer/printAdmin');
 
 
 router.get('/', ShowListPrinter);

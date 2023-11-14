@@ -1,63 +1,31 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import APIs from '../util/API';
 
 
-const recentOrderData = [
-	{
-		id: '2113928',
-		student: 'Đào Duy Long',
-		hour: '12/13',
-		date: '25/10/2023',
-		number_pager: 25,
-		state: 1
-	},
-	{
-		id: '2113928',
-		student: 'Đào Duy Long',
-		hour: '12/13',
-		date: '25/10/2023',
-		number_pager: 25,
-		id_print: '3',
-		state: 0
-	},
-	{
-		id: '2113928',
-		student: 'Đào Duy Long',
-		hour: '12/13',
-		date: '25/10/2023',
-		number_pager: 25,
-		id_print: '3',
-		state: 0
-	},
-	{
-		id: '2113928',
-		student: 'Đào Duy Long',
-		hour: '12/13',
-		date: '25/10/2023',
-		number_pager: 25,
-		id_print: '3',
-		state: 0
-	},
-	{
-		id: '2113928',
-		student: 'Đào Duy Long',
-		hour: '12/13',
-		date: '25/10/2023',
-		number_pager: 25,
-		id_print: '3',
-		state: 1
-	},
-	{
-		id: '2113928',
-		student: 'Đào Duy Long',
-		hour: '12/13',
-		date: '25/10/2023',
-		number_pager: 25,
-		id_print: '3',
-		state: 0
-	}
-]
 
 export default function RecentOrders() {
+	const [data, setdata] = useState(null);
+
+	useEffect(() => {
+		// Hàm fetchApiData sử dụng Axios để gửi yêu cầu GET đến API
+		const fetchApiData = async () => {
+		  try {	
+			  const response = await axios.get(APIs.APIadminRevenueStatistics + '/RecentOrders');
+			  setdata(response.data);
+		  } catch (error) {
+			console.error('Error fetching data:', error);
+		  }
+		};
+	
+		// Gọi hàm fetchApiData khi component được mount
+		fetchApiData();
+	  }, []); // [] đảm bảo useEffect chỉ chạy một lần khi component được mount
+	  if (!data) return <></>;
+
+
+
+
 	return (
 
 		<div className="bg-white px-4 pt-3 pb-4 rounded-sm border border-gray-200 flex-1">
@@ -77,7 +45,7 @@ export default function RecentOrders() {
 					</thead>
 					<tbody>
 						{/* bg-yellow-300 */}
-						{recentOrderData.map((order) => (
+						{data.map((order) => (
 							<tr key={order.id} class= {order.state === 1 ? "border-b": "border-b"}>
 								<td class="text-sm text-gray-900  font-bold px-6 py-4 whitespace-nowrap">#{order.id}</td>
 								<td class="text-sm text-gray-900 font-bold px-6 py-4 whitespace-nowrap">{order.student}</td>

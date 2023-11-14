@@ -1,7 +1,11 @@
 
+import homeBK from '../../assets/images/homeBK.jpg'
 
 export default function Home() {
   return (
-    <p>123213</p>
+    <img
+    src={homeBK}
+    alt="Your Company"
+  />
   );
 }

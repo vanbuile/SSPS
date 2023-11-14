@@ -53,7 +53,7 @@ export default function Example() {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <button
                   type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="relative rounded-full bg-gray-300 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-500"
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">View notifications</span>
@@ -144,13 +144,13 @@ export default function Example() {
   )
 }
 
-const linkClass =
-	'flex items-center hover:text-white font-light px-3 py-2 hover:bg-neutral-700 hover:no-underline active:bg-neutral-600 px-7 rounded-sm text-base transition-all duration-350 ease-in-out'
+const linkClass = 
+	'flex items-center font-light px-3 py-2  hover:no-underline  px-7 rounded-sm text-base transition-all duration-350 ease-in-out'
 
 function SidebarLink({ link }) {
 	const { pathname } = useLocation()
 
-	return (
+	return (  
 		<Link
 			to={link.path}
 			className={classNames(pathname === link.path ? 'bg-gray-200 text-3xl font-medium text-gray-600 dark:text-white' : ' text-3xl font-medium text-gray-900 dark:text-white', linkClass)}

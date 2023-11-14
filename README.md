@@ -1,76 +1,51 @@
-## cài thêm 
-### `npm i react-icons`
-### `npm i recharts`
-### `npm i date-fns`
-### `npm i classnames`
+# Lệnh Chạy
+### Server
+- cd folder server chạy lệnh **npm start** chạy trên port 3001
+### Client
+- cd folder client chạy lệnh **npm start** chạy trên port 3000
+***
+# API
+### Client
+- API có dụng 'http://localhost:3001/api' với phần phía sau là nơi lưu trữ json
+- trong folder client/util -> nơ cấu hình API của từng nhiệm vụ
+- API sẽ dùng thông qua ***axios*** thư viện dùng gọi API
+```javascript
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import APIs from '../util/API';
+```
+- với **useState, useEffect** phần sử lí event của reactjs
+- với **APIs** trong phần client/util chọn APIs muốn dùng
+```javascript
+const [data, setdata] = useState(null);
+useEffect(() => {
+	// Hàm fetchApiData sử dụng Axios để gửi yêu cầu GET đến API
+	const fetchApiData = async () => {
+	  try {
+		  const response = await axios.get(APIs.APIadminPrinterStatistics + '/TransactionChart');
+		  setdata(response.data);
+	  } catch (error) {
+		console.error('Error fetching data:', error);
+	  }
+	};
 
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+	// Gọi hàm fetchApiData khi component được mount
+	fetchApiData();
+  }, []); // [] đảm bảo useEffect chỉ chạy một lần khi component được mount
+  if (!data) return <></>;
+```
+- **if (!data) return <></>;** này để đồng bộ chứ không bị lỗi 
+- data được lấy lên từ server
+### Server
+- **app.use** phần này để chọn API cần xử dụng được kế nối với router của từng phần sau khi kế nối xong thì router có nhiệm vụ là phân chia task cho từng API con bên trong nó, các API này sẽ gọi đến các hàm cần xử lí
+- ***cors*** là phần dưới dùng để xác thực API và dùng để cho phép loại file nào được vận chuyển thông qua HTTP
+- ***async (req, res)*** hàm trong API có 2 phần request/response. res là dữ liệu được truyền từ server lên client còn req là những dữ liệu từ client gửi lại server, phần async để đồng bộ khi xử lí quá lớn 
+***
+# Kiến trúc
+- **BusinessLayer** dùng để xử lí database khi lấy từ dưới tầng PersistenceLayer lên và trả về cho tầng UI phía trên FORNTEND thông qua API -> tần này xử lí nhiều nhất không được gọi database phần này
+- **PersistenceLayer** tần này có chức năng là xử kết nối database không xử lí dùng **mysql2** để truy vấn và xử lí, ***connection*** kế nối database, 
+```javascript
+const connection = require('./DataBase');
+const mysql = require('mysql2');
+```
+- **DATABASE** dùng XAMPP 
