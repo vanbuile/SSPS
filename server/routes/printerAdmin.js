@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const {ShowListPrinter, AddNewPrinter, EditOldPrinter, DeleteOldPrinter} = require('../PersistenceLayer/printAdmin');
+const {ShowListPrinter, AddNewPrinter, EditOldPrinter, DeleteOldPrinter} = require('../PersistenceLayer/PrinterDAO');
 
 
-router.get('/', ShowListPrinter);
+router.get('/:page', ShowListPrinter);
 router.post('/add', AddNewPrinter);
 router.post('/edit/', EditOldPrinter);
 router.get('/delete/:id', DeleteOldPrinter);

@@ -1,7 +1,6 @@
 
-
 //import package
-require('dotenv').config() // For using proces.env
+require('dotenv').config() // For using process.env
 const express = require('express')
 const multer = require("multer");
 const cors = require("cors");
@@ -9,7 +8,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 //import route object
-//const printAdmin = require('./routes/printAdmin')
+const printerAdmin = require('./routes/printerAdmin')
 const statisticAdmin = require('./routes/statisticAdmin');
 const revenueAdmin = require('./routes/revenueAdmin');
 
@@ -31,14 +30,14 @@ app.use(express.urlencoded({ extends: true }));
 
 
 // API dùng
-//app.use('/api/admin/print', printAdmin);
+app.use('/api/admin/print', printerAdmin);
 app.use('/api/admin/statisticAdmin', statisticAdmin);
 app.use('/api/admin/revenueAdmin', revenueAdmin);
 
 
-app.listen(3001,'localhost', () => {
-    console.log(`Example app listening on port 3001`)
+app.listen(process.env.SV_PORT,'localhost', () => {
+    console.log(`Example app listening on port ${process.env.SV_PORT}`)
 })
 
 // test kết nối database
-const select  = require('./PersistenceLayer/PrintDAO');
+// const select  = require('./PersistenceLayer/PrinterDAO');
