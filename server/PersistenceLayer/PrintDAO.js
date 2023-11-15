@@ -16,5 +16,4 @@ const select = async ()  =>{
     connection.end();
   });
 }
-select();
 module.exports = select;

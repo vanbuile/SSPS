@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS SSPS;
 CREATE DATABASE IF NOT EXISTS SSPS;
 
 USE SSPS;
@@ -10,7 +11,8 @@ CREATE TABLE IF NOT EXISTS PRINTER (
     brand VARCHAR(255),
     dayBuy DATE,
     description VARCHAR(255),
-    paper VARCHAR(255),
+    paper INT,
+    remainingPaper INT,
     facility VARCHAR(255),
     building VARCHAR(255),
     floor VARCHAR(255),
@@ -48,6 +50,8 @@ CREATE TABLE IF NOT EXISTS FILE (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
     type VARCHAR(255),
+    ispublic INT, -- nếu =0 thì không share -> link = nullptr, nếu =1 thì share -> link != nullptr
+    link VARCHAR(255),
     Rank INT
 );
 
@@ -82,8 +86,3 @@ CREATE TABLE IF NOT EXISTS COMMENT (
     FOREIGN KEY (MSSV) REFERENCES STUDENT(MSSV),
     FOREIGN KEY (id_file) REFERENCES FILE(id)
 );
-
-
-INSERT INTO PRINTER (configuration, name, model, brand, dayBuy, description, paper, facility, building, floor, state)
-VALUES
-('ConfigurationValue', 'PrinterName', 'PrinterModel', 'PrinterBrand', '2023-11-14', 'PrinterDescription', 'A4', 'FacilityName', 'BuildingName', 'FloorName', 1);

@@ -1,3 +1,4 @@
+const util = require('util');
 const mysql = require('mysql2');
 
 // Tạo kết nối đến MySQL
@@ -16,6 +17,6 @@ connection.connect((err) => {
   }
   console.log('Kết nối thành công!');
 });
+const query = util.promisify(connection.query).bind(connection);
 
-
-module.exports = connection;
+module.exports = {query, connection};

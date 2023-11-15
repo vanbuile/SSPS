@@ -36,9 +36,14 @@ app.use('/api/admin/statisticAdmin', statisticAdmin);
 app.use('/api/admin/revenueAdmin', revenueAdmin);
 
 
-app.listen(3001,'localhost', () => {
+app.listen(3002,'localhost', () => {
     console.log(`Example app listening on port 3001`)
 })
 
 // test kết nối database
-const select  = require('./PersistenceLayer/PrintDAO');
+// const SelectAllPrinting  = require('./PersistenceLayer/PrintingDAO');
+// const test = async() => {
+//     x =  await SelectAllPrinting();
+//     console.log(x);
+// }
+// test();
