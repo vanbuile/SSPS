@@ -1,4 +1,4 @@
-const connection = require('DataBase')
+const connection = require('./DataBase')
 
 const viewListPrinter = async (page) => {
   let q =  `call ViewPrinter(?);`
