@@ -25,7 +25,7 @@ app.use(
 var upload = multer();
 app.use(upload.array());
 app.use(express.json());
-app.use(express.urlencoded({ extends: true }));
+app.use(express.urlencoded({ extended: true }));
 
 
 

@@ -1,13 +1,15 @@
 const connection = require('./DataBase')
 
-const viewListPrinter = async (page) => {
-  let q =  `call ViewPrinter(?);`
-  connection.query(q, [page], (err, result) => {console.log(result)})
+const viewListPrinter = async (from) => {
+  let q =  `call ViewPrinterByPage(?);`
+  const [result, fields] = await connection.query(q, [from], (err, result, fields) => {console.log(result)})
+  return result[0]
 }
 const addPrinter = async (name, brand, model, location, paper, day, description,type, status ) =>
 {
   let q = `call AddPrinter(?, ?, ?, ?, ?, ?, ?, ?, ?);`
-  connection.query(q,[name, brand, model, location, paper, day, description,type, status],(err, result) => {console.log(result)})
+  const [result, fields] = await connection.query(q,[name, brand, model, location, paper, day, description,type, status],(err, result) => {console.log(result)})
+  return result[0]
 }
 const editPrinter = async (id, name, brand, model, location, paper, day, description,type, status ) => {
   let q = `call EditPrinter(?,?, ?, ?, ?, ?, ?, ?, ?, ?);`

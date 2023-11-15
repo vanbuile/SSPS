@@ -1,11 +1,11 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 const port = process.env.DB_PORT || 3306
 const hostname = process.env.DB_HOST || 'localhost'
 const username = process.env.DB_USER || 'root'
 const password = process.env.DB_PASS || ''
 const database = process.env.DB_NAME || 'SSPS'
 
-const connection = mysql.createPool({
+const connection =  mysql.createPool({
   host     : hostname,
   user     : username,
   password : password,
@@ -15,16 +15,11 @@ const connection = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0
 });
-
-
-// Kết nối đến MySQL
-// connection.connect((err) => {
-//   if (err) {
-//     console.error('Lỗi kết nối:', err);
-//     throw err;
-//   }
-//   console.log('Kết nối thành công!');
-// });
-
+if(connection)
+  console.log("Connect database succesfull")
+else {
+  console.log("Connect database failed")
+  throw new Error("DB_ERROR")
+}
 
 module.exports = connection;

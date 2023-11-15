@@ -1,7 +1,8 @@
 const {viewListPrinter, addPrinter, editPrinter, deletePrinter } = require('../../PersistenceLayer/PrinterDAO')
 const ShowListPrinter = async (req, res) => {
-    let page = req.body.page
-    let [result, fields] = await viewListPrinter(page)
+    let page = req.params.page
+    let from = (page - 1) * 10
+    let result = await viewListPrinter(from)
     return res.status(201).json({"data": result})
 }
 const AddNewPrinter = async (req, res) => {
@@ -15,6 +16,8 @@ const AddNewPrinter = async (req, res) => {
     let type = req.body.type
     let status = req.body.status
     let rs = await addPrinter(name, brand, model, location, paper, day, description, type, status)
+
+    //return res.status(200).json({'data': rs})
 }
 const EditOldPrinter = async (req, res) => {
     let id = res.params.id;
@@ -30,7 +33,7 @@ const EditOldPrinter = async (req, res) => {
     let rs = await editPrinter(id, name, brand, model, location, paper, day, description, type, status)
 }
 const DeleteOldPrinter = async (req, res) => {
-    let id = res.body.id;
+    let id = res.params.id;
     let rs = await deletePrinter(id)
 }
 
