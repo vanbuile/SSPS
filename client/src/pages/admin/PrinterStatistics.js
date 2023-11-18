@@ -15,11 +15,12 @@ export default function PrinterStatistics() {
 			<div class="grid grid-cols-11 gap-4">
 				<div class="col-span-8">
 					<TransactionChart />
-					<br></br>
-					<PrinterStatisticsOrders  /> 
 				</div>
 				<div class="col-span-3">
 					< PrinterStatisticsCol  />
+				</div>
+				<div class="col-span-10">
+					<PrinterStatisticsOrders  /> 
 				</div>
 			</div>
 

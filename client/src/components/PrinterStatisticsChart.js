@@ -54,7 +54,7 @@ export default function TransactionChart(props) {
 					<YAxis />
 					<Tooltip />
 					<Legend />
-					<Line type="monotone" dataKey="total" stroke="#8884d8" strokeWidth={3} activeDot={{ r: 8 }} />
+					<Line type="monotone" dataKey="Tổng" stroke="#8884d8" strokeWidth={3} activeDot={{ r: 8 }} />
 					{Object.entries(namePrint).map(([key, value]) => <Line type="monotone" dataKey={key} stroke={value} strokeWidth={2} strokeDasharray="5 5" />)}
 					{/* <Line type="monotone" dataKey="print1" stroke="#82ca9d" strokeWidth={2} strokeDasharray="5 5" />
 					<Line type="monotone" dataKey="print2" stroke="#d0021b" strokeWidth={2} strokeDasharray="5 5" />

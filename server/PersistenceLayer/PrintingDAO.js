@@ -1,88 +1,39 @@
-const {query, connection} = require('./DataBase');
-const mysql = require('mysql2');
-
+const connection = require('./DataBase');
 
 //!  TransactionChart
-const SelectAllPrinting = async() => {
+const GetPrintingInfo = async() => {
+    const query = `CALL GetPrintingInfo();`;
 
-    try {
-        // Sử dụng await với hàm đã được chuyển đổi thành Promise
-        const data = await query(`
-        SELECT 
-            P.id_printer,
-            P.MSSV,
-            P.id_file,
-            P.numberPage,
-            P.date,
-            F.ispublic
-        FROM 
-            PRINTING P
-        JOIN 
-            FILE F ON P.id_file = F.id
-        JOIN 
-            PRINTER PR ON P.id_printer = PR.id;
-        `);
-        
-        // Đóng kết nối sau khi hoàn thành truy vấn
-        console.log(data);
-    
-        // Trả về dữ liệu
-        return data;
-    } catch (err) {
-        console.error('Lỗi truy vấn:', err);
-        throw err;
-    }
+    const [result, fields] = await connection.query(query)
+
+    return result[0];
 }
 
-//! pringter and DashboardTotal static col tên máy in + số giấy còn và lại
-const SelectAllPrintingJoinPrinter = async() => {
-    // data = [
-    // {
-    //     id_printer: 1,
-    //     MSSV: "2113928",
-    //     id_file: 1,
-    //     numberPage: 10,
-    //     date: "11/14/2023",
-    //     ispublic: false
-    // }
-    // ];
-    try {
-        // Sử dụng await với hàm đã được chuyển đổi thành Promise
-        const data = await query(`
-        SELECT 
-            P.id_printer,
-            P.MSSV,
-            P.id_file,
-            P.numberPage,
-            P.date,
-            F.ispublic
-        FROM 
-            PRINTING P
-        JOIN 
-            FILE F ON P.id_file = F.id
-        JOIN 
-            PRINTER PR ON P.id_printer = PR.id;
-        `);
-        
-        // Đóng kết nối sau khi hoàn thành truy vấn
-        console.log(data);
-    
-        // Trả về dữ liệu
-        return data;
-    } catch (err) {
-        console.error('Lỗi truy vấn:', err);
-        throw err;
-    }
+// //! pringter and DashboardTotal static col tên máy in + số giấy còn và lại
+const GetWeekInSemester = async() => {
+    const query = `CALL GetWeekInSemester()`;
+    const [result, fields] = await connection.query(query)
+    return result[0];
 }
 
-//! PrinterStatisticsOrders  sinh viên + máy in
-const SelectAllPrintingJoinStudent = async() => {
-
+// //! PrinterStatisticsOrders 
+const GetPrintInSemester = async() => {
+    const query = `CALL GetPrintInSemester()`;
+    const [result, fields] = await connection.query(query)
+	return result[0];
 }
 
 
+const GetStudentPrintMaxSemester = async()=> 
+{
+    const query = `CALL GetStudentPrintMaxSemester()`;
+    const [result, fields] = await connection.query(query)
+
+	return result[0];
+}
 
 
-
-
-module.exports = {SelectAllPrinting,  SelectAllPrintingJoinPrinter};
+module.exports = {GetPrintingInfo, 
+                GetWeekInSemester, 
+                GetPrintInSemester, 
+                GetStudentPrintMaxSemester};

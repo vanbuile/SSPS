@@ -1,17 +1,15 @@
 
-
 //import package
-require('dotenv').config() // For using proces.env
+require('dotenv').config() // For using process.env
 const express = require('express')
 const multer = require("multer");
 const cors = require("cors");
-
-require("dotenv").config();
+const bodyParser = require('body-parser');
 
 //import route object
-//const printAdmin = require('./routes/printAdmin')
-const statisticAdmin = require('./routes/statisticAdmin');
-const revenueAdmin = require('./routes/revenueAdmin');
+const printerAdmin = require('./routes/printerAdmin')
+const Statistic = require('./routes/Statistic');
+const Revenue = require('./routes/Revenue');
 
 //init app object
 const app = express()
@@ -26,19 +24,19 @@ app.use(
 var upload = multer();
 app.use(upload.array());
 app.use(express.json());
-app.use(express.urlencoded({ extends: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
 // API dùng
-//app.use('/api/admin/print', printAdmin);
-app.use('/api/admin/statisticAdmin', statisticAdmin);
-app.use('/api/admin/revenueAdmin', revenueAdmin);
+app.use('/api/admin/print', printerAdmin);
+app.use('/api/admin/statisticAdmin', Statistic);
+app.use('/api/admin/revenueAdmin', Revenue);
 
 
-app.listen(3002,'localhost', () => {
-    console.log(`Example app listening on port 3001`)
-})
+// app.listen(3002,'localhost', () => {
+//     console.log(`Example app listening on port 3001`)
+// })
 
 // test kết nối database
 // const SelectAllPrinting  = require('./PersistenceLayer/PrintingDAO');
@@ -47,3 +45,9 @@ app.listen(3002,'localhost', () => {
 //     console.log(x);
 // }
 // test();
+app.listen(process.env.SV_PORT,'localhost', () => {
+    console.log(`Example app listening on port ${process.env.SV_PORT}`)
+})
+
+// test kết nối database
+// const select  = require('./PersistenceLayer/PrinterDAO');

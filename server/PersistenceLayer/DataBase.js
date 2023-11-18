@@ -1,22 +1,29 @@
-const util = require('util');
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
+const port = process.env.DB_PORT || 3306
+const hostname = process.env.DB_HOST || 'localhost'
+const username = process.env.DB_USER || 'root'
+const password = process.env.DB_PASS || ''
+const database = process.env.DB_NAME || 'SSPS'
 
-// Tạo kết nối đến MySQL
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: null,
-  database: process.env.DB_NAME,
+const connection = mysql.createPool({
+  host     : hostname,
+  user     : username,
+  password : password,
+  database: database,
+  port: port,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+  timezone: '+07:00', // Use the correct timezone offset for Vietnam
 });
 
-// Kết nối đến MySQL
-connection.connect((err) => {
-  if (err) {
-    console.error('Lỗi kết nối:', err);
-    throw err;
-  }
-  console.log('Kết nối thành công!');
-});
-const query = util.promisify(connection.query).bind(connection);
 
-module.exports = {query, connection};
+if(connection){
+  console.log("Connect database succesfull")
+}
+else {
+  console.log("Connect database failed")
+  throw new Error("DB_ERROR")
+}
+
+module.exports = connection;
