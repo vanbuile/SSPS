@@ -1,31 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link, useParams } from "react-router-dom";
 import { FaPrint, FaTrash } from 'react-icons/fa';
 import { FaDownload } from 'react-icons/fa';
 import { FaComment } from 'react-icons/fa';
-import { FaStar } from 'react-icons/fa';
-import { FaBackward } from "react-icons/fa";
-import { FaEye } from "react-icons/fa";
+import { FaStar, FaBackward, FaEye } from 'react-icons/fa';
+import data from './dataSharedfile.js';
+
 export default function Detail() {
-  const { articleId } = useParams();
-  const rating = 3; // Change this to your actual rating
-  const maxRating = 5; // Change this to your maximum rating
-  const article = {
-    user:"Nguyễn Ngọc Bảo Châu - 2110842",
-    title: "Nguyên lý về mối liên hệ phổ biến",
-    description: "Phép biện chứng duy vật được xây dựng trên cơ sở một hệ thống những nguyên lý,những phạm trù cơ bản, những quy luật phổ biến phản ánh đúng đắn hiện thực.........biến phản ánh  ",
-  };
-  const comments = [
-    { id: 1, text: "Comment 1", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê"},
-    { id: 2, text: "Comment 2", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
-    { id: 3, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
-    { id: 4, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
-    { id: 5, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê"},
-    { id: 6, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
-    { id: 7, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
-    { id: 8, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
-  ];
+  const { id } = useParams();
+  const [rated, setRated] = useState(false);
+  const [newComment, setNewComment] = useState('');
+  const [article, setArticle] = useState(data.sharedfilesList.find((item) => item.id === parseInt(id)));
   const styles = {
     frame: {
       border:"1px solid #0f6cbf",
@@ -49,6 +34,12 @@ export default function Detail() {
     },
     description: {
       color: "gray",
+    },
+    score:
+    {
+      color:"#FFD700",
+      padding:"10px",
+      fontWeight:"bold",
     },
     user: {
       marginTop:"20px",
@@ -84,6 +75,7 @@ export default function Detail() {
       display: "flex",
       justifyContent: "flex-end",
       alignItems: "center",
+      padding:"10px",
     },
     commentText: {
       flex: 1, // Takes up available space (pushes date to the right)
@@ -114,88 +106,111 @@ export default function Detail() {
     },
   };
   const handleSendComment = () => {
-    // Implement your comment logic here
-    console.log("Sending a comment...");
+    if (newComment.trim() !== '') {
+      // Gửi comment
+      window.confirm("Bạn có muốn gửi bình luận không?");
+      console.log('Comment sent');
+    } else {
+      // Hiển thị cảnh báo nếu comment trống
+      window.alert('Vui lòng nhập bình luận trước khi gửi.');
+    }
   };
-  // Function to handle downloading the article
+
   const handleDownload = () => {
     // Implement your download logic here
     console.log("Downloading article...");
   };
 
-  // Function to handle commenting
   const handleDelete = () => {
-    // Implement your comment logic here
-    console.log("Commenting on the article...");
+    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa không?");
+    if (confirmDelete) {
+      console.log("Deleting article...");
+    } else {
+      console.log("Cancel deleting...");
+    }
   };
+
   const handleView = () => {
-    // Implement your comment logic here
-    console.log("Commenting on the article...");
+
+    console.log("Viewing article...");
   };
 
-  // Function to handle rating
-  const handleRate = () => {
-    // Implement your rating logic here
-    console.log("Rating the article...");
+  const handleRate = (value) => {
+    if(!rated)
+    {
+      console.log(`Rating the article with ${value} stars...`);
+      const updatedArticle = { ...article, rating: value };
+      setArticle(updatedArticle);
+      setRated(true);
+    }
+    else
+    {
+      window.alert("Bạn chỉ có thể đánh giá 1 lần!");
+    }
+    
   };
-
+  const renderStarRating = () => {
+    return (
+      <div style={styles.rating}>
+        {[1, 2, 3, 4, 5].map((star) => (
+          <FaStar
+            key={star}
+            onClick={() => handleRate(star)}
+            style={{ cursor: 'pointer', color: article.rating >= star ? '#FFD700' : 'gray' }}
+          />
+        ))}
+      </div>
+    );
+  };
   return (
     <div>
-      <Link to="/shared" >
-        <FaBackward style={{ marginLeft:"80px", }}/>
+      <Link to="/shared">
+        <FaBackward style={{ marginLeft: "80px" }} />
       </Link>
       <div style={styles.frame}>
         <div style={styles.header}>
           <div>
             <h2 style={styles.title}>{article.title}</h2>
             <p style={styles.description}>{article.description}</p>
-            <p style={styles.user}>{article.user}</p>
+            <p style={styles.user}>{article.autor}</p>
           </div>
           <div style={styles.buttonFrame}>
+          <p style={styles.score}>Score: {article.score}</p>
+          {renderStarRating()}
             <button onClick={handleView} style={styles.button}>
               <FaEye />
             </button>
             <button onClick={handleDownload} style={styles.button}>
               <FaDownload />
             </button>
-            <button onClick={handleRate} style={styles.button}>
-              <FaPrint />
-            </button>
             <button onClick={handleDelete} style={styles.button}>
               <FaTrash />
             </button>
-            <div style={styles.rating}>
-              {Array.from({ length: maxRating }, (_, index) => (
-                <FaStar
-                  key={index}
-                  style={{
-                    color: index < rating ? 'gold' : 'grey',
-                    fontSize: '24px',
-                  }}
-                />
-              ))}
-            </div>
+        
           </div>
         </div>
       </div>
       <div style={styles.comment}>
-        <h3 style={{fontWeight:"bold",fontSize:"150%"}}>Comment</h3>
-        <div style={styles.commentInput}> 
-            <textarea
-              style={styles.commentTextarea}
-              placeholder="Write your comment..."
-            />
-            <button onClick={handleSendComment} style={styles.sendButton}>
-              Send
-            </button>
+        <h3 style={{ fontWeight: "bold", fontSize: "150%" }}>Comment</h3>
+        <div style={styles.commentInput}>
+          <textarea
+            style={styles.commentTextarea}
+            placeholder="Write your comment..."
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+          />
+
+          <button onClick={handleSendComment} style={styles.sendButton}>
+            Send
+          </button>
         </div>
-        <h3 style={{fontWeight:"bold",fontSize:"150%"}}>Các bình luận khác</h3>
+        <h3 style={{ fontWeight: "bold", fontSize: "150%" }}>Các bình luận khác</h3>
         <ul>
-          {comments.map((comment) => (
+          {article.commentlist.map((comment) => (
             <li key={comment.id} style={styles.commentlist}>
               {comment.text}
               <br></br>
-              <span style={{color:"gray",fontSize:"60%"}}>{comment.date}<br/>{comment.user}</span>
+              <span style={{ color: "gray", fontSize: "60%" }}>{comment.date}<br/>{comment.autor}</span>
             </li>
           ))}
         </ul>
