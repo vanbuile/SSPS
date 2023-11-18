@@ -13,10 +13,14 @@ const connection =  mysql.createPool({
   port: port,
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
+  timezone: '+07:00', // Use the correct timezone offset for Vietnam
 });
-if(connection)
+
+
+if(connection){
   console.log("Connect database succesfull")
+}
 else {
   console.log("Connect database failed")
   throw new Error("DB_ERROR")

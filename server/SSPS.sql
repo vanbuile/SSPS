@@ -1,62 +1,53 @@
+DROP DATABASE IF EXISTS SSPS;
 CREATE DATABASE IF NOT EXISTS SSPS;
 
 USE SSPS;
 
+SET GLOBAL time_zone = '+07:00';
+
 CREATE TABLE IF NOT EXISTS PRINTER (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    configuration VARCHAR(255),
     name VARCHAR(255),
     model VARCHAR(255),
     brand VARCHAR(255),
-    dayBuy DATE,
+    day DATE,
     description VARCHAR(255),
-    paper VARCHAR(255),
+    paper INT DEFAULT 0,
     facility VARCHAR(255),
     building VARCHAR(255),
     floor VARCHAR(255),
     state INT
 );
 
-CREATE TABLE IF NOT EXISTS BUYPAGE (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    numberPage INT,
-    date DATE
-);
-
-CREATE TABLE IF NOT EXISTS PRINTER_BUYPAGE (
-    id_printer INT,
-    id_buypage INT,
-    PRIMARY KEY (id_printer, id_buypage),
-    FOREIGN KEY (id_printer) REFERENCES PRINTER(id),
-    FOREIGN KEY (id_buypage) REFERENCES BUYPAGE(id)
-);
 
 CREATE TABLE IF NOT EXISTS STUDENT (
-    MSSV VARCHAR(6) PRIMARY KEY,
-    numberPage INT
+    MSSV VARCHAR(7) PRIMARY KEY,
+    name VARCHAR(255),
+    paper INT
 );
 
 CREATE TABLE IF NOT EXISTS STUDENT_BUYPAGE (
-    MSSV VARCHAR(6),
-    id_buypage INT,
-    PRIMARY KEY (MSSV, id_buypage),
-    FOREIGN KEY (MSSV) REFERENCES STUDENT(MSSV),
-    FOREIGN KEY (id_buypage) REFERENCES BUYPAGE(id)
+    MSSV VARCHAR(7),
+    ID INT AUTO_INCREMENT PRIMARY KEY ,
+    date DATETIME,
+    paper INT,
+    FOREIGN KEY (MSSV) REFERENCES STUDENT(MSSV)
 );
 
 CREATE TABLE IF NOT EXISTS FILE (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    ID INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
-    type VARCHAR(255),
-    Rank INT
+    description VARCHAR(255),
+    link VARCHAR(255),
+    isShare INT -- nếu =0 thì không share -> link = nullptr, nếu =1 thì share -> link != nullptr
 );
 
 CREATE TABLE IF NOT EXISTS PRINTING (
     id_printer INT,
-    MSSV VARCHAR(6),
+    MSSV VARCHAR(7),
     id_file INT,
-    numberPage INT,
-    date DATE,
+    paper INT,
+    date DATETIME,
     PRIMARY KEY (id_printer, MSSV, id_file),
     FOREIGN KEY (id_printer) REFERENCES PRINTER(id),
     FOREIGN KEY (MSSV) REFERENCES STUDENT(MSSV),
@@ -64,26 +55,42 @@ CREATE TABLE IF NOT EXISTS PRINTING (
 );
 
 CREATE TABLE IF NOT EXISTS RATING (
-    MSSV VARCHAR(6),
+    MSSV VARCHAR(7),
     id_file INT,
     star INT,
-    date DATE,
+    date DATETIME,
     PRIMARY KEY (MSSV, id_file),
     FOREIGN KEY (MSSV) REFERENCES STUDENT(MSSV),
     FOREIGN KEY (id_file) REFERENCES FILE(id)
 );
 
 CREATE TABLE IF NOT EXISTS COMMENT (
-    MSSV VARCHAR(6),
+    MSSV VARCHAR(7),
     id_file INT,
     Content INT,
-    date DATE,
+    date DATETIME,
     PRIMARY KEY (MSSV, id_file),
     FOREIGN KEY (MSSV) REFERENCES STUDENT(MSSV),
     FOREIGN KEY (id_file) REFERENCES FILE(id)
 );
 
+CREATE TABLE IF NOT EXISTS SEMESTER (
+    Semester CHAR(5) PRIMARY KEY,
+    date DATETIME,
+    week INT
+);
 
-INSERT INTO PRINTER (configuration, name, model, brand, dayBuy, description, paper, facility, building, floor, state)
-VALUES
-('ConfigurationValue', 'PrinterName', 'PrinterModel', 'PrinterBrand', '2023-11-14', 'PrinterDescription', 'A4', 'FacilityName', 'BuildingName', 'FloorName', 1);
+
+CREATE TABLE IF NOT EXISTS FILETYPE (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    isUsable INT
+);
+
+CREATE TABLE IF NOT EXISTS FILEHAVETYPE(
+    id_type INT,
+    id_file INT,
+    PRIMARY KEY(id_type,id_file),
+    FOREIGN KEY (id_file) REFERENCES FILE(ID),
+    FOREIGN KEY (id_type) REFERENCES FILETYPE(ID)
+);

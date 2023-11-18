@@ -3,7 +3,7 @@ import React from 'react'
 import DashboardStatsGrid from '../../components/RevenueStatisticsStatsGrid'
 import RecentOrders from '../../components/RevenueStatisticsOrders'
 import BuyerProfilePieChart from '../../components/RevenueStatisticsPieChart'
-import PopularProducts from '../../components/RevenueStatisticsProducts'
+// import PopularProducts from '../../components/RevenueStatisticsProducts'
 
 export default function RevenueStatistics() {
 	return (
@@ -16,8 +16,8 @@ export default function RevenueStatistics() {
 				</div>
 				<div class="col-span-3">
 					<BuyerProfilePieChart />
-					<br></br>
-					<PopularProducts />
+					{/* <br></br>
+					<PopularProducts /> */}
 				</div>
 			</div>
 
