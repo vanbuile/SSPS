@@ -1,30 +1,16 @@
 const express = require("express");
 
-const PrinterStatisticsOrders = async (req, res) =>{
-    const recentOrderData = [
-        {
-            id: '2113928',
-            student: 'Đào Duy Long',
-            hour: '12/13',
-            date: '25/10/2023',
-            number_pager: 25,
-            id_print: '3',
-            name_print: "Máy in h6" 
-        },
-        {
-            id: '2113928',
-            student: 'Đào Duy Long',
-            hour: '12/13',
-            date: '25/10/2023',
-            number_pager: 25,
-            id_print: '3',
-            name_print: "Máy in h6" 
-        }
-    ]
-    
-    return res.status(200).json(recentOrderData);
+const {GetStudentPrintMaxSemester} = require("../../PersistenceLayer/PrintingDAO");
+
+const StudentPrintMaxSemester = async (req, res) =>{
+    const result = await GetStudentPrintMaxSemester();
+    for (let i = 0; i < result.length; i++)
+    {
+        result[i].Rank = i + 1;
+    }
+    return res.status(200).json(result);
 }
 
 
 
-module.exports = PrinterStatisticsOrders;
+module.exports = StudentPrintMaxSemester;

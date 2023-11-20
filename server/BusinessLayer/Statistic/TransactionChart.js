@@ -1,69 +1,49 @@
 const express = require("express");
 
-const TransactionChart = async (req, res) =>{
-    const Transaction = [
-        {
-          name: 'Tuần 1',
-          print1: 2400,
-          print2: 6400,
-          print3: 2400,
-          print4: 7400,
-          total: 0
-        },
-        {
-          name: 'Tuần 2',
-          print1: 1398,
-          print2: 2210,
-          print3: 2400,
-          print4: 5400,
-          total: 0
-        },
-        {
-          name: 'Tuần 3',
-          print1: 9800,
-          print2: 2290,
-          print3: 2400,
-          print4: 5400,
-          total: 0
-        },
-        {
-          name: 'Tuần 4',
-          print1: 3908,
-          print2: 2000,
-          print3: 2400,
-          print4: 5400,
-          total: 0
-        },
-        {
-          name: 'Tuần 5',
-          print1: 1398,
-          print2: 2210,
-          print3: 3400,
-          print4: 5400,
-          total: 0
-        },
-        {
-          name: 'Tuần 6',
-          print1: 9800,
-          print2: 2290,
-          print3: 4400,
-          print4: 5400,
-          total: 0
-        },
-        {
-          name: 'Tuần 7',
-          print1: 3908,
-          print2: 2000,
-          print3: 3400,
-          print4: 5400,
-          total: 0
-        }
-      ];
-      
-    
-    return res.status(200).json(Transaction);
+
+const {GetWeekInSemester} = require("../../PersistenceLayer/PrintingDAO");
+
+const WeekInSemester = async (req, res) =>{
+
+  data = await GetWeekInSemester();
+
+  listPrinter = [];
+  Maxweek = 1;
+  data.forEach(item => {
+      if(!listPrinter.includes(item.name))
+      {
+        listPrinter.push(item.name);
+      }
+      Maxweek = Math.max( Maxweek, item.totalWeek);
+  });
+  // listPrinter.push("total");
+  
+
+  const result = [1];
+
+  for (let i = 0; i < Maxweek; i++)
+  {
+      result[i] = {
+        name: 'Tuần ' + (i+1)
+      }
+      let sum = 0;
+      for(let j = 0; j < listPrinter.length; j++)
+      {
+        result[i][listPrinter[j]] = data.reduce((total, obj) =>{
+          if (obj.totalWeek == i+1 && obj.name === listPrinter[j]) {
+
+            total += obj.paper;
+          }
+          return total;
+        }, 0)
+        sum += result[i][listPrinter[j]];
+      }
+      result[i]["Tổng"] = sum;      
+  }
+
+  return res.status(200).json(result);
 }
 
 
-
-module.exports = TransactionChart;
+// TransactionChart();
+module.exports = WeekInSemester;
