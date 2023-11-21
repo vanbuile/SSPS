@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import { FaFilter } from 'react-icons/fa';
-import data from "./dataSharedfile.js";
 export default function Shared() {
   const [isInputFocused, setInputFocused] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);

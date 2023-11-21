@@ -4,7 +4,6 @@ import { FaPrint, FaTrash } from 'react-icons/fa';
 import { FaDownload } from 'react-icons/fa';
 import { FaComment } from 'react-icons/fa';
 import { FaStar, FaBackward, FaEye } from 'react-icons/fa';
-import data from './dataSharedfile.js';
 
 export default function Detail() {
   const { id } = useParams();
