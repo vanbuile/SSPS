@@ -31,7 +31,7 @@ function BuyForm(props) {
   const navigate = useNavigate();
   const navigateToCheck = () => {
     setTimeout(() => {
-      navigate("/");
+      navigate("/buy/paymentcheck");
     }, 500);
   };
   const handleSubmit = (values) => {
