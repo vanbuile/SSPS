@@ -3,7 +3,9 @@ import SortOptions from '../../components/SortOptions'
 import ListPrinter from '../../components/ListPrinter'
 import PrinterPagination from '../../components/PrinterPagination'
 import AddPrinter from '../../components/AddPrinter'
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
+import APIs from "../../util/API";
+import axios from "axios";
 const sortOption= [
 	{ id: 1, name: 'Bảng chữ cái (A - Z)', unavailable: false },
 	{ id: 2, name: 'Bảng chữ cái (A - Z)', unavailable: false },
@@ -30,23 +32,53 @@ const printerList= [
 	{name:'Brother-HL1202D',type: 1, state: 1, paper: 400, location:'102-BKB6',model:'101221', brand:'Brother', description:"Best seller printer from Brother", day:'2020-01-01'},
 	{name:'Brother-HL1202D',type: 1, state: 1, paper: 400, location:'102-BKB6',model:'101221', brand:'Brother', description:"Best seller printer from Brother", day:'2020-01-01'},
 ]
-const locations = [
-	{name:'Bất kỳ'},
-	{name:'101-BKB6'},
-	{name:'102-BKB6'},
-	{name:'103-BKB6'},
-	{name:'304-BKB6'},
-	{name:'105-BKB1'},
-	{name:'207-BKB1'},
-	{name:'102-BKB2'},
-	{name:'401-BKB3'},
-	{name:'103-BKB2'},
-]
 function addNewPrinter(printer){
 	printerList.push(printer)
 }
-export default function PrinterAdmin() {	
-	
+const initialFilters = {
+	location: "Any",
+	paper:"Any",
+	status: "Any"
+}
+export default function PrinterAdmin() {
+	const [sortOption, setSortOption] = useState(0)
+	const [printers, setPrinters] = useState([])
+	const [filters, setFilters] = useState(initialFilters)
+
+	useEffect(()=>{
+		const getAPIdata = async (sort) => {
+			try {
+				const response = await axios.get(APIs.APIadminPrinter,{
+					params :{
+						sort: sortOption,
+						location: filters.location,
+						paper: filters.paper,
+						status: filters.status
+					}
+				})
+				setPrinters(response.data)
+			} catch (error){
+				console.error('Error fetching data:', error)
+			}
+		}
+		getAPIdata()
+	},[])
+	const handleView = async () => {
+		try {
+			const response = await axios.get(APIs.APIadminPrinter,{
+				params :{
+					sort: sortOption,
+					location: filters.location,
+					paper: filter.paper,
+					status: filter.status
+				}
+			})
+			setPrinters(response.data)
+		} catch (error){
+			console.error('Error fetching data:', error)
+		}
+	}
+
 	return (
 		<div className="container mx-auto">
 			{/* First row */}
@@ -54,16 +86,22 @@ export default function PrinterAdmin() {
 				<div className="left flex flex-row">
 					<div className="inline-flex items-center justify-center text-lg me-2 font-bold opacity-50 text-md"><p>Sắp xếp</p></div>
 					<div className="inline-flex items-center justify-center">
-						<SortOptions option = {sortOption} type={1} />
+						<SortOptions onChange={setSortOption} option = {sortOption} type={1} />
 					</div>
 				</div>
 				<div className="right">
-					<AddPrinter />
+					<AddPrinter addPrinter={addPrinter}/>
 				</div>
 			</div>
 			<hr className='mb-2'/>
 			{/* Table of printer - Second row*/}
-			<ListPrinter printers={printerList} locations={locations}/>
+			<ListPrinter
+				printers={printers}
+				setPrinters={setPrinters}
+				filters={filters}
+				setFilters={setFilters}
+				handleView={handleView}
+			/>
 			<PrinterPagination />
 		</div>
 	);

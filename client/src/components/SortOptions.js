@@ -2,12 +2,14 @@ import { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
-export default function SortOptions({ option , type}) {
-  const [selected, setSelected] = useState(option[0])
-
+export default function SortOptions({onChange, option , type, }) {
+  const handleChangeListbox = (event) => {
+      let value = event.target.value
+      onChange(value)
+  }
   return (
     
-      <Listbox value={selected} onChange={setSelected}>
+      <Listbox value={selected} onChange={handleChangeListbox}>
         <div className="relative mt-1 w-auto">
           <Listbox.Button 
             className={`${ type ? 'shadow-md py-2' : 'border border-mainBlue py-1'
@@ -27,7 +29,7 @@ export default function SortOptions({ option , type}) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="z-40 absolute mt-1 max-h-60 overflow-auto rounded-md bg-white py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+            <Listbox.Options  className="z-40 absolute mt-1 max-h-60 overflow-auto rounded-md bg-white py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
               {option.map((opt, optIdx) => (
                 <Listbox.Option
                   key={optIdx}

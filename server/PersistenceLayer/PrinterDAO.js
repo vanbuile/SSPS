@@ -7,11 +7,11 @@ const viewListPrinter = async () => {
   return result[0]
 }
 
-const addPrinter = async (name, brand, model, location, paper, day, description,type, status ) =>
+const addPrinter = async (name, brand, model, facility, building, floor, paper, day, description, status ) =>
 {
   try {
-    let q = `call AddPrinter(?, ?, ?, ?, ?, ?, ?, ?, ?);`
-    const [result, fields] = await connection.query(q,[name, brand, model, location, paper, day, description,type, status])
+    let q = `call AddPrinter(?, ?, ?, ?, ?, ?,?, ?, ?, ?);`
+    const [result, fields] = await connection.query(q,[name, brand, model, facility,floor, paper, day, description, status])
   }
   catch (e) {
     //console.log(e)

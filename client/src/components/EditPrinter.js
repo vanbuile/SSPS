@@ -6,7 +6,7 @@ import { CheckIcon } from '@heroicons/react/24/outline'
 
 
 
-export default function EditPrinter({printer}) {
+export default function EditPrinter({printer, editPrinter}) {
   const [isOpen, setIsOpen] = useState(false)
   const [isCommit, setIsCommit] = useState(false)
   const [isAlert, setIsAlert] = useState(false)

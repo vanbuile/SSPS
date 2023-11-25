@@ -1,12 +1,29 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { CheckIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import APIs from "../util/API";
+import axios from "axios";
+import card from "@material-tailwind/react/theme/components/card";
 
 
-export default function AddPrinter() {
+const initialInputs = {
+  name: "",
+  model:"",
+  brand:"",
+  facility:"",
+  building:"",
+  floor:"",
+  day:"",
+  paper: 0,
+  description: "",
+  status: 0
+}
+export default function AddPrinter({handleView}) {
   const [isOpen, setIsOpen] = useState(false)
   const [isCommit, setIsCommit] = useState(false)
   const [isAlert, setIsAlert] = useState(false)
+  const [inputs, setInputs] = useState(initialInputs)
+
   function closeModal() {
     setIsOpen(false)
   }
@@ -28,8 +45,27 @@ export default function AddPrinter() {
     closeCommitModal()
     closeModal()
   }
-  function Commit(){
-    openAlert()
+  async function Commit(){
+    try {
+      const response = await axios.post(APIs.APIadminPrinter +"/add", {
+          name: inputs.name,
+          model: inputs.model,
+          brand: inputs.brand,
+          facility: inputs.facility,
+          building: inputs.building,
+          floor: inputs.floor,
+          day: inputs.day,
+          paper: inputs.paper,
+          description: inputs.description,
+          status: inputs.status
+      })
+      handleView()
+      openAlert()
+    }
+    // Alert that change has success
+    catch (e) {
+      console.log("Error when add data")
+    }
   }
 
   return (

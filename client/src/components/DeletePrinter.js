@@ -2,9 +2,12 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { TrashIcon } from '@heroicons/react/20/solid'
 import { CheckIcon } from '@heroicons/react/24/outline'
-export default function DeletePrinter({ printer }) {
+import APIs from "../util/API";
+import axios from "axios";
+export default function DeletePrinter({ printer , deletePrinter}) {
   let [isOpen, setIsOpen] = useState(false)
   let [isAlert, setIsAlert] = useState(false)
+  let [alertContent, setAlertContent] = useState()
 
   function closeModal() {
     setIsOpen(false)
@@ -16,15 +19,33 @@ export default function DeletePrinter({ printer }) {
     setIsAlert(false)
     closeModal()
   }
-  function openAlert(){
+  function openAlertSuccess(){
+    setAlertContent(["Xóa máy in thành công!", "Bạn có thể xem ngay kết quả!"])
     setIsAlert(true)
   }
-  function Commit(){
-    openAlert();
+  function openAlertFailed(){
+    setAlertContent(["Xóa máy in thất bại", "Có lỗi đã xảy ra!"])
+    setIsAlert(true)
+  }
+  async function Commit(){
+    try {
+      const response = await axios.delete(APIs.APIadminPrinter + `/delete/${printer.id}`)
+      if (response.status == 200) {
+        deletePrinter(printer)
+        openAlertSuccess();
+      }
+      else {
+        openAlertFailed();
+      }
+    }
+    catch (e) {
+      openAlertFailed()
+      console.log(`Error when delete printer: ${e}`)
+    }
+
   }
   return (
     <>
-
         <button  
         onClick={openModal} 
         type="button"
@@ -113,11 +134,11 @@ export default function DeletePrinter({ printer }) {
                                         </div>
                                         <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                           <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                                            Xóa máy in thành công!
+                                            {alertContent[0]}
                                           </Dialog.Title>
                                           <div className="mt-2">
                                             <p className="text-sm text-gray-500">
-                                              Bạn có thể xem ngay kết quả.
+                                              alertContent[1]
                                             </p>
                                           </div>
                                         </div>

@@ -5,7 +5,7 @@ import DeletePrinter from './DeletePrinter'
 import { useState } from 'react'
 import {CheckCircleIcon} from '@heroicons/react/20/solid'
 import {ExclamationCircleIcon} from '@heroicons/react/20/solid'
- export default function ItemPrinter({ printer, idx }) {
+ export default function ItemPrinter({ printer, idx ,editPrinter, deletePrinter}) {
     
   return (
     <div className="w-full px-4 my-1">
@@ -46,10 +46,10 @@ import {ExclamationCircleIcon} from '@heroicons/react/20/solid'
           )}
         </Disclosure>
         <div className='ml-1'>
-           <EditPrinter printer={printer}/>
+           <EditPrinter printer={printer} editPrinter={editPrinter}/>
         </div>
         <div className='ml-1'>
-            <DeletePrinter printer={printer}/>
+            <DeletePrinter printer={printer} deletePrinter={deletePrinter}/>
         </div>
         
       </div>
