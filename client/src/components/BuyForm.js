@@ -14,7 +14,8 @@ import momoimage from "../assets/images/momo.png";
 import momocheckimage from "../assets/images/momocheck.png";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-
+import axios from "axios";
+import APIs from '../util/API';
 const data = [{ name: "Nguyễn Văn An", email: "an.nguyen@hcmutedu.vn" }];
 BuyForm.propTypes = {
   onSubmit: PropTypes.func,
@@ -36,8 +37,18 @@ function BuyForm(props) {
   };
   const handleSubmit = (values) => {
     console.log("values: ", values);
+    
     console.log("paymethod: ", paymethod);
-    openModal();
+    const fetchApiData = async () => {
+		  try {
+			  const response = await axios.post(APIs.APIbuy);
+			  console.log("response: ", response);
+		  } catch (error) {
+			console.error('Error fetching data:', error);
+		  }
+		};
+    //openModal();
+    fetchApiData();
   };
   let [isOpen, setIsOpen] = useState(false);
   function closeModal() {
