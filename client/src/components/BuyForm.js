@@ -41,8 +41,11 @@ function BuyForm(props) {
     console.log("paymethod: ", paymethod);
     const fetchApiData = async () => {
 		  try {
-			  const response = await axios.post(APIs.APIbuy);
-			  console.log("response: ", response);
+			  let res= await axios.post(APIs.APIbuy + "/create_payment_url");
+        console.log(res);
+        //redirect to payment page
+        window.location.href = res.data;
+			  
 		  } catch (error) {
 			console.error('Error fetching data:', error);
 		  }
