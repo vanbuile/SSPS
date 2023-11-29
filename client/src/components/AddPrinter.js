@@ -1,12 +1,44 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { CheckIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import APIs from "../util/API";
+import axios from "axios";
+import card from "@material-tailwind/react/theme/components/card";
 
 
-export default function AddPrinter() {
+const initialInputs = {
+  name: "",
+  model:"",
+  brand:"",
+  building:"BKB1",
+  floor:"",
+  day:"",
+  paper: 0,
+  description: "",
+  status: 1
+}
+const options = [
+    "BKB1",
+    "BKB2",
+    "BKB3",
+    "BKB5",
+    "BKB6",
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6"
+]
+
+export default function AddPrinter({reload}) {
   const [isOpen, setIsOpen] = useState(false)
   const [isCommit, setIsCommit] = useState(false)
   const [isAlert, setIsAlert] = useState(false)
+  const [inputs, setInputs] = useState(initialInputs)
+  const [alertContent, setAlertContent] = useState(["",""])
+  let [isSuccess, setIsSuccess] = useState(true)
+
   function closeModal() {
     setIsOpen(false)
   }
@@ -20,7 +52,14 @@ export default function AddPrinter() {
   function closeCommitModal(){
     setIsCommit(false)
   }
-  function openAlert(){
+  function openAlertSuccess(){
+    setAlertContent(["Bạn đã thêm máy in thành công!", "Bạn có thể xem kết quả ngay!"])
+    setIsSuccess(true)
+    setIsAlert(true)
+  }
+  function openAlertFailed() {
+    setAlertContent(["Thêm máy in thất bại!","Có lỗi đã xảy ra!"])
+    setIsSuccess(false)
     setIsAlert(true)
   }
   function closeAlert(){
@@ -28,10 +67,39 @@ export default function AddPrinter() {
     closeCommitModal()
     closeModal()
   }
-  function Commit(){
-    openAlert()
+  async function Commit(){
+    try {
+      console.log(inputs)
+      const response = await axios.post(APIs.APIadminPrinter +"/add", {
+          name: inputs.name,
+          model: inputs.model,
+          brand: inputs.brand,
+          building: inputs.building,
+          floor: inputs.floor,
+          day: inputs.day,
+          paper: inputs.paper,
+          description: inputs.description,
+          status: inputs.status
+      })
+      if (response.status == 200) {
+        openAlertSuccess()
+        reload()
+      }
+      else {
+        openAlertFailed()
+      }
+    }
+    // Alert that change has success
+    catch (e) {
+      openAlertFailed()
+      console.log("Error when add data")
+    }
   }
-
+  const handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setInputs(values => ({...values, [name]: value}))
+  }
   return (
     <>  
         <button 
@@ -40,7 +108,6 @@ export default function AddPrinter() {
         className="text-white bg-mainBlue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
         Thêm máy in
         </button>
-      
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -86,13 +153,13 @@ export default function AddPrinter() {
                   <div>
                   <form>
                     <div class="space-y-8">
-                      <div class="border-b border-gray-900/10 pb-6">
+                      <div className="border-b border-gray-900/10 pb-6">
                         <div class="mt-8 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                           <div class="sm:col-span-4">
                             <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Tên máy in</label>
                             <div class="mt-1">
                               <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                <input required type="text" name="name" id="name" autocomplete="name" class="focus:outline-none  w-full block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6" placeholder="Từ 1-20 ký tự"/>
+                                <input onChange={handleChange} type="text" name="name" id="name"  class="focus:outline-none  w-full block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6" placeholder="Từ 1-20 ký tự"/>
                               </div>
                             </div>
                           </div>
@@ -100,7 +167,7 @@ export default function AddPrinter() {
                             <label for="brand" class="block text-sm font-medium leading-6 text-gray-900">Hãng</label>
                             <div class="mt-1">
                               <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                <input required type="text" name="brand" id="brand" autocomplete="brand" class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Từ 1-20 ký tự"/>
+                                <input onChange={handleChange} type="text" name="brand" id="brand" class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Từ 1-20 ký tự"/>
                               </div>
                             </div>
                           </div>
@@ -108,7 +175,7 @@ export default function AddPrinter() {
                             <label for="model" class="block text-sm font-medium leading-6 text-gray-900">Mẫu số</label>
                             <div class="mt-1">
                               <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                <input required type="text" name="model" id="model" autocomplete="model" class="focus:outline-none  w-full block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6" placeholder="Từ 1-20 ký tự"/>
+                                <input onChange={handleChange} type="text" name="model" id="model" autocomplete="model" class="focus:outline-none  w-full block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6" placeholder="Từ 1-20 ký tự"/>
                               </div>
                             </div>
                           </div>
@@ -116,7 +183,7 @@ export default function AddPrinter() {
                             <label for="paper" class="block text-sm font-medium leading-6 text-gray-900">SL Giấy</label>
                             <div class="mt-1">
                               <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                <input required  type="number" name="paper" id="paper" autocomplete="paper" class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Từ 1-20 ký tự"/>
+                                <input onChange={handleChange}  type="number" name="paper" id="paper" class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Từ 1-20 ký tự"/>
                               </div>
                             </div>
                           </div>
@@ -124,68 +191,70 @@ export default function AddPrinter() {
                             <label for="day" class="block text-sm font-medium leading-6 text-gray-900">Ngày mua</label>
                             <div class="mt-1">
                               <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                <input required  type="date" name="day" id="day" autocomplete="day" class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Từ 1-20 ký tự"/>
+                                <input onChange={handleChange} type="date" name="day" id="day"  class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Từ 1-20 ký tự"/>
                               </div>
                             </div>
                           </div>
-                          
-                         
-
                           <div class="col-span-full">
                             <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Mô tả</label>
                             <div class="mt-2">
-                              <textarea id="about" name="about" rows="3" class="focus:outline-none block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-2 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-300 sm:text-sm sm:leading-6" placeholder='Không quá 200 kí tự'></textarea>
+                              <textarea onChange={handleChange} id="description" name="description" rows="3" class="focus:outline-none block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-2 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-300 sm:text-sm sm:leading-6" placeholder='Không quá 200 kí tự'></textarea>
                             </div>
                           </div>
-
-                          
-
-                          {/* <div class="col-span-full">
-                            <label for="cover-photo" class="block text-sm font-medium leading-6 text-gray-900">Cover photo</label>
-                            <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                              <div class="text-center">
-                                <svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                  <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
-                                </svg>
-                                <div class="mt-4 flex text-sm leading-6 text-gray-600">
-                                  <label for="file-upload" class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-                                    <span>Tải ảnh máy in</span>
-                                    <input id="file-upload" name="file-upload" type="file" class="sr-only"/>
-                                  </label>
-                                  <p class="pl-1">hoặc kéo thả</p>
-                                </div>
-                                <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF tối đa 10MB</p>
-                              </div>
-                            </div>
-                          </div> */}
-
                         </div>
+
+
+                        {/*<fieldset className='mt-2 float-left'>*/}
+                        {/*    <legend class="text-sm font-semibold leading-6 text-gray-900">Vị trí</legend>*/}
+                        {/*    /!*<div class="mt-2 space-y-2">*!/*/}
+                        {/*    /!*  <div class="flex items-center gap-x-3">*!/*/}
+                        {/*    /!*    <input onChange={handleChange} id="type1" name="type" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>*!/*/}
+                        {/*    /!*    <label for="type1" class="block text-sm font-medium leading-6 text-gray-900">In thường</label>*!/*/}
+                        {/*    /!*  </div>*!/*/}
+                        {/*    /!*  <div class="flex items-center gap-x-3">*!/*/}
+                        {/*    /!*    <input onChange={handleChange} id="type2" name="type" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>*!/*/}
+                        {/*    /!*    <label for="type2" class="block text-sm font-medium leading-6 text-gray-900">In màu</label>*!/*/}
+                        {/*    /!*  </div>*!/*/}
+                        {/*    /!* *!/*/}
+                        {/*    /!*</div>*!/*/}
+                        {/*  */}
+                        {/*</fieldset>*/}
                         <fieldset className='mt-2 float-left'>
-                            <legend class="text-sm font-semibold leading-6 text-gray-900">Loại máy in</legend>
-                            <div class="mt-2 space-y-2">
-                              <div class="flex items-center gap-x-3">
-                                <input required id="type1" name="type" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
-                                <label for="type1" class="block text-sm font-medium leading-6 text-gray-900">In thường</label>
-                              </div>
-                              <div class="flex items-center gap-x-3">
-                                <input required id="type2" name="type" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
-                                <label for="type2" class="block text-sm font-medium leading-6 text-gray-900">In màu</label>
-                              </div>
-                             
+                          <legend className="text-sm font-semibold leading-6 text-gray-900">Vị trí</legend>
+                          <div className="mt-2 space-y-2">
+                            <div className="flex items-center gap-x-3">
+                              <label htmlFor="building" className="block text-sm font-medium leading-6 text-gray-900">
+                                Tòa
+                              </label>
+                              <div className="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md w-full">
+                                <select value={"BKB1"} name="building" id="building" onChange={handleChange} class="focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6">
+                                  {
+                                    options.map((item, idx) => (
+                                        <option value={item} id={idx}>{item}</option>
+                                    ))
+                                  }
+                                </select>
+                                </div>
                             </div>
+                            <div className="flex items-center gap-x-3">
+                              <label htmlFor="floor" className="block text-sm font-medium leading-6 text-gray-900">Tầng</label>
+                              <div className="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
+                                <input onChange={handleChange} type="number" name="floor" id="floor"  className=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Tầng thứ .."/>
+                              </div>
+                            </div>
+                          </div>
                         </fieldset>
                         <fieldset className='mt-2 float-right mr-6'>
                             <legend class="text-sm font-semibold leading-6 text-gray-900">Tình trạng</legend>
                             <div class="mt-2 space-y-2">
                               <div class="flex items-center gap-x-3">
-                                <input required id="state1" name="state" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
+                                <input onChange={handleChange} value={0} id="state1" name="status" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
                                 <label for="state1" class="block text-sm font-medium leading-6 text-gray-900">Bảo trì</label>
                               </div>
                               <div class="flex items-center gap-x-3">
-                                <input required id="state2" name="state" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
+                                <input onChange={handleChange} value={1} id="state2" name="status" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
                                 <label for="state2" class="block text-sm font-medium leading-6 text-gray-900">Hoạt động</label>
                               </div>
-                             
                             </div>
                         </fieldset>
                           <div className='clear-both'></div>
@@ -276,16 +345,18 @@ export default function AddPrinter() {
                                                   <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                                                     <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                                       <div className="sm:flex sm:items-start">
-                                                        <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-lime-200 sm:mx-0 sm:h-10 sm:w-10">
-                                                          <CheckIcon className="h-6 w-6 text-lime-600" aria-hidden="true" />
+                                                        <div className={`mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full ${isSuccess? "bg-lime-200": "bg-red-200"} sm:mx-0 sm:h-10 sm:w-10`}>
+                                                          {
+                                                            isSuccess? (<CheckIcon className="h-6 w-6 text-lime-600" aria-hidden="true" />):(<XMarkIcon className="h-6 w-6 text-red-600" aria-hidden="true" />)
+                                                          }
                                                         </div>
                                                         <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                                           <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                                                            Thêm máy in thành công!
+                                                            {alertContent[0]}
                                                           </Dialog.Title>
                                                           <div className="mt-2">
                                                             <p className="text-sm text-gray-500">
-                                                              Bạn có thể xem ngay kết quả.
+                                                              {alertContent[1]}
                                                             </p>
                                                           </div>
                                                         </div>
@@ -294,7 +365,7 @@ export default function AddPrinter() {
                                                     <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                                       <button
                                                         type="button"
-                                                        className="border border-lime-600 inline-flex w-full justify-center rounded-md bg-transparent px-3 py-2 text-sm font-semibold text-lime-600 shadow-sm hover:bg-lime-600 hover:text-white sm:ml-3 sm:w-auto"
+                                                        className={`border ${isSuccess? "border-lime-600 text-lime-600 hover:bg-lime-600": "border-red-600 text-red-600 hover:bg-red-600"} inline-flex w-full justify-center rounded-md bg-transparent px-3 py-2 text-sm font-semibold  shadow-sm  hover:text-white sm:ml-3 sm:w-auto`}
                                                         onClick={closeAlert}
                                                       >
                                                         Thoát

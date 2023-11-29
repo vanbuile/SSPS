@@ -151,4 +151,30 @@ BEGIN
     ORDER BY number_pager_buy DESC;
 END //
 
+CREATE PROCEDURE ViewAllPrinter()
+BEGIN
+    SELECT * FROM printer;
+END //
+
+
+CREATE PROCEDURE AddPrinter(IN _name varchar(255), IN _brand varchar(255), IN _model varchar(255), IN _building varchar(255),IN _floor INT,IN _paper int, IN _day date, IN _description varchar(255),IN _state int)
+BEGIN
+	INSERT INTO `ssps`.`printer`(`name`,`brand`,`model`,`building`,`floor`,`paper`,`day`,`description`,`state`)
+VALUES
+(_name,_brand,_model,_building,_floor,_paper,_day,_description,_state);
+END //
+
+CREATE PROCEDURE EditPrinter(IN _id int,IN _name varchar(255), IN _brand varchar(255), IN _model varchar(255), IN _building varchar(255),IN _floor INT,IN _paper int, IN _day date, IN _description varchar(255),IN _state int)
+BEGIN
+    UPDATE `ssps`.`printer`
+    SET `name`=_name ,`brand` = _brand,`model` = _model,`building`= _building,`floor` = _floor,`paper`= _paper,`day`=_day,`description`=_description,`state`=_state
+    WHERE `id` = _id;
+END //
+
+CREATE PROCEDURE `DeletePrinter` (IN _id int)
+BEGIN
+	DELETE FROM `ssps`.`printer`
+	WHERE `id` = _id;
+END //
+
 DELIMITER ;
