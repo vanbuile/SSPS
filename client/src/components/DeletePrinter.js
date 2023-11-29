@@ -2,12 +2,14 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { TrashIcon } from '@heroicons/react/20/solid'
 import { CheckIcon } from '@heroicons/react/24/outline'
+import { XMarkIcon} from "@heroicons/react/24/outline";
 import APIs from "../util/API";
 import axios from "axios";
-export default function DeletePrinter({ printer , deletePrinter}) {
+export default function DeletePrinter({ printer , reload}) {
   let [isOpen, setIsOpen] = useState(false)
   let [isAlert, setIsAlert] = useState(false)
-  let [alertContent, setAlertContent] = useState()
+  let [alertContent, setAlertContent] = useState(["Xóa máy in thành công!", "Bạn có thể xem ngay kết quả!"])
+  let [isSuccess, setIsSuccess] = useState(true)
 
   function closeModal() {
     setIsOpen(false)
@@ -21,17 +23,19 @@ export default function DeletePrinter({ printer , deletePrinter}) {
   }
   function openAlertSuccess(){
     setAlertContent(["Xóa máy in thành công!", "Bạn có thể xem ngay kết quả!"])
+    setIsSuccess(true)
     setIsAlert(true)
   }
   function openAlertFailed(){
     setAlertContent(["Xóa máy in thất bại", "Có lỗi đã xảy ra!"])
+    setIsSuccess(false)
     setIsAlert(true)
   }
   async function Commit(){
     try {
       const response = await axios.delete(APIs.APIadminPrinter + `/delete/${printer.id}`)
       if (response.status == 200) {
-        deletePrinter(printer)
+        reload(null, null, null, null, null)
         openAlertSuccess();
       }
       else {
@@ -129,8 +133,10 @@ export default function DeletePrinter({ printer , deletePrinter}) {
                                   <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                                     <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                       <div className="sm:flex sm:items-start">
-                                        <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-lime-200 sm:mx-0 sm:h-10 sm:w-10">
-                                          <CheckIcon className="h-6 w-6 text-lime-600" aria-hidden="true" />
+                                        <div className={`mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full ${isSuccess? "bg-lime-200": "bg-red-200"} sm:mx-0 sm:h-10 sm:w-10`}>
+                                          {
+                                            isSuccess? (<CheckIcon className="h-6 w-6 text-lime-600" aria-hidden="true" />):(<XMarkIcon className="h-6 w-6 text-red-600" aria-hidden="true" />)
+                                          }
                                         </div>
                                         <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                           <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
@@ -138,7 +144,7 @@ export default function DeletePrinter({ printer , deletePrinter}) {
                                           </Dialog.Title>
                                           <div className="mt-2">
                                             <p className="text-sm text-gray-500">
-                                              alertContent[1]
+                                              {alertContent[1]}
                                             </p>
                                           </div>
                                         </div>
@@ -147,7 +153,7 @@ export default function DeletePrinter({ printer , deletePrinter}) {
                                     <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                       <button
                                         type="button"
-                                        className="border border-lime-600 inline-flex w-full justify-center rounded-md bg-transparent px-3 py-2 text-sm font-semibold text-lime-600 shadow-sm hover:bg-lime-600 hover:text-white sm:ml-3 sm:w-auto"
+                                        className={`border ${isSuccess? "border-lime-600 text-lime-600 hover:bg-lime-600": "border-red-600 text-red-600 hover:bg-red-600"} inline-flex w-full justify-center rounded-md bg-transparent px-3 py-2 text-sm font-semibold  shadow-sm  hover:text-white sm:ml-3 sm:w-auto`}
                                         onClick={closeAlert}
                                       >
                                         Thoát

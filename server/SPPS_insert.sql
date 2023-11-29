@@ -1,25 +1,25 @@
 -- INSERT INTO PRINTER
-INSERT INTO PRINTER (name, model, brand, day, description, paper, facility, building, floor, state)
+INSERT INTO PRINTER (name, model, brand, day, description, paper, building, floor, state)
 VALUES 
-('Brother-HL1', 'Model 1', 'Brother', '2023-11-01', 'Mô tả Máy In 1', 1000, 'CS1', 'BKB1', 'Tầng 1', ,1),
-('Brother-HL2', 'Model 2', 'Brother', '2023-11-02', 'Mô tả Máy In 2', 2000, 'CS2', 'BKB2', 'Tầng 2', 1),
-('Toshiba-Q1', 'Model Y', 'Toshiba', '2023-11-03', 'Mô tả Máy In 3', 300, 'CS2', 'BKB3', 'Tầng 3', 0),
-('Toshiba-Q2', 'Model 4', 'Toshiba', '2023-11-04', 'Mô tả Máy In 4', 5000, 'CS1', 'BKB1', 'Tầng 4', 1),
-('Samsung-QL', 'Model Z', 'Samsung', '2023-11-05', 'Mô tả Máy In 5', 1200, 'CS2', 'BKB2', 'Tầng 5', 0),
-('Canon-CX08', 'Model V', 'Canon', '2023-11-01', 'Mô tả Máy In 1', 1000, 'CS1', 'BKB1', 'Tầng 1', ,1),
-('Canon-CX08', 'Model 2', 'Canon', '2023-11-02', 'Mô tả Máy In 2', 4200, 'CS2', 'BKB2', 'Tầng 2', 1),
-('Canon-Cx05', 'Model A', 'Canon', '2023-11-03', 'Mô tả Máy In 3', 150, 'CS2', 'BKB3', 'Tầng 3', 0),
-('Epson-T1', 'Model 4', 'Epson', '2023-11-04', 'Mô tả Máy In 4', 5000, 'CS1', 'BKB1', 'Tầng 4', 1),
-('Samsung-QL', 'Model V', 'Samsung', '2023-11-05', 'Mô tả Máy In 5', 1200, 'CS2', 'BKB2', 'Tầng 5', 0),
-('Epson-777', 'Model 1', 'Epson', '2023-11-01', 'Mô tả Máy In 1', 1000, 'CS1', 'BKB1', 'Tầng 1', ,1),
-('HP-HLQ2', 'Model 2', 'HP', '2023-11-02', 'Mô tả Máy In 2', 2000, 'CS2', 'BKB6', 'Tầng 2', 1),
-('HP-HLQ2', 'Model K', 'HP', '2023-11-03', 'Mô tả Máy In 3', 1500, 'CS2', 'BKB3', 'Tầng 3', 0),
-('Toshiba-Q2', 'Model 4', 'Toshiba', '2023-11-04', 'Mô tả Máy In 4', 5000, 'CS1', 'BKB1', 'Tầng 4', 1),
-('Samsung-QL', 'Model 5', 'Samsung', '2023-11-05', 'Mô tả Máy In 5', 200, 'CS2', 'BKB2', 'Tầng 5', 0),
-('HP-HLQ2', 'Model 2', 'HP', '2023-11-02', 'Mô tả Máy In 2', 2000, 'CS2', 'BKB2', 'Tầng 2', 1),
-('HP-HLQ2', 'Model 10', 'HP', '2023-11-03', 'Mô tả Máy In 3', 1500, 'CS2', 'BKB3', 'Tầng 3', 0),
-('Toshiba-Q2', 'Model X', 'Toshiba', '2023-11-04', 'Mô tả Máy In 4', 5000, 'CS1', 'BKB1', 'Tầng 4', 1),
-('Samsung-QL', 'Model 5', 'Samsung', '2023-11-05', 'Mô tả Máy In 5', 100, 'CS2', 'BKB6', 'Tầng 5', 0)
+('Brother-HL1', 'Model 1', 'Brother', '2023-11-01', 'Mô tả Máy In 1', 1000, 'BKB1', 1,1),
+('Brother-HL2', 'Model 2', 'Brother', '2023-11-02', 'Mô tả Máy In 2', 2000, 'BKB2', 2, 1),
+('Toshiba-Q1', 'Model Y', 'Toshiba', '2023-11-03', 'Mô tả Máy In 3', 300, 'BKB3', 3, 0),
+('Toshiba-Q2', 'Model 4', 'Toshiba', '2023-11-04', 'Mô tả Máy In 4', 5000, 'BKB1', 4, 1),
+('Samsung-QL', 'Model Z', 'Samsung', '2023-11-05', 'Mô tả Máy In 5', 1200, 'BKB2', 5, 0),
+('Canon-CX08', 'Model V', 'Canon', '2023-11-01', 'Mô tả Máy In 1', 1000, 'BKB1', 1,1),
+('Canon-CX08', 'Model 2', 'Canon', '2023-11-02', 'Mô tả Máy In 2', 4200, 'BKB2', 2, 1),
+('Canon-Cx05', 'Model A', 'Canon', '2023-11-03', 'Mô tả Máy In 3', 150, 'BKB3', 3, 0),
+('Epson-T1', 'Model 4', 'Epson', '2023-11-04', 'Mô tả Máy In 4', 5000, 'BKB1', 4, 1),
+('Samsung-QL', 'Model V', 'Samsung', '2023-11-05', 'Mô tả Máy In 5', 1200, 'BKB2', 5, 0),
+('Epson-777', 'Model 1', 'Epson', '2023-11-01', 'Mô tả Máy In 1', 1000, 'BKB1', 1 ,1),
+('HP-HLQ2', 'Model 2', 'HP', '2023-11-02', 'Mô tả Máy In 2', 2000, 'BKB6', 2, 1),
+('HP-HLQ2', 'Model K', 'HP', '2023-11-03', 'Mô tả Máy In 3', 1500, 'BKB3', 3, 0),
+('Toshiba-Q2', 'Model 4', 'Toshiba', '2023-11-04', 'Mô tả Máy In 4', 5000, 'BKB1', 4, 1),
+('Samsung-QL', 'Model 5', 'Samsung', '2023-11-05', 'Mô tả Máy In 5', 200, 'BKB2', 5, 0),
+('HP-HLQ2', 'Model 2', 'HP', '2023-11-02', 'Mô tả Máy In 2', 2000, 'BKB2', 2, 1),
+('HP-HLQ2', 'Model 10', 'HP', '2023-11-03', 'Mô tả Máy In 3', 1500,  'BKB3', 3, 0),
+('Toshiba-Q2', 'Model X', 'Toshiba', '2023-11-04', 'Mô tả Máy In 4', 5000, 'BKB1', 4, 1),
+('Samsung-QL', 'Model 5', 'Samsung', '2023-11-05', 'Mô tả Máy In 5', 100, 'BKB6', 5, 0);
 
 -- INSERT INTO STUDENT
 INSERT INTO STUDENT (MSSV, name, paper) 
