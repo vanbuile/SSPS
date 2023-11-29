@@ -1,10 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
-import { BuildingOffice2Icon} from "@heroicons/react/20/solid";
 import Table from './Printertable';
 
 
-export default function MyModal() {
+export default function ShareModal() {
   let [isOpen, setIsOpen] = useState(false)
 
   function closeModal() {
@@ -45,9 +44,9 @@ export default function MyModal() {
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-bold leading-6 text-black-900"
+                    className="text-lg font-medium leading-6 text-gray-900"
                   >
-                     !!!
+                    Chooose Printer !!!
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
@@ -71,19 +70,23 @@ export default function MyModal() {
         </Dialog>
       </Transition>
     );
-}
-  return (
+  }
+
+  function handelShare() {     
+    console.log("heheehehheehehe");
+  }
+
+return (
     <>
-      <div className="flex">
+      <div className="flex rounded-md bg-textGray px-3 py-2 text-sm font-semibold text-white" style={{marginLeft:'500px'}}>
         <button
           type="button"
           onClick={openModal}
-          style={{marginLeft: '60px', marginTop: '5px'}}
         >
-            <BuildingOffice2Icon className="w-20 h-50"/>
+            Share
         </button>
       </div>
-      {isOpen && Showmodal()}
+      {isOpen && <>{Showmodal()} {handelShare()} </>}
     </>
   )
 }

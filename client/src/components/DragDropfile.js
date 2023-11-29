@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DocumentTextIcon, CloudArrowUpIcon } from '@heroicons/react/20/solid';
-function Line() {
-  return (
-    <div
-      style={{
-        marginTop:'10px',
-        height: '1px', // Adjust the height as needed
-        width: '750px',   // Adjust the thickness of the line
-        backgroundColor: 'black', // Adjust the color of the line
-      }}
-    ></div>
-  );
-}
+import ShareModal from './ShareForm';
+
 const FileUpload = () => {
+  function Line() {
+    return (
+      <div
+        style={{
+          marginTop:'10px',
+          height: '1px', // Adjust the height as needed
+          width: '750px',   // Adjust the thickness of the line
+          backgroundColor: 'black', // Adjust the color of the line
+        }}
+      ></div>
+    );
+  }
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -42,9 +44,6 @@ const FileUpload = () => {
   const handleCancel = () => {
     setSelectedFile(null);
   };
-  const handleShare = () => {
-    console.log('Share file to the backend:', selectedFile);
-  }
 
   return (
     <div>
@@ -81,9 +80,7 @@ const FileUpload = () => {
       <div style={{marginLeft:'30px'}}>
         <button onClick={handleCancel}  class="rounded-md bg-mainRed px-3 py-2 text-sm font-semibold text-white ">Cancel</button>
       </div>
-      <div style={{marginLeft:'500px'}}>
-      <button onClick={handleShare}  class="rounded-md bg-textGray px-3 py-2 text-sm font-semibold text-white ">Share</button>
-      </div>
+      <ShareModal/>
     </div>
     </div>
   );

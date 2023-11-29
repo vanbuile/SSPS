@@ -23,7 +23,7 @@ export default function Print() {
     style={{marginLeft: "80px"}}
     >
       <div className="w-1/5">
-        <h2 className='text-4xl font-bold ml-10'>Print</h2>
+        <h2 className='text-4xl font-bold ml-10'>IN</h2>
         <div className="mt-2 flex items-center gap-x-5">
           <div className="ml-10 w-15 h-15 flex border border-1 rounded-full p-2 justify-center">
             <i>
@@ -36,10 +36,10 @@ export default function Print() {
               </svg>
             </i>
           </div>
-          <p>Copies:</p>
+          <p>Số lượng:</p>
           <input type="text" name="copies" id="copies" autocomplete="given-name" class="block w-5 rounded-md border-1 py-1.4 text-gray-900 shadow-sm ring-1 ring-inset ring-black placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-100 sm:text-sm sm:leading-6"placeholder='1'/>
         </div>     
-        <p class="text-xl text-[#a3a3a3] font-bold ml-10">Settings</p>
+        <p class="text-xl text-[#a3a3a3] font-bold ml-10">Cài đặt</p>
         <div className='ml-10'><ChoosePrintStyle/></div>
       </div>
       <div className='ml-20'><VerticalLine /></div>

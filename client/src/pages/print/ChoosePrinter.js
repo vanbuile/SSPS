@@ -18,9 +18,8 @@ function VerticalLine() {
   }
 function Bulding({building}){
     return (
-        <div className="bg-mainBlue"
+        <div className="bg-mainBlue text-white"
         style={{
-            border: '1px solid black',
             marginLeft: '50px', marginTop: '50px', 
             width: '100px', height: '50px',
             padding: '10px', textAlign: 'center', borderRadius: '5px'}}
