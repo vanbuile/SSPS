@@ -1,15 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Link, useParams } from "react-router-dom";
 import { FaPrint, FaTrash } from 'react-icons/fa';
 import { FaDownload } from 'react-icons/fa';
 import { FaComment } from 'react-icons/fa';
 import { FaStar, FaBackward, FaEye } from 'react-icons/fa';
-
+import axios from "axios";
+import APIs from "../../util/API.js";
 export default function Detail() {
   const { id } = useParams();
   const [rated, setRated] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const [article, setArticle] = useState(data.sharedfilesList.find((item) => item.id === parseInt(id)));
+  const [fileDetails, setFileDetails] = useState({});
+  const [commentList, setCommentList] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${APIs.APIshareFile}/detail/${id}`);
+      const data = response.data;
+      console.log('Data from server:', data.commentList);
+      setFileDetails(data.fileDetails);
+      setCommentList(data.commentList);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [id]);
+  const handleSendComment = async () => {
+    try {
+      const response = await axios.post(`${APIs.APIshareFile}/detail/${id}/comment`, {
+        content: newComment,
+        mssv:'2110029',
+      });
+      if (response){
+        fetchData()
+      }
+      console.log('Comment sent:', response.data)
+      setNewComment('');
+    } catch (error) {
+      console.error('Error sending comment:', error);
+    }
+  };
+  
   const styles = {
     frame: {
       border:"1px solid #0f6cbf",
@@ -77,10 +111,10 @@ export default function Detail() {
       padding:"10px",
     },
     commentText: {
-      flex: 1, // Takes up available space (pushes date to the right)
+      flex: 1, 
     },
     commentDate: {
-      marginLeft: "10px", // Adds some space to the left of the date
+      marginLeft: "10px", 
     },
     commentInput: {
       display: "flex",
@@ -104,19 +138,9 @@ export default function Detail() {
       marginRight:"15px",
     },
   };
-  const handleSendComment = () => {
-    if (newComment.trim() !== '') {
-      // Gửi comment
-      window.confirm("Bạn có muốn gửi bình luận không?");
-      console.log('Comment sent');
-    } else {
-      // Hiển thị cảnh báo nếu comment trống
-      window.alert('Vui lòng nhập bình luận trước khi gửi.');
-    }
-  };
+ 
 
   const handleDownload = () => {
-    // Implement your download logic here
     console.log("Downloading article...");
   };
 
@@ -137,10 +161,10 @@ export default function Detail() {
   const handleRate = (value) => {
     if(!rated)
     {
-      console.log(`Rating the article with ${value} stars...`);
-      const updatedArticle = { ...article, rating: value };
-      setArticle(updatedArticle);
-      setRated(true);
+      // console.log(`Rating the article with ${value} stars...`);
+      // const updatedArticle = { ...article, rating: value };
+      // setArticle(updatedArticle);
+      // setRated(true);
     }
     else
     {
@@ -155,7 +179,7 @@ export default function Detail() {
           <FaStar
             key={star}
             onClick={() => handleRate(star)}
-            style={{ cursor: 'pointer', color: article.rating >= star ? '#FFD700' : 'gray' }}
+            //style={{ cursor: 'pointer', color: article.rating >= star ? '#FFD700' : 'gray' }}
           />
         ))}
       </div>
@@ -163,57 +187,66 @@ export default function Detail() {
   };
   return (
     <div>
-      <Link to="/shared">
-        <FaBackward style={{ marginLeft: "80px" }} />
-      </Link>
-      <div style={styles.frame}>
-        <div style={styles.header}>
-          <div>
-            <h2 style={styles.title}>{article.title}</h2>
-            <p style={styles.description}>{article.description}</p>
-            <p style={styles.user}>{article.autor}</p>
+      
+        <div>
+          <Link to="/shared">
+            <FaBackward style={{ marginLeft: "80px" }} />
+          </Link>
+          <div style={styles.frame}>
+            <div style={styles.header}>
+              <div>
+                <h2 style={styles.title}>{fileDetails.name}</h2>
+                <p style={styles.description}>{fileDetails.description}</p>
+                {/* <p style={styles.user}>{article.author}</p> */}
+              </div>
+              <div style={styles.buttonFrame}>
+                {/* <p style={styles.score}>Score: {article.score}</p> */}
+                {renderStarRating()}
+                <button onClick={handleView} style={styles.button}>
+                  <FaEye />
+                </button>
+                <button onClick={handleDownload} style={styles.button}>
+                  <FaDownload />
+                </button>
+                <button onClick={handleDelete} style={styles.button}>
+                  <FaTrash />
+                </button>
+              </div>
+            </div>
           </div>
-          <div style={styles.buttonFrame}>
-          <p style={styles.score}>Score: {article.score}</p>
-          {renderStarRating()}
-            <button onClick={handleView} style={styles.button}>
-              <FaEye />
-            </button>
-            <button onClick={handleDownload} style={styles.button}>
-              <FaDownload />
-            </button>
-            <button onClick={handleDelete} style={styles.button}>
-              <FaTrash />
-            </button>
-        
+          <div style={styles.comment}>
+            <h3 style={{ fontWeight: "bold", fontSize: "150%" }}>Comment</h3>
+            <div style={styles.commentInput}>
+              <textarea
+                style={styles.commentTextarea}
+                placeholder="Write your comment..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+              />
+              <button onClick={handleSendComment} style={styles.sendButton}>
+                Send
+              </button>
+            </div>
+            <h3 style={{ fontWeight: "bold", fontSize: "150%" }}>Other Comments</h3>
+            {!commentList || commentList.length === 0 ? (
+              <p>No comments yet.</p>
+            ) : (
+              <ul>
+                {commentList && commentList.map((comment) => (
+                  <li key={comment.id} style={styles.commentlist}>
+                    {comment.Content}
+                    <br />
+                    <span style={{ color: "gray", fontSize: "60%" }}>
+                      {comment.date}
+                      <br />
+                    {/* {comment.author} */}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
-      </div>
-      <div style={styles.comment}>
-        <h3 style={{ fontWeight: "bold", fontSize: "150%" }}>Comment</h3>
-        <div style={styles.commentInput}>
-          <textarea
-            style={styles.commentTextarea}
-            placeholder="Write your comment..."
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-          />
-
-          <button onClick={handleSendComment} style={styles.sendButton}>
-            Send
-          </button>
-        </div>
-        <h3 style={{ fontWeight: "bold", fontSize: "150%" }}>Các bình luận khác</h3>
-        <ul>
-          {article.commentlist.map((comment) => (
-            <li key={comment.id} style={styles.commentlist}>
-              {comment.text}
-              <br></br>
-              <span style={{ color: "gray", fontSize: "60%" }}>{comment.date}<br/>{comment.autor}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }

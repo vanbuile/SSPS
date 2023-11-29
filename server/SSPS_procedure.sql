@@ -151,4 +151,27 @@ BEGIN
     ORDER BY number_pager_buy DESC;
 END //
 
+--share file procedure
+CREATE PROCEDURE GetAllSharedFile()
+BEGIN
+    select *
+    from file
+    WHERE isShare==1
+end //
+
+
+CREATE PROCEDURE GetSharedFileDetail(fid)
+BEGIN
+    select * 
+    from file
+    WHERE 
+
+
+end//
+
+
+--end share file procedure
+
+
+
 DELIMITER ;

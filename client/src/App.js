@@ -29,8 +29,11 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="print" element={<Print />} />
-          <Route path="shared" element={<Shared />} />
-          <Route path="detail" element={<Detail />} />
+          <Route path="shared" >
+            <Route path="detail/:id" element={<Detail />} />
+            <Route index element={<Shared />} />
+
+          </Route>
           <Route path="buy" element={<Buy />} />
           <Route path="login" element={<Login />} />
         </Route>

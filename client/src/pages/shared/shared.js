@@ -1,13 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { Link } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import { FaFilter } from 'react-icons/fa';
+import axios from "axios";
+import APIs from "../../util/API.js";
 export default function Shared() {
   const [isInputFocused, setInputFocused] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState(""); 
+  const [dataFromServer, setDataFromServer] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchResults, setSearchResults] = useState([]); 
+
+  useEffect(async () => {
+    const fetchData = async () => {
+      try {
+        const url = APIs.APIshareFile + "/";
+        const response = await axios.get(url);
+        setDataFromServer(response.data.data); 
+        //console.log(response.data);
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response.data.message);
+        }
+      }
+    };
+
+    fetchData();
+  }, []);
+  const handleSearch = async () => {
+    try {
+      const url = `${APIs.APIshareFile}/?search=${searchKeyword}`;
+      const response = await axios.get(url);
+      setSearchResults(response.data.data);
+      //console.log(response.data);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data.message);
+      }
+    }
+  };
   
-  const datafile = data.sharedfilesList;
   const styles = {
     topframe: {
       width: "auto",
@@ -96,7 +129,11 @@ export default function Shared() {
     setSelectedFilter(value); 
     setIsFilterOpen(false);
   };
-
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch(); 
+    }
+  };
   return (
     <div style={{ display: "block", justifyContent: "center" }}>
       <div style={styles.topframe}>
@@ -107,7 +144,11 @@ export default function Shared() {
             placeholder="Tìm kiếm tài liệu bạn cần ..."
             onFocus={handleInputFocus}
             onBlur={handleInputBlur}
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            onKeyDown={handleKeyPress} 
           />
+          
         </div>
         <div style={styles.filterButton}>
         <FaFilter isOpen={isFilterOpen} onClick={() => setIsFilterOpen(!isFilterOpen)} /> Filter
@@ -125,14 +166,25 @@ export default function Shared() {
         </select>
       </div>
       <div style={styles.content}>
-     {datafile.map((article, index) => (
-        <div key={index} style={styles.article}>
-          <h2 style={{ color: "#0F6CBF", fontSize: "120%", paddingBottom: "5px" }}>
-          <Link to={`/detail/${article.id}`}>{article.title}</Link>
-          </h2>
-          <p style={{ color: "gray" }}>{article.description}</p>
-        </div>
-      ))}
+      {searchResults.length > 0 ? (
+  searchResults.map((article, index) => (
+    <div key={index} style={styles.article}>
+      <h2 style={{ color: "#0F6CBF", fontSize: "120%", paddingBottom: "5px" }}>
+        <Link to={`/detail/${article.id}`}>{article.name}</Link>
+      </h2>
+      <p style={{ color: "gray" }}>{article.description}</p>
+    </div>
+  ))
+) : (
+  dataFromServer.map((article, index) => (
+    <div key={index} style={styles.article}>
+      <h2 style={{ color: "#0F6CBF", fontSize: "120%", paddingBottom: "5px" }}>
+        <Link to={`detail/${article.ID}`}>{article.name}</Link>
+      </h2>
+      <p style={{ color: "gray" }}>{article.description}</p>
+    </div>
+  ))
+)}
     </div>
     </div>
   );
