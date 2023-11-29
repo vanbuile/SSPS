@@ -144,6 +144,7 @@ function BuyForm(props) {
                   label="Name"
                   form={form}
                   type="text"
+                  disabled
                 />
               </div>
               <div className="flex flex-col">
