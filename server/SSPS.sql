@@ -13,9 +13,8 @@ CREATE TABLE IF NOT EXISTS PRINTER (
     day DATE,
     description VARCHAR(255),
     paper INT DEFAULT 0,
-    facility VARCHAR(255),
     building VARCHAR(255),
-    floor VARCHAR(255),
+    floor INT,
     state INT
 );
 
@@ -73,7 +72,6 @@ CREATE TABLE IF NOT EXISTS COMMENT (
     FOREIGN KEY (MSSV) REFERENCES STUDENT(MSSV),
     FOREIGN KEY (id_file) REFERENCES FILE(id)
 );
-
 
 CREATE TABLE IF NOT EXISTS SEMESTER (
     Semester CHAR(5) PRIMARY KEY,

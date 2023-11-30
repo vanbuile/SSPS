@@ -54,4 +54,4 @@ app.listen(process.env.SV_PORT,'localhost', () => {
 })
 
 // test kết nối database
-const select  = require('./PersistenceLayer/PrinterDAO');
+// const select  = require('./PersistenceLayer/PrinterDAO');

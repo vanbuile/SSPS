@@ -73,17 +73,18 @@ END //
 
 CREATE PROCEDURE GetStudentPrintMaxSemester()
 BEGIN
+
     DECLARE dateVar DATE;
     DECLARE weekVar INT;
 
-    SELECT date, week INTO dateVar, weekVar FROM Semester 
+    SELECT date,week INTO dateVar, weekVar FROM Semester 
     ORDER BY date DESC LIMIT 1;
 
     SELECT
         S.MSSV AS id,
         S.name AS student,
         P.paper AS number_pager_printer,
-        S.paper AS number_pager_remaining,
+        s.paper AS number_pager_remaining,
         P.number_file_share as number_file_share,
         P.number_file as number_file
     FROM
@@ -98,12 +99,11 @@ BEGIN
             FILE F ON P.id_file = F.ID
         WHERE 
              FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 <= weekVar and FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 > 0
-        GROUP BY P.paper, P.MSSV, S.paper) AS P
+        GROUP BY P.MSSV) AS P
     JOIN
         STUDENT S ON P.MSSV = S.MSSV
-    ORDER BY P.paper DESC LIMIT 10;
+    GROUP BY number_pager_printer DESC LIMIT 10;
 END //
-
 
 CREATE PROCEDURE GetStudentCourseRevenue()
 BEGIN
@@ -178,4 +178,30 @@ BEGIN
     UPDATE STUDENT
     SET paper = quantity;
 END //
+CREATE PROCEDURE ViewAllPrinter()
+BEGIN
+    SELECT * FROM printer;
+END //
+
+
+CREATE PROCEDURE AddPrinter(IN _name varchar(255), IN _brand varchar(255), IN _model varchar(255), IN _building varchar(255),IN _floor INT,IN _paper int, IN _day date, IN _description varchar(255),IN _state int)
+BEGIN
+	INSERT INTO `ssps`.`printer`(`name`,`brand`,`model`,`building`,`floor`,`paper`,`day`,`description`,`state`)
+VALUES
+(_name,_brand,_model,_building,_floor,_paper,_day,_description,_state);
+END //
+
+CREATE PROCEDURE EditPrinter(IN _id int,IN _name varchar(255), IN _brand varchar(255), IN _model varchar(255), IN _building varchar(255),IN _floor INT,IN _paper int, IN _day date, IN _description varchar(255),IN _state int)
+BEGIN
+    UPDATE `ssps`.`printer`
+    SET `name`=_name ,`brand` = _brand,`model` = _model,`building`= _building,`floor` = _floor,`paper`= _paper,`day`=_day,`description`=_description,`state`=_state
+    WHERE `id` = _id;
+END //
+
+CREATE PROCEDURE `DeletePrinter` (IN _id int)
+BEGIN
+	DELETE FROM `ssps`.`printer`
+	WHERE `id` = _id;
+END //
+
 DELIMITER ;
