@@ -2,12 +2,23 @@ import React from 'react';
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import checkImage from "../../assets/images/check.png";
+import { useNavigate } from "react-router-dom";
 function Paymentcheck(props) {
     let [isOpen, setIsOpen] = useState(true);
+    const navigate = useNavigate();
+    const navigateToCheck = () => {
+      setTimeout(() => {
+        navigate("/");
+      }, 500);
+    };
     function closeModal() {
-        setIsOpen(false);
-        
-      }
+      setIsOpen(false);
+      navigateToCheck();
+    }
+    
+    function openModal() {
+      setIsOpen(true);
+    }
     
       function openModal() {
         setIsOpen(true);
