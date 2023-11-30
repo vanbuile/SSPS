@@ -12,7 +12,7 @@ const fileAdmin = require('./routes/fileAdmin')
 const pageNumber = require('./routes/pageNumber');
 const Statistic = require('./routes/Statistic');
 const Revenue = require('./routes/Revenue');
-
+const Buy = require('./routes/buy');
 //init app object
 const app = express()
 // xác thực khi dùng APIs
@@ -36,6 +36,7 @@ app.use('/api/admin/statisticAdmin', Statistic);
 app.use('/api/admin/revenueAdmin', Revenue);
 app.use('/api/admin/fileAdmin', fileAdmin);
 app.use('/api/admin/pageNumber', pageNumber);
+app.use('/api/testbuy', Buy);
 
 
 // app.listen(3002,'localhost', () => {
