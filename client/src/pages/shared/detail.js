@@ -1,8 +1,9 @@
 import React, { useState,useEffect } from 'react';
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { FaPrint, FaTrash } from 'react-icons/fa';
 import { FaDownload } from 'react-icons/fa';
 import { FaComment } from 'react-icons/fa';
+import { saveAs } from 'file-saver';
 import { FaStar, FaBackward, FaEye } from 'react-icons/fa';
 import axios from "axios";
 import APIs from "../../util/API.js";
@@ -12,27 +13,41 @@ export default function Detail() {
   const [newComment, setNewComment] = useState('');
   const [fileDetails, setFileDetails] = useState({});
   const [commentList, setCommentList] = useState([]);
-
+  const [isLoaded, setIsLoaded] = useState(false);
+  const navigate = useNavigate();
   const fetchData = async () => {
     try {
       const response = await axios.get(`${APIs.APIshareFile}/detail/${id}`);
-      const data = response.data;
-      console.log('Data from server:', data.commentList);
-      setFileDetails(data.fileDetails);
-      setCommentList(data.commentList);
+      //console.log(response);
+      //console.log('Not found, redirecting...');
+      
+        const data = response.data;
+        console.log('Data from server:', data.commentList);
+        setFileDetails(data.fileDetails);
+        setCommentList(data.commentList);
+        setIsLoaded(true);
+      
     } catch (error) {
       console.error('Error fetching data:', error);
+      navigate('/shared');
     }
   };
 
   useEffect(() => {
     fetchData();
   }, [id]);
+
+  if (!isLoaded) {
+    return <div>Loading...</div>; // Hiển thị loading khi fetchData đang thực hiện
+  }
+
   const handleSendComment = async () => {
+    if(newComment)
+    {
     try {
       const response = await axios.post(`${APIs.APIshareFile}/detail/${id}/comment`, {
         content: newComment,
-        mssv:'2110029',
+        mssv:'1818972',
       });
       if (response){
         fetchData()
@@ -41,9 +56,32 @@ export default function Detail() {
       setNewComment('');
     } catch (error) {
       console.error('Error sending comment:', error);
+    }}
+    else
+    {
+      window.alert("Vui lòng nhập bình luận !");
     }
   };
-  
+  const handleRate = async (value) => {
+    if (!rated) {
+      setRated(value); 
+      try {
+        const response = await axios.post(`${APIs.APIshareFile}/detail/${id}/rating`, {
+          star: value,
+          mssv:'1818972',
+        });
+        if (response){
+          fetchData()
+        }
+      } catch (error) {
+        console.error('Error to rating:', error);
+      }
+      
+    } else {
+      window.alert("Bạn chỉ có thể đánh giá 1 lần!");
+    }
+    
+  };
   const styles = {
     frame: {
       border:"1px solid #0f6cbf",
@@ -140,14 +178,24 @@ export default function Detail() {
   };
  
 
-  const handleDownload = () => {
-    console.log("Downloading article...");
+  const handleDownload = async () => {
+    try {
+    
+    } catch (error) {
+      window.alert('Error downloading file...');
+    }
   };
-
-  const handleDelete = () => {
+  
+  const handleDelete = async () => {
     const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa không?");
     if (confirmDelete) {
-      console.log("Deleting article...");
+      try {
+        const response = await axios.post(`${APIs.APIshareFile}/detail/${id}/delete`);
+        navigate('/shared');
+        
+      } catch (error) {
+        console.error('Error Deleting', error);
+      }
     } else {
       console.log("Cancel deleting...");
     }
@@ -156,22 +204,10 @@ export default function Detail() {
   const handleView = () => {
 
     console.log("Viewing article...");
+    window.open(fileDetails.link, "_blank");
   };
 
-  const handleRate = (value) => {
-    if(!rated)
-    {
-      // console.log(`Rating the article with ${value} stars...`);
-      // const updatedArticle = { ...article, rating: value };
-      // setArticle(updatedArticle);
-      // setRated(true);
-    }
-    else
-    {
-      window.alert("Bạn chỉ có thể đánh giá 1 lần!");
-    }
-    
-  };
+  
   const renderStarRating = () => {
     return (
       <div style={styles.rating}>
@@ -179,7 +215,7 @@ export default function Detail() {
           <FaStar
             key={star}
             onClick={() => handleRate(star)}
-            //style={{ cursor: 'pointer', color: article.rating >= star ? '#FFD700' : 'gray' }}
+            style={{ cursor: 'pointer', color: rated >= star ? '#FFD700' : 'gray' }}
           />
         ))}
       </div>
@@ -200,7 +236,7 @@ export default function Detail() {
                 {/* <p style={styles.user}>{article.author}</p> */}
               </div>
               <div style={styles.buttonFrame}>
-                {/* <p style={styles.score}>Score: {article.score}</p> */}
+                <p style={styles.score}>Score: {fileDetails.score}/5</p>
                 {renderStarRating()}
                 <button onClick={handleView} style={styles.button}>
                   <FaEye />
@@ -210,6 +246,8 @@ export default function Detail() {
                 </button>
                 <button onClick={handleDelete} style={styles.button}>
                   <FaTrash />
+                  <Link to="/shared">
+                  </Link>
                 </button>
               </div>
             </div>

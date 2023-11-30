@@ -3,9 +3,18 @@ const ShareFileDAO = require("../../PersistenceLayer/ShareFileDAO");
 const viewListSharedFile = async (req, res) => {
   try {
     let sharedFiles;
-    if (req.query.search) {
-      const searchKey = req.query.search;
+    const searchKey = req.query.search;
+    const sortBy = req.query.sort;
+    console.log(searchKey)
+    console.log(sortBy)
+
+    if (searchKey && sortBy) {
+      const searchResult = await ShareFileDAO.searchByKey(searchKey);
+      sharedFiles = await ShareFileDAO.sortBy(sortBy, searchResult);
+    } else if (searchKey) {
       sharedFiles = await ShareFileDAO.searchByKey(searchKey);
+    } else if (sortBy) {
+      sharedFiles = await ShareFileDAO.sortBy(sortBy);
     } else {
       sharedFiles = await ShareFileDAO.getListSharedFile();
     }
@@ -24,9 +33,12 @@ const viewDetail = async (req, res) => {
     const fileId = req.params.id;
 
     const fileDetails = await ShareFileDAO.getDetailbyID(fileId);
+    if (!fileDetails) return res.status(404).json({errorMes: 'not found'});
     const commentLists = await ShareFileDAO.getCommentList(fileId);
     // console.log(fileDetails);
     // console.log(commentLists);
+
+
     return res.status(200).json({ fileDetails:fileDetails, commentList:commentLists });
   } catch (error) {
     console.error('Error retrieving file details:', error);
@@ -48,5 +60,30 @@ const addComment = async (req, res) => {
       return res.status(500).json({ error: 'Internal server error' });
   }
 };
+const addRating = async (req, res) => {
+  try {
+      const fileId = req.params.id;
+      const mssv= req.body.mssv;
+      const star=req.body.star;
+      const date = new Date(); 
 
-module.exports = { viewListSharedFile, viewDetail,addComment };
+      await ShareFileDAO.insertRating(fileId, mssv, star, date);
+
+      return res.status(200).json({ message: 'Rating successfully' });
+  } catch (error) {
+      console.error('Error Rating:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+const deletePost = async(req,res) =>
+{
+  try {
+    const fileId = req.params.id;
+    await ShareFileDAO.deleteFile(fileId);
+    return res.status(200).json({ message: 'Delete successfully' });
+} catch (error) {
+    console.error('Error Deleting:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+}
+}
+module.exports = { viewListSharedFile, viewDetail,addComment,addRating,deletePost };

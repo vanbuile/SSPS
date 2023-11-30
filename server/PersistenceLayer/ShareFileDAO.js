@@ -23,11 +23,29 @@ const searchByKey = async (key) => {
         return [];
     }
 };
+const sortBy = async (key) => {
+    try {
+        let query = `SELECT * FROM file WHERE isShare = 1`;
+        if (key === 'star_asc') {
+            query += ` ORDER BY score ASC`;
+        } else if (key === 'star_desc') {
+            query += ` ORDER BY score DESC`;
+        }
+
+        const [result, fields] = await connection.query(query);
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const getDetailbyID = async (fileid) => {
     try {
-        const query = 'SELECT * FROM file WHERE ID = ?;';
+        const query = 'SELECT * FROM file WHERE ID = ? AND isShare=1;';
         const [result, fields] = await connection.query(query, [fileid]);
-        return result[0];
+        if (result.length > 0) return result[0];
+        else return false;
+        
     } catch (error) {
         throw error;
     }
@@ -49,10 +67,31 @@ const insertComment = async (fileId, mssv, content, date) => {
         throw error;
     }
 };
+const insertRating = async (fileId, mssv, star, date) => {
+    try {
+        const query = `INSERT INTO RATING (MSSV, id_file, star, date) VALUES (?, ?, ?, ?);`;
+        const [result] = await connection.query(query, [mssv, fileId, star, date]);
+    } catch (error) {
+        throw error;
+    }
+};
+const deleteFile = async (id)  =>
+{
+    try {
+        const query = `UPDATE FILE SET isShare=0 WHERE ID=?`;
+        const [result] = await connection.query(query, [id]);
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
 module.exports = {
     getListSharedFile,
     getCommentList,
     getDetailbyID,
     searchByKey,
     insertComment,
+    sortBy,
+    insertRating,
+    deleteFile,
 };

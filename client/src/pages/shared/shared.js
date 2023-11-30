@@ -11,6 +11,7 @@ export default function Shared() {
   const [dataFromServer, setDataFromServer] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchResults, setSearchResults] = useState([]); 
+  const [filterKeyword, setFilterKeyword] = useState([]); 
 
   useEffect(async () => {
     const fetchData = async () => {
@@ -30,7 +31,12 @@ export default function Shared() {
   }, []);
   const handleSearch = async () => {
     try {
-      const url = `${APIs.APIshareFile}/?search=${searchKeyword}`;
+      let url = APIs.APIshareFile + "/";
+      if (filterKeyword) {
+        url = `${APIs.APIshareFile}/?search=${searchKeyword}&sort=${filterKeyword}`;
+      } else {
+        url = `${APIs.APIshareFile}/?search=${searchKeyword}`;
+      }
       const response = await axios.get(url);
       setSearchResults(response.data.data);
       //console.log(response.data);
@@ -40,7 +46,26 @@ export default function Shared() {
       }
     }
   };
-  
+  const handleFilterSelect = async (value) => {
+    setSelectedFilter(value); 
+    setFilterKeyword(value);
+    setIsFilterOpen(false);
+    try {
+      let url = APIs.APIshareFile + "/";
+      if (searchKeyword) {
+        url = `${APIs.APIshareFile}/?search=${searchKeyword}&sort=${value}`;
+      } else {
+        url = `${APIs.APIshareFile}/?sort=${value}`;
+      }
+      const response = await axios.get(url);
+      setSearchResults(response.data.data);
+      //console.log(response.data);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data.message);
+      }
+    }
+  };
   const styles = {
     topframe: {
       width: "auto",
@@ -125,10 +150,7 @@ export default function Shared() {
   const handleInputBlur = () => {
     setInputFocused(false);
   };
-  const handleFilterSelect = (value) => {
-    setSelectedFilter(value); 
-    setIsFilterOpen(false);
-  };
+  
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       handleSearch(); 
@@ -160,9 +182,8 @@ export default function Shared() {
           value={selectedFilter}
           onChange={(e) => handleFilterSelect(e.target.value)}
         >
-          <option value="timeAscending">Ngày đăng mới nhất</option>
-          <option value="timeDescending">Ngày đăng cũ nhất</option>
-          <option value="rating">Đánh giá cao</option>
+          <option value="star_desc">Đánh giá cao</option>
+          <option value="star_asc">Đánh giá thấp</option>
         </select>
       </div>
       <div style={styles.content}>
