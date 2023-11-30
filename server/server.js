@@ -10,7 +10,7 @@ const bodyParser = require('body-parser');
 const printerAdmin = require('./routes/printerAdmin')
 const Statistic = require('./routes/Statistic');
 const Revenue = require('./routes/Revenue');
-
+const Buy = require('./routes/buy');
 //init app object
 const app = express()
 // xác thực khi dùng APIs
@@ -32,6 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/admin/print', printerAdmin);
 app.use('/api/admin/statisticAdmin', Statistic);
 app.use('/api/admin/revenueAdmin', Revenue);
+app.use('/api/testbuy', Buy);
 
 
 // app.listen(3002,'localhost', () => {
