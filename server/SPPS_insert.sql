@@ -60,11 +60,17 @@ INSERT INTO STUDENT_BUYPAGE (MSSV, date, paper) VALUES
 -- INSERT INTO FILE
 INSERT INTO FILE (name, description, link, isShare) 
 VALUES 
-('Tệp 1', 'Mô tả 1', 'Liên kết 1', 1),
-('Tệp 2', 'Mô tả 2', 'Liên kết 2', 0),
-('Tệp 3', 'Mô tả 3', 'Liên kết 3', 1),
-('Tệp 4', 'Mô tả 4', 'Liên kết 4', 0),
-('Tệp 5', 'Mô tả 5', 'Liên kết 5', 1);
+('Lập trình Java', 'File về lập trình Java từ cơ bản đến nâng cao.', 'Liên kết Java', 1),
+('Toán cao cấp', 'Tài liệu về toán cao cấp, bao gồm các chương từ 1 đến 5.', 'Liên kết Toán cao cấp', 1),
+('Kỹ thuật lập trình', 'Tài liệu về kỹ thuật lập trình, giới thiệu về các ngôn ngữ lập trình.', 'Liên kết Kỹ thuật lập trình', 1),
+('Quản trị mạng', 'Tài liệu hướng dẫn về quản trị mạng, các chương từ 1 đến 10.', 'Liên kết Quản trị mạng', 1),
+('Tiếng Anh giao tiếp', 'Tài liệu học tiếng Anh giao tiếp, từ vựng và ngữ pháp.', 'Liên kết Tiếng Anh', 1),
+('Mạng máy tính', 'File bao gồm chương 1, chương 2 và chương 3 về mạng máy tính.', 'Liên kết Mạng máy tính', 1),
+('Hóa đại cương', 'File chứa nâng cao và cơ bản về hóa đại cương.', 'Liên kết Hóa đại cương', 0),
+('Mạng máy tính', 'File bao gồm chương 1, chương 2 và chương 3 về mạng máy tính.', 'Liên kết Mạng máy tính', 0),
+('Hóa đại cương', 'File chứa nâng cao và cơ bản về hóa đại cương.', 'Liên kết Hóa đại cương', 1);
+
+
 
 -- INSERT INTO PRINTING
 INSERT INTO PRINTING (id_printer, MSSV, id_file, paper, date) 
