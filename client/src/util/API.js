@@ -11,5 +11,11 @@ const APIadminPageNumber = localhost + "/admin/pageNumber";//cập nhật số t
 const APILogin = localhost + "/login";//đăng nhập
 const APIadminGetInfo = localhost + "/admin/adminInfo";//cập nhật hồ sơ
 
+<<<<<<< HEAD
 const APIs = {APIadminPrinterStatistics, APIadminRevenueStatistics, APIbuy, APIadminPrinter, APIadminFileTypes, APIadminPageNumber, APILogin, APIadminGetInfo};
+=======
+
+
+const APIs = { APIadminPrinterStatistics, APIadminRevenueStatistics, APIbuy ,APIadminPrinter};
+>>>>>>> d3e1360 (Merge pull request #7 from vanbuile/be_buy)
 export default APIs;
