@@ -24,6 +24,7 @@ function TextFieldInput(props) {
             },
           }}
           helperText={prop.helperText}
+          disabled={prop.disabled}
           {...field}
         />
       )}

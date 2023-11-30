@@ -13,6 +13,7 @@ import HomeAdmin from "./pages/admin/homeAdmin";
 import PrinterAdmin from "./pages/admin/printerAdmin";
 import PaperAdmin from "./pages/admin/paperAdmin";
 import RevenueStatistics from "./pages/admin/RevenueStatistics";
+import PaymentCheck from "./pages/buy/paymentcheck";
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
 
           </Route>
           <Route path="buy" element={<Buy />} />
+          <Route path="buy/paymentcheck" element={<PaymentCheck />} />
           <Route path="login" element={<Login />} />
         </Route>
         <Route path="*" element={<Error />} />

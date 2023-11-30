@@ -5,7 +5,8 @@ import DeletePrinter from './DeletePrinter'
 import { useState } from 'react'
 import {CheckCircleIcon} from '@heroicons/react/20/solid'
 import {ExclamationCircleIcon} from '@heroicons/react/20/solid'
- export default function ItemPrinter({ printer, idx }) {
+import {format} from 'date-fns';
+ export default function ItemPrinter({ printer, idx, reload}) {
     
   return (
     <div className="w-full px-4 my-1">
@@ -18,7 +19,7 @@ import {ExclamationCircleIcon} from '@heroicons/react/20/solid'
             <>
               <Disclosure.Button className="flex w-full justify-between rounded-lg bg-lightBlue-200 px-4 py-2 text-left text-sm font-medium text-mainBlue hover:bg-lightBlue-300 focus:outline-none focus-visible:ring focus-visible:ring-lightBlue-300 focus-visible:ring-opacity-75">
                 <span className='flex-1'>{printer.name}</span>
-                <span className='flex-1'>{printer.location}</span>
+                <span className='flex-1'>{printer.building}</span>
                 <span className='flex-1'>{printer.paper}</span>
               
                 <span className='flex-1'>
@@ -37,19 +38,19 @@ import {ExclamationCircleIcon} from '@heroicons/react/20/solid'
               <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500 transition-all">
                   <hr/>
                   <p>Mẫu: {printer.model}</p>
-                  <p>Loại máy: {printer.type==1?'In thường':'In màu'}</p>
+                  {/*<p>Loại máy: {printer.type==1?'In thường':'In màu'}</p>*/}
                   <p>Hãng: {printer.brand}</p>
-                  <p>Ngày mua: {printer.day}</p>
+                  <p>Ngày mua: { printer.day}</p>
                   <p>Mô tả: {printer.description}</p>
               </Disclosure.Panel>
             </>
           )}
         </Disclosure>
         <div className='ml-1'>
-           <EditPrinter printer={printer}/>
+           <EditPrinter printer={printer} reload={reload}/>
         </div>
         <div className='ml-1'>
-            <DeletePrinter printer={printer}/>
+            <DeletePrinter printer={printer} reload={reload}/>
         </div>
         
       </div>
