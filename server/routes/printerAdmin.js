@@ -5,7 +5,7 @@ const {ShowListPrinter, AddNewPrinter, EditOldPrinter, DeleteOldPrinter} = requi
 
 router.get('/', ShowListPrinter);
 router.post('/add', AddNewPrinter);
-router.post('/edit/', EditOldPrinter);
-router.get('/delete/:id', DeleteOldPrinter);
+router.put('/edit', EditOldPrinter);
+router.delete('/delete/:id', DeleteOldPrinter);
 
 module.exports = router
