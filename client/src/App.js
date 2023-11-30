@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./layouts/header/layout";
 import Home from "./pages/home/home";
-import Print from "./pages/print/print";
+import Print from "./pages/print/print1";
+import ChoosePrinter from './pages/print/ChoosePrinter';
 import Shared from "./pages/shared/shared";
 import Detail from "./pages/shared/detail";
 import Buy from "./pages/buy/buy";
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="print" element={<Print />} />
+          <Route path='print/ChoosePrinter' element={< ChoosePrinter/>} />
           <Route path="shared" element={<Shared />} />
           <Route path="detail" element={<Detail />} />
           <Route path="buy" element={<Buy />} />
