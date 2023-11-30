@@ -68,6 +68,13 @@ export default function EditPrinter({printer, reload}) {
   function openRefill() {
     setIsRefill(true)
   }
+  function closeRefill() {
+    setIsRefill(false)
+    setIsCommit(false)
+  }
+  function openRefill() {
+    setIsRefill(true)
+  }
   function openAlertSuccess(){
     setAlertContent(["Sửa máy in thành công!", "Bạn có thể xem ngay kết quả!"])
     setIsSuccess(true)

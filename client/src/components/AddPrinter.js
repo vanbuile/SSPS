@@ -96,6 +96,13 @@ export default function AddPrinter({reload}) {
   function openRefill() {
     setIsRefill(true)
   }
+  function closeRefill() {
+    setIsRefill(false)
+    setIsCommit(false)
+  }
+  function openRefill() {
+    setIsRefill(true)
+  }
   async function Commit(){
     if(handleAuthorization('SPSO_cookie_id') == true) {
       if(!inputs.name) {
