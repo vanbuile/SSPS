@@ -69,13 +69,13 @@ sẽ được lưu vào Cookie:
 - Đối với SPSO:
 {
 	name: SPSO_cookie_id,
-	value: <ID>', (ID là giá trị của trường ID của bảng SPSO trên DBS)
+	value: ID, (ID là giá trị của trường ID của bảng SPSO trên DBS)
 	Expires/Max Age: Thời gian kể từ lúc đăng nhập thành công + 60 phút
 }
 - Đối với Student:
 {
 	name: Student_cookie_id,
-	value: <MSSV> (MSSV là giá trị của trường MSSV của bảng STUDENT trên DBS),
+	value: MSSV (MSSV là giá trị của trường MSSV của bảng STUDENT trên DBS),
 	Expires/Max Age: Thời gian kể từ lúc đăng nhập thành công + 60 phút
 }
 
