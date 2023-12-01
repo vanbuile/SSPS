@@ -16,7 +16,7 @@ function SelectOptions({ id, name, value, options, onChange, labelText }) {
             >
                 {options.map((option) => (
                     <option key={option} value={option}>
-                        {labelText === "Chọn số lượng" ? option : `Sau ${option} ngày`}
+                        {labelText === "Chọn Số Lượng" ? option : `Sau ${option} ngày`}
                     </option>
                 ))}
             </select>
@@ -39,7 +39,7 @@ export default function AdjustingDefaultPageNumForm() {
             value: quantity,
             options: ["100", "150", "200", "250", "300"],
             onChange: handleQuantityChange,
-            labelText: "Chọn số lượng",
+            labelText: "Chọn Số Lượng",
         }
     ];
     const openModal = () => {

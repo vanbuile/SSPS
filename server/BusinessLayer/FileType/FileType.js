@@ -3,7 +3,7 @@ const {getFileTypesList,addFileTypes,removeFileTypes} = require('../../Persisten
 const AddFileTypes = async (req, res) => {
     const types = Object.values(req.query);
     try {
-        let result = await addFileTypes(types)
+        await addFileTypes(types)
     }
     catch (e) {
         console.log(e)
@@ -15,8 +15,7 @@ const AddFileTypes = async (req, res) => {
 const RemoveFileTypes = async (req, res) => {
     const types = Object.values(req.query);
     try {
-        let result = await removeFileTypes(types)
-        
+        await removeFileTypes(types)
     }
     catch (e) {
         console.log(e)
@@ -26,7 +25,7 @@ const RemoveFileTypes = async (req, res) => {
 }
 
 const PermmitedFileTypesList = async (req, res) =>{
-    data = await getFileTypesList();
+    let data = await getFileTypesList();
     const filteredData = data.filter(item => item.isUsable === 1);
 	const result = filteredData
 
@@ -34,7 +33,7 @@ const PermmitedFileTypesList = async (req, res) =>{
 }
 
 const UnPermmitedFileTypesList = async (req, res) =>{
-    data = await getFileTypesList();
+    let data = await getFileTypesList();
     const filteredData = data.filter(item => item.isUsable === 0);
 	const result = filteredData
 

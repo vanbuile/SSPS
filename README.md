@@ -49,3 +49,42 @@ const connection = require('./DataBase');
 const mysql = require('mysql2');
 ```
 - **DATABASE** dùng XAMPP 
+
+# Đăng Nhập
+### Các TK/MK để đăng nhập
+Đối với SPSO (2):
+- TK: SPSO1234, MK: SPSO1234
+- TK: SPSO5678, MK: SPSO5678
+Đối với Student (7):
+- TK: 2113928, MK: 2113928
+- TK: 2113927, MK: 2113927
+- TK: 2223928, MK: 2223928
+- TK: 2355555, MK: 2355555
+- TK: 2018972, MK: 2018972
+- TK: 1918972, MK: 1918972
+- TK: 1818972, MK: 1818972
+
+### Thông tin ID/MSSV của Student/SPSO sau khi Đăng Nhập
+sẽ được lưu vào Cookie:
+- Đối với SPSO:
+{
+	name: SPSO_cookie_id,
+	value: <ID>', (ID là giá trị của trường ID của bảng SPSO trên DBS)
+	Expires/Max Age: Thời gian kể từ lúc đăng nhập thành công + 60 phút
+}
+- Đối với Student:
+{
+	name: Student_cookie_id,
+	value: <MSSV> (MSSV là giá trị của trường MSSV của bảng STUDENT trên DBS),
+	Expires/Max Age: Thời gian kể từ lúc đăng nhập thành công + 60 phút
+}
+
+Khi gửi request ở phía Client, để lấy ID/MSSV từ Cookie thì dùng lệnh này:
+- Đối với SPSO:
+``` javascript
+document.cookie.split('; ').find((cookie) => cookie.startsWith(`SPSO_cookie_id=`)).split('=')[1]
+```
+- Đối với Student:
+``` javascript
+document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1]
+```

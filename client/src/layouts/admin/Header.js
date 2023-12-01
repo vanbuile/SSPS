@@ -6,12 +6,13 @@ import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import imageBK from '../../assets/images/BK.png'
 
-
-
-
 export default function Header() {
 	const navigate = useNavigate()
-
+	const logout = async () => {
+		const expirationTime = new Date(Date.now() - 60 * 1000);
+		document.cookie = `SPSO_cookie_id=null; expires=${expirationTime.toUTCString()}; path=/`;
+		window.location.href = 'http://localhost:3000/login';
+    };
 	return (
 		<div className="bg-mainBlue h-16 px-4 flex items-center border-b border-gray-200 justify-between">
 			<div className="flex items-center py-3">
@@ -76,7 +77,7 @@ export default function Header() {
 							>
 								<Popover.Panel className="absolute right-0 z-10 mt-2.5 transform w-80">
 									<div className="bg-white rounded-sm shadow-md ring-1 ring-black ring-opacity-5 px-2 py-2.5">
-										<strong className="text-gray-700 font-medium">Thống báo</strong>
+										<strong className="text-gray-700 font-medium">Thông báo</strong>
 										<div className="mt-2 py-1 text-sm">không có!</div>
 									</div>
 								</Popover.Panel>
@@ -115,7 +116,7 @@ export default function Header() {
 											'active:bg-gray-200 rounded-sm px-4 py-2 text-gray-700 cursor-pointer focus:bg-gray-200'
 										)}
 									>
-										Thống Tin
+										Thông Tin
 									</div>
 								)}
 							</Menu.Item>
@@ -134,14 +135,14 @@ export default function Header() {
 							</Menu.Item>
 							<Menu.Item>
 								{({ active }) => (
-									<div
+									<button onClick={logout}
 										className={classNames(
 											active && 'bg-gray-100',
 											'active:bg-gray-200 rounded-sm px-4 py-2 text-gray-700 cursor-pointer focus:bg-gray-200'
 										)}
 									>
 										Đăng xuất
-									</div>
+									</button>
 								)}
 							</Menu.Item>
 						</Menu.Items>

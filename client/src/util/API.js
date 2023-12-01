@@ -8,7 +8,8 @@ const APIbuy = localhost + "/testbuy";
 const APIadminPrinter = localhost +"/admin/print";
 const APIadminFileTypes = localhost + "/admin/fileAdmin";//cập nhật kiểu file được cho phép
 const APIadminPageNumber = localhost + "/admin/pageNumber";//cập nhật số trang in
-const APIshareFile = localhost + "/share";
+const APILogin = localhost + "/login";//đăng nhập
+const APIadminGetInfo = localhost + "/admin/adminInfo";//cập nhật hồ sơ
 
-const APIs = {APIadminPrinterStatistics, APIadminRevenueStatistics, APIbuy, APIadminPrinter, APIadminFileTypes, APIadminPageNumber, APIshareFile};
+const APIs = {APIadminPrinterStatistics, APIadminRevenueStatistics, APIbuy, APIadminPrinter, APIadminFileTypes, APIadminPageNumber, APILogin, APIadminGetInfo};
 export default APIs;
