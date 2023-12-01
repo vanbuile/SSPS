@@ -151,48 +151,59 @@ export default function Shared() {
     setSelectedFilter(value); 
     setIsFilterOpen(false);
   };
-
-  return (
-    <div style={{ display: "block", justifyContent: "center" }}>
-      <div style={styles.topframe}>
-        <div style={styles.search}>
-          <FaSearch style={styles.searchIcon} />
-          <input
-            style={styles.searchInput}
-            placeholder="Tìm kiếm tài liệu bạn cần ..."
-            onFocus={handleInputFocus}
-            onBlur={handleInputBlur}
-          />
+  const handleAuthorization = (role) => {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name === role) {
+        return true
+      }
+    }
+    window.location.href = 'http://localhost:3000/login';
+  }
+  if(handleAuthorization('Student_cookie_id') == true) {
+    return (
+      <div style={{ display: "block", justifyContent: "center" }}>
+        <div style={styles.topframe}>
+          <div style={styles.search}>
+            <FaSearch style={styles.searchIcon} />
+            <input
+              style={styles.searchInput}
+              placeholder="Tìm kiếm tài liệu bạn cần ..."
+              onFocus={handleInputFocus}
+              onBlur={handleInputBlur}
+            />
+          </div>
+          <div style={styles.filterButton} onClick={() => setIsFilterOpen(!isFilterOpen)}>
+            <FaFilter style={styles.filterIcon} /> Filter
+          </div>
         </div>
-        <div style={styles.filterButton} onClick={() => setIsFilterOpen(!isFilterOpen)}>
-          <FaFilter style={styles.filterIcon} /> Filter
+        <div style={styles.filterDialog}>
+          <label>Sắp xếp theo:</label>
+          <select
+            style={styles.select}
+            value={selectedFilter}
+            onChange={(e) => handleFilterSelect(e.target.value)}
+          >
+            <option value="timeAscending">Thời gian tăng dần</option>
+            <option value="timeDescending">Thời gian giảm dần</option>
+            <option value="rating">Đánh giá</option>
+            <option value="sizeAscending">Kích thước tăng dần</option>
+            <option value="sizeDescending">Kích thước giảm dần</option>
+          </select>
         </div>
+        <div style={styles.content}>
+        {articles.map((article, index) => (
+          <div key={index} style={styles.article}>
+            <h2 style={{ color: "#0F6CBF", fontSize: "120%", paddingBottom:"5px"}}>
+              <Link to={'/detail'}>{article.title}</Link>
+            </h2>
+            <p style={{color:"gray"}}>{article.description}</p>
+          </div>
+        ))}
       </div>
-      <div style={styles.filterDialog}>
-        <label>Sắp xếp theo:</label>
-        <select
-          style={styles.select}
-          value={selectedFilter}
-          onChange={(e) => handleFilterSelect(e.target.value)}
-        >
-          <option value="timeAscending">Thời gian tăng dần</option>
-          <option value="timeDescending">Thời gian giảm dần</option>
-          <option value="rating">Đánh giá</option>
-          <option value="sizeAscending">Kích thước tăng dần</option>
-          <option value="sizeDescending">Kích thước giảm dần</option>
-        </select>
       </div>
-      <div style={styles.content}>
-      {articles.map((article, index) => (
-        <div key={index} style={styles.article}>
-          <h2 style={{ color: "#0F6CBF", fontSize: "120%", paddingBottom:"5px"}}>
-            <Link to={'/detail'}>{article.title}</Link>
-          </h2>
-          <p style={{color:"gray"}}>{article.description}</p>
-        </div>
-      ))}
-    </div>
-    </div>
-  );
+    );
+  }
 }
 

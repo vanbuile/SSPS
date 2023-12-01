@@ -27,18 +27,35 @@ export default function EditPrinter({printer, reload}) {
   const [isAlert, setIsAlert] = useState(false)
   let [alertContent, setAlertContent] = useState(["Sửa máy in thành công!", "Bạn có thể xem ngay kết quả!"])
   let [isSuccess, setIsSuccess] = useState(true)
-  function closeModal() {
-    setIsOpen(false)
+  const handleAuthorization = (role) => {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name === role) {
+        return true
+      }
+    }
+    window.location.href = 'http://localhost:3000/login';
   }
-
+  function closeModal() {
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsOpen(false)
+    }
+  }
   function openModal() {
-    setIsOpen(true)
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsOpen(true)
+    }
   }
   function openCommitModal(){
-    setIsCommit(true)
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsCommit(true)
+    }
   }
   function closeCommitModal(){
-    setIsCommit(false)
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsCommit(false)
+    }
   }
   function openAlertSuccess(){
     setAlertContent(["Sửa máy in thành công!", "Bạn có thể xem ngay kết quả!"])
@@ -51,34 +68,38 @@ export default function EditPrinter({printer, reload}) {
     setIsAlert(true)
   }
   function closeAlert(){
-    setIsAlert(false)
-    closeCommitModal()
-    closeModal()
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsAlert(false)
+      closeCommitModal()
+      closeModal()
+    }
   }
   async function Commit(){
-    try {
-      const response = await axios.put(APIs.APIadminPrinter + `/edit`, {
-        id: inputs.id,
-        name: inputs.name,
-        model: inputs.model,
-        brand: inputs.brand,
-        paper: inputs.paper,
-        day: inputs.day,
-        building: inputs.building,
-        floor: inputs.floor,
-        description: inputs.description,
-        state: inputs.state
-      })
-      if (response.status == 200){
-        reload(null, null, null, null, null)
-        openAlertSuccess()
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      try {
+        const response = await axios.put(APIs.APIadminPrinter + `/edit`, {
+          id: inputs.id,
+          name: inputs.name,
+          model: inputs.model,
+          brand: inputs.brand,
+          paper: inputs.paper,
+          day: inputs.day,
+          building: inputs.building,
+          floor: inputs.floor,
+          description: inputs.description,
+          state: inputs.state
+        })
+        if (response.status == 200){
+          reload(null, null, null, null, null)
+          openAlertSuccess()
+        }
+        else
+          openAlertFailed()
       }
-      else
+      catch (e) {
         openAlertFailed()
-    }
-    catch (e) {
-      openAlertFailed()
-      console.log(`Error when edit printer: ${e}`)
+        console.log(`Error when edit printer: ${e}`)
+      }
     }
   }
   const handleChange = (event) => {

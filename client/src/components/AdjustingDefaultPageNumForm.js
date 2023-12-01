@@ -42,21 +42,37 @@ export default function AdjustingDefaultPageNumForm() {
             labelText: "Chọn Số Lượng",
         }
     ];
+    const handleAuthorization = (role) => {
+        const cookies = document.cookie.split('; ');
+        for (const cookie of cookies) {
+          const [name, value] = cookie.split('=');
+          if(name === role) {
+            return true
+          }
+        }
+        window.location.href = 'http://localhost:3000/login';
+    }
     const openModal = () => {
-        setIsModalOpen(true);
+        if(handleAuthorization('SPSO_cookie_id') == true) {
+            setIsModalOpen(true);
+        }
     };
 
     const closeModal = () => {
-        setIsModalOpen(false);
+        if(handleAuthorization('SPSO_cookie_id') == true) {
+            setIsModalOpen(false);
+        }
     };
     const confirmUpdate = async () => {
-        let api_url = APIs.APIadminPageNumber + '/UpdatePageNumber?quantity=' + quantity
-        try {
-            await axios.get(api_url);
-            setIsChecked(true);
-            closeModal();
-        } catch (error) {
-            console.error('Error adding file types:', error);
+        if(handleAuthorization('SPSO_cookie_id') == true) {
+            let api_url = APIs.APIadminPageNumber + '/UpdatePageNumber?quantity=' + quantity
+            try {
+                await axios.get(api_url);
+                setIsChecked(true);
+                closeModal();
+            } catch (error) {
+                console.error('Error adding file types:', error);
+            }
         }
     };
     const modalButton = (label, onClick) => (
@@ -68,7 +84,9 @@ export default function AdjustingDefaultPageNumForm() {
         </button>
     );
     const handleReload = () => {
-        window.location.reload();
+        if(handleAuthorization('SPSO_cookie_id') == true) {
+            window.location.reload();
+        }
     };
     return (
         <div className="mb-10 mt-10 bg-[#F5F5F5] pt-3 pb-4 border-2 border-[#0F6CBF] flex-1 text-center text-[20px]">
