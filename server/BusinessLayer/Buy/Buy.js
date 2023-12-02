@@ -1,9 +1,9 @@
 const moment = require("moment");
 const express = require("express");
-
-const CreatePaymentUrl= async (req, res) => {
-    process.env.TZ = "Asia/Ho_Chi_Minh";
-
+const { InsertTransaction,IncreasePaper } = require("../../PersistenceLayer/BuyDAO");
+const CreatePaymentUrl = async (req, res) => {
+  process.env.TZ = "Asia/Ho_Chi_Minh";
+  console.log(req.body);
   let date = new Date();
   let createDate = moment(date).format("YYYYMMDDHHmmss");
 
@@ -18,7 +18,7 @@ const CreatePaymentUrl= async (req, res) => {
   let vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
   let returnUrl = "http://localhost:3001/api/testbuy/vnpay_return";
   let orderId = moment(date).format("DDHHmmss");
-  let amount = 100000;
+  let amount = req.body.amount;
   let bankCode = "";
 
   let locale = "vn";
@@ -31,7 +31,7 @@ const CreatePaymentUrl= async (req, res) => {
   vnp_Params["vnp_Locale"] = locale;
   vnp_Params["vnp_CurrCode"] = currCode;
   vnp_Params["vnp_TxnRef"] = orderId;
-  vnp_Params["vnp_OrderInfo"] = "Thanh toan cho ma GD:" + orderId;
+  vnp_Params["vnp_OrderInfo"] = req.body.MSSV;
   vnp_Params["vnp_OrderType"] = "other";
   vnp_Params["vnp_Amount"] = amount * 100;
   vnp_Params["vnp_ReturnUrl"] = returnUrl;
@@ -52,57 +52,65 @@ const CreatePaymentUrl= async (req, res) => {
   vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: false });
   //send vnpUrl to client
   res.send(vnpUrl);
-}
+};
 
 const VnpayReturn = async (req, res) => {
-    let vnp_Params = req.query;
-    console.log("GET: vnpay_return ");
-    let secureHash = vnp_Params['vnp_SecureHash'];
-  
-    delete vnp_Params['vnp_SecureHash'];
-    delete vnp_Params['vnp_SecureHashType'];
-  
-    vnp_Params = sortObject(vnp_Params);
-  
-  
-    let tmnCode = "PB6LSZKB"
-    let secretKey = "JOUNKJFVQTKYYZAANRSSUVXKNXOKQEPV"
-  
-    let querystring = require('qs');
-    let signData = querystring.stringify(vnp_Params, { encode: false });
-    let crypto = require("crypto");     
-    let hmac = crypto.createHmac("sha512", secretKey);
-    let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");     
-  
-    if(secureHash === signed){
-        //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-        res.redirect("http://localhost:3000")
-        //redirect to payment check page
-    } else{
-        res.redirect("http://localhost:3000")
-    }
-}
+  let vnp_Params = req.query;
+  console.log("GET: vnpay_return ");
+  let secureHash = vnp_Params["vnp_SecureHash"];
 
+  delete vnp_Params["vnp_SecureHash"];
+  delete vnp_Params["vnp_SecureHashType"];
 
+  vnp_Params = sortObject(vnp_Params);
 
+  let tmnCode = "PB6LSZKB";
+  let secretKey = "JOUNKJFVQTKYYZAANRSSUVXKNXOKQEPV";
+
+  let querystring = require("qs");
+  let signData = querystring.stringify(vnp_Params, { encode: false });
+  let crypto = require("crypto");
+  let hmac = crypto.createHmac("sha512", secretKey);
+  let signed = hmac.update(new Buffer(signData, "utf-8")).digest("hex");
+
+  if (secureHash === signed) {
+    //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
+    //InsertTransaction(req.body.MSSV, moment().format("YYYY-MM-DD HH:mm:ss"), req.body.amount/2000)
+    console.log(vnp_Params["vnp_OrderInfo"]);
+    let MSSV = vnp_Params["vnp_OrderInfo"];
+    let amount = vnp_Params["vnp_Amount"];
+    InsertTransaction(
+      MSSV,
+      moment().format("YYYY-MM-DD HH:mm:ss"),
+      amount / 200000
+    );
+    IncreasePaper(MSSV, amount / 200000);
+
+    res.redirect("http://localhost:3000/buy/paymentcheck");
+
+    //redirect to payment check page
+  } else {
+    res.redirect("http://localhost:3000");
+  }
+};
 
 function sortObject(obj) {
-    let sorted = {};
-    let str = [];
-    let key;
-    for (key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        str.push(encodeURIComponent(key));
-      }
+  let sorted = {};
+  let str = [];
+  let key;
+  for (key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      str.push(encodeURIComponent(key));
     }
-    str.sort();
-    for (key = 0; key < str.length; key++) {
-      sorted[str[key]] = encodeURIComponent(obj[str[key]]).replace(/%20/g, "+");
-    }
-    return sorted;
   }
+  str.sort();
+  for (key = 0; key < str.length; key++) {
+    sorted[str[key]] = encodeURIComponent(obj[str[key]]).replace(/%20/g, "+");
+  }
+  return sorted;
+}
 
-  module.exports = {
-    CreatePaymentUrl,
-    VnpayReturn
-  }
+module.exports = {
+  CreatePaymentUrl,
+  VnpayReturn,
+};
