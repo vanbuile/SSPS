@@ -13,6 +13,7 @@ import LayoutAdmin from "./layouts/admin/Layout";
 import HomeAdmin from "./pages/admin/homeAdmin";
 import PrinterAdmin from "./pages/admin/printerAdmin";
 import PaperAdmin from "./pages/admin/paperAdmin";
+import InfoAdmin from "./pages/admin/infoAdmin";
 import RevenueStatistics from "./pages/admin/RevenueStatistics";
 import PaymentCheck from "./pages/buy/paymentcheck";
 
@@ -25,9 +26,11 @@ export default function App() {
           <Route path="homeAdmin" element={<HomeAdmin />} />
           <Route path="printerAdmin" element={<PrinterAdmin />} />
           <Route path="paperAdmin" element={<PaperAdmin />} />
+          <Route path="infoAdmin" element={<InfoAdmin />} />
           <Route path="PrinterStatistics" element={<PrinterStatistics />} />
           <Route path="RevenueStatistics" element={<RevenueStatistics />} />
         </Route>
+        <Route path="login" element={<Login />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="print" element={<Print />} />
@@ -36,7 +39,6 @@ export default function App() {
           <Route path="detail" element={<Detail />} />
           <Route path="buy" element={<Buy />} />
           <Route path="buy/paymentcheck" element={<PaymentCheck />} />
-          <Route path="login" element={<Login />} />
         </Route>
         <Route path="*" element={<Error />} />
       </Routes>

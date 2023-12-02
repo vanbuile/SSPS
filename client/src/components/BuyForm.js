@@ -14,7 +14,8 @@ import momoimage from "../assets/images/momo.png";
 import momocheckimage from "../assets/images/momocheck.png";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-
+import axios from "axios";
+import APIs from '../util/API';
 const data = [{ name: "Nguyễn Văn An", email: "an.nguyen@hcmutedu.vn" }];
 BuyForm.propTypes = {
   onSubmit: PropTypes.func,
@@ -34,10 +35,35 @@ function BuyForm(props) {
       navigate("/buy/paymentcheck");
     }, 500);
   };
+  const handleAuthorization = (role) => {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name === role) {
+        return true
+      }
+    }
+    window.location.href = 'http://localhost:3000/login';
+  }
   const handleSubmit = (values) => {
-    console.log("values: ", values);
-    console.log("paymethod: ", paymethod);
-    openModal();
+    if (handleAuthorization('Student_cookie_id') == true) {
+      console.log("values: ", values);
+      
+      console.log("paymethod: ", paymethod);
+      const fetchApiData = async () => {
+        try {
+          let res= await axios.post(APIs.APIbuy + "/create_payment_url");
+          console.log(res);
+          //redirect to payment page
+          window.location.href = res.data;
+          
+        } catch (error) {
+        console.error('Error fetching data:', error);
+        }
+      };
+      //openModal();
+      fetchApiData();
+    }
   };
   let [isOpen, setIsOpen] = useState(false);
   function closeModal() {
@@ -130,6 +156,7 @@ function BuyForm(props) {
                   label="Name"
                   form={form}
                   type="text"
+                  disabled
                 />
               </div>
               <div className="flex flex-col">

@@ -38,19 +38,36 @@ export default function AddPrinter({reload}) {
   const [inputs, setInputs] = useState(initialInputs)
   const [alertContent, setAlertContent] = useState(["",""])
   let [isSuccess, setIsSuccess] = useState(true)
-
-  function closeModal() {
-    setIsOpen(false)
+  
+  const handleAuthorization = (role) => {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name === role) {
+        return true
+      }
+    }
+    window.location.href = 'http://localhost:3000/login';
   }
-
+  function closeModal() {
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsOpen(false)
+    }
+  }
   function openModal() {
-    setIsOpen(true)
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsOpen(true)
+    }
   }
   function openCommitModal(){
-    setIsCommit(true)
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsCommit(true)
+    }
   }
   function closeCommitModal(){
-    setIsCommit(false)
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsCommit(false)
+    }
   }
   function openAlertSuccess(){
     setAlertContent(["Bạn đã thêm máy in thành công!", "Bạn có thể xem kết quả ngay!"])
@@ -63,36 +80,40 @@ export default function AddPrinter({reload}) {
     setIsAlert(true)
   }
   function closeAlert(){
-    setIsAlert(false)
-    closeCommitModal()
-    closeModal()
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsAlert(false)
+      closeCommitModal()
+      closeModal()
+    }
   }
   async function Commit(){
-    try {
-      console.log(inputs)
-      const response = await axios.post(APIs.APIadminPrinter +"/add", {
-          name: inputs.name,
-          model: inputs.model,
-          brand: inputs.brand,
-          building: inputs.building,
-          floor: inputs.floor,
-          day: inputs.day,
-          paper: inputs.paper,
-          description: inputs.description,
-          status: inputs.status
-      })
-      if (response.status == 200) {
-        openAlertSuccess()
-        reload()
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      try {
+        console.log(inputs)
+        const response = await axios.post(APIs.APIadminPrinter +"/add", {
+            name: inputs.name,
+            model: inputs.model,
+            brand: inputs.brand,
+            building: inputs.building,
+            floor: inputs.floor,
+            day: inputs.day,
+            paper: inputs.paper,
+            description: inputs.description,
+            status: inputs.status
+        })
+        if (response.status == 200) {
+          openAlertSuccess()
+          reload()
+        }
+        else {
+          openAlertFailed()
+        }
       }
-      else {
+      // Alert that change has success
+      catch (e) {
         openAlertFailed()
+        console.log("Error when add data")
       }
-    }
-    // Alert that change has success
-    catch (e) {
-      openAlertFailed()
-      console.log("Error when add data")
     }
   }
   const handleChange = (event) => {

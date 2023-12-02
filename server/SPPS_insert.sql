@@ -22,15 +22,21 @@ VALUES
 ('Samsung-QL', 'Model 5', 'Samsung', '2023-11-05', 'Mô tả Máy In 5', 100, 'BKB6', 5, 0);
 
 -- INSERT INTO STUDENT
-INSERT INTO STUDENT (MSSV, name, paper) 
+INSERT INTO STUDENT (MSSV, name, paper, pass) 
 VALUES 
-('2113928', 'Sinh viên 1', 50),
-('2113927', 'Sinh viên 2', 30),
-('2223928', 'Sinh viên 3', 70),
-('2355555', 'Sinh viên 4', 40),
-('2018972', 'Sinh viên 5', 60),
-('1918972', 'Sinh viên 7', 60),
-('1818972', 'Sinh viên 8', 60);
+('2113928', 'Sinh viên 1', 50, '2113928'),
+('2113927', 'Sinh viên 2', 30, '2113927'),
+('2223928', 'Sinh viên 3', 70, '2223928'),
+('2355555', 'Sinh viên 4', 40, '2355555'),
+('2018972', 'Sinh viên 5', 60, '2018972'),
+('1918972', 'Sinh viên 7', 60, '1918972'),
+('1818972', 'Sinh viên 8', 60, '1818972');
+
+-- INSERT INTO SPSO
+INSERT INTO SPSO (ID, name, pass) 
+VALUES 
+('SPSO1234', 'Nguyễn Văn A', 'SPSO1234'),
+('SPSO5678', 'Nguyễn Văn B', 'SPSO5678');
 
 -- INSERT INTO STUDENT_BUYPAGE
 INSERT INTO STUDENT_BUYPAGE (MSSV, date, paper) VALUES
@@ -107,13 +113,15 @@ VALUES
 ('HK222', '2023-09-01', 8);
 
 -- INSERT INTO FILETYPE
-INSERT INTO FILETYPE (name, isUsable) 
+INSERT INTO FILETYPE (name, value, isUsable) 
 VALUES 
-('Loại 1', 1),
-('Loại 2', 0),
-('Loại 3', 1),
-('Loại 4', 0),
-('Loại 5', 1);
+('.PDF (Portable Document Format)','PDF', 1),
+('.XLSX (Microsoft Excel Spreadsheet)','XLSX', 0),
+('.PPT (Microsoft Powerpoint Presentation)','PPT', 0),
+('.DOCX (Microsoft Word Document)','DOCX', 1),
+('.TXT (Text Document)','TXT', 0),
+('.PNG (Portable Network Graphics)','PNG', 1),
+('.JPEG (Joint Photographic Experts Group)','JPEG', 0);
 
 -- INSERT INTO FILEHAVETYPE
 INSERT INTO FILEHAVETYPE (id_type, id_file) 

@@ -139,67 +139,79 @@ export default function Detail() {
     console.log("Rating the article...");
   };
 
-  return (
-    <div>
-      <Link to="/shared" >
-        <FaBackward style={{ marginLeft:"80px", }}/>
-      </Link>
-      <div style={styles.frame}>
-        <div style={styles.header}>
-          <div>
-            <h2 style={styles.title}>{article.title}</h2>
-            <p style={styles.description}>{article.description}</p>
-            <p style={styles.user}>{article.user}</p>
-          </div>
-          <div style={styles.buttonFrame}>
-            <button onClick={handleView} style={styles.button}>
-              <FaEye />
-            </button>
-            <button onClick={handleDownload} style={styles.button}>
-              <FaDownload />
-            </button>
-            <button onClick={handleRate} style={styles.button}>
-              <FaPrint />
-            </button>
-            <button onClick={handleDelete} style={styles.button}>
-              <FaTrash />
-            </button>
-            <div style={styles.rating}>
-              {Array.from({ length: maxRating }, (_, index) => (
-                <FaStar
-                  key={index}
-                  style={{
-                    color: index < rating ? 'gold' : 'grey',
-                    fontSize: '24px',
-                  }}
-                />
-              ))}
+  const handleAuthorization = (role) => {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name === role) {
+        return true
+      }
+    }
+    window.location.href = 'http://localhost:3000/login';
+  }
+  if(handleAuthorization('Student_cookie_id') == true) {
+    return (
+      <div>
+        <Link to="/shared" >
+          <FaBackward style={{ marginLeft:"80px", }}/>
+        </Link>
+        <div style={styles.frame}>
+          <div style={styles.header}>
+            <div>
+              <h2 style={styles.title}>{article.title}</h2>
+              <p style={styles.description}>{article.description}</p>
+              <p style={styles.user}>{article.user}</p>
+            </div>
+            <div style={styles.buttonFrame}>
+              <button onClick={handleView} style={styles.button}>
+                <FaEye />
+              </button>
+              <button onClick={handleDownload} style={styles.button}>
+                <FaDownload />
+              </button>
+              <button onClick={handleRate} style={styles.button}>
+                <FaPrint />
+              </button>
+              <button onClick={handleDelete} style={styles.button}>
+                <FaTrash />
+              </button>
+              <div style={styles.rating}>
+                {Array.from({ length: maxRating }, (_, index) => (
+                  <FaStar
+                    key={index}
+                    style={{
+                      color: index < rating ? 'gold' : 'grey',
+                      fontSize: '24px',
+                    }}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div style={styles.comment}>
-        <h3 style={{fontWeight:"bold",fontSize:"150%"}}>Comment</h3>
-        <div style={styles.commentInput}> 
-            <textarea
-              style={styles.commentTextarea}
-              placeholder="Write your comment..."
-            />
-            <button onClick={handleSendComment} style={styles.sendButton}>
-              Send
-            </button>
+        <div style={styles.comment}>
+          <h3 style={{fontWeight:"bold",fontSize:"150%"}}>Comment</h3>
+          <div style={styles.commentInput}> 
+              <textarea
+                style={styles.commentTextarea}
+                placeholder="Write your comment..."
+              />
+              <button onClick={handleSendComment} style={styles.sendButton}>
+                Send
+              </button>
+          </div>
+          <h3 style={{fontWeight:"bold",fontSize:"150%"}}>Các bình luận khác</h3>
+          <ul>
+            {comments.map((comment) => (
+              <li key={comment.id} style={styles.commentlist}>
+                {comment.text}
+                <br></br>
+                <span style={{color:"gray",fontSize:"60%"}}>{comment.date}<br/>{comment.user}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-        <h3 style={{fontWeight:"bold",fontSize:"150%"}}>Các bình luận khác</h3>
-        <ul>
-          {comments.map((comment) => (
-            <li key={comment.id} style={styles.commentlist}>
-              {comment.text}
-              <br></br>
-              <span style={{color:"gray",fontSize:"60%"}}>{comment.date}<br/>{comment.user}</span>
-            </li>
-          ))}
-        </ul>
       </div>
-    </div>
-  );
+    );
+  }
 }

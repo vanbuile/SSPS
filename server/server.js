@@ -8,6 +8,9 @@ const bodyParser = require('body-parser');
 
 //import route object
 const printerAdmin = require('./routes/printerAdmin')
+const fileAdmin = require('./routes/fileAdmin')
+const adminInfo = require('./routes/adminInfo')
+const pageNumber = require('./routes/pageNumber');
 const Statistic = require('./routes/Statistic');
 const Revenue = require('./routes/Revenue');
 const Buy = require('./routes/buy');
@@ -15,6 +18,7 @@ const print = require('./routes/print');
 const file = require('./routes/file');
 
 
+const Login = require('./routes/login');
 //init app object
 const app = express()
 // xác thực khi dùng APIs
@@ -36,9 +40,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/admin/print', printerAdmin);
 app.use('/api/admin/statisticAdmin', Statistic);
 app.use('/api/admin/revenueAdmin', Revenue);
+app.use('/api/admin/fileAdmin', fileAdmin);
+app.use('/api/admin/adminInfo', adminInfo);
+app.use('/api/admin/pageNumber', pageNumber);
 app.use('/api/testbuy', Buy);
 app.use('/api/chooseprinter', print);
-app.use('/api/file', file);
+app.use('/api/file', file);app.use('/api/login', Login);
+
 
 // app.listen(3002,'localhost', () => {
 //     console.log(`Example app listening on port 3001`)
