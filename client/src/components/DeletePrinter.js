@@ -11,15 +11,31 @@ export default function DeletePrinter({ printer , reload}) {
   let [alertContent, setAlertContent] = useState(["Xóa máy in thành công!", "Bạn có thể xem ngay kết quả!"])
   let [isSuccess, setIsSuccess] = useState(true)
 
+  const handleAuthorization = (role) => {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name === role) {
+        return true
+      }
+    }
+    window.location.href = 'http://localhost:3000/login';
+  }
   function closeModal() {
-    setIsOpen(false)
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsOpen(false)
+    }
   }
   function openModal() {
-    setIsOpen(true)
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsOpen(true)
+    }
   }
   function closeAlert(){
-    setIsAlert(false)
-    closeModal()
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsAlert(false)
+      closeModal()
+    }
   }
   function openAlertSuccess(){
     setAlertContent(["Xóa máy in thành công!", "Bạn có thể xem ngay kết quả!"])
@@ -32,19 +48,21 @@ export default function DeletePrinter({ printer , reload}) {
     setIsAlert(true)
   }
   async function Commit(){
-    try {
-      const response = await axios.delete(APIs.APIadminPrinter + `/delete/${printer.id}`)
-      if (response.status == 200) {
-        reload(null, null, null, null, null)
-        openAlertSuccess();
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      try {
+        const response = await axios.delete(APIs.APIadminPrinter + `/delete/${printer.id}`)
+        if (response.status == 200) {
+          reload(null, null, null, null, null)
+          openAlertSuccess();
+        }
+        else {
+          openAlertFailed();
+        }
       }
-      else {
-        openAlertFailed();
+      catch (e) {
+        openAlertFailed()
+        console.log(`Error when delete printer: ${e}`)
       }
-    }
-    catch (e) {
-      openAlertFailed()
-      console.log(`Error when delete printer: ${e}`)
     }
 
   }

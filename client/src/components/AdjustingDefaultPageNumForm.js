@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import APIs from '../util/API';
 function SelectOptions({ id, name, value, options, onChange, labelText }) {
     return (
         <div className="col-span-1 ml-5 pr-4">
@@ -14,7 +16,7 @@ function SelectOptions({ id, name, value, options, onChange, labelText }) {
             >
                 {options.map((option) => (
                     <option key={option} value={option}>
-                        {labelText === "Chọn số lượng" ? option : `Sau ${option} ngày`}
+                        {labelText === "Chọn Số Lượng" ? option : `Sau ${option} ngày`}
                     </option>
                 ))}
             </select>
@@ -27,14 +29,9 @@ export default function AdjustingDefaultPageNumForm() {
         setQuantity(event.target.value);
     };
 
-    const handleDaysChange = (event) => {
-        setDays(event.target.value);
-    };
-
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
     const [quantity, setQuantity] = useState("100"); // default là 100
-    const [days, setDays] = useState("3"); // default là 3
     const selectInputs = [
         {
             id: "quantity",
@@ -42,27 +39,41 @@ export default function AdjustingDefaultPageNumForm() {
             value: quantity,
             options: ["100", "150", "200", "250", "300"],
             onChange: handleQuantityChange,
-            labelText: "Chọn số lượng",
-        },
-        {
-            id: "days",
-            name: "days",
-            value: days,
-            options: ["3", "4", "5", "6", "7"],
-            onChange: handleDaysChange,
-            labelText: "Chọn ngày",
-        },
+            labelText: "Chọn Số Lượng",
+        }
     ];
+    const handleAuthorization = (role) => {
+        const cookies = document.cookie.split('; ');
+        for (const cookie of cookies) {
+          const [name, value] = cookie.split('=');
+          if(name === role) {
+            return true
+          }
+        }
+        window.location.href = 'http://localhost:3000/login';
+    }
     const openModal = () => {
-        setIsModalOpen(true);
+        if(handleAuthorization('SPSO_cookie_id') == true) {
+            setIsModalOpen(true);
+        }
     };
 
     const closeModal = () => {
-        setIsModalOpen(false);
+        if(handleAuthorization('SPSO_cookie_id') == true) {
+            setIsModalOpen(false);
+        }
     };
-    const confirmUpdate = () => {
-        setIsChecked(true); // Show the success message
-        closeModal(); // Close the modal
+    const confirmUpdate = async () => {
+        if(handleAuthorization('SPSO_cookie_id') == true) {
+            let api_url = APIs.APIadminPageNumber + '/UpdatePageNumber?quantity=' + quantity
+            try {
+                await axios.get(api_url);
+                setIsChecked(true);
+                closeModal();
+            } catch (error) {
+                console.error('Error adding file types:', error);
+            }
+        }
     };
     const modalButton = (label, onClick) => (
         <button
@@ -72,12 +83,17 @@ export default function AdjustingDefaultPageNumForm() {
             {label}
         </button>
     );
+    const handleReload = () => {
+        if(handleAuthorization('SPSO_cookie_id') == true) {
+            window.location.reload();
+        }
+    };
     return (
         <div className="mb-10 mt-10 bg-[#F5F5F5] pt-3 pb-4 border-2 border-[#0F6CBF] flex-1 text-center text-[20px]">
-            <strong id="form-title" className="text-[#374151] text-[20px]">Cập nhật số lượng trang in mặc định cho mỗi sinh viên và ngày cập nhật thay đổi</strong>
-            <hr className="border-[#0F6CBF] w-full my-4" />
+            <strong id="form-title" className="text-[#374151] text-[20px]">Chọn Số Lượng Giấy In Cấp Lại Cho Toàn Bộ Sinh Viên Của Trường</strong>
+            <hr className="border-[#0F6CBF] w-full my-10" />
             <div id="form-select" className="grid grid-rows-2 gap-4">
-                <div className="col-span-1 grid grid-cols-2 gap-4 flex justify-between items-center mt-4">
+                <div className="grid grid-cols-1 gap-4 flex justify-between items-center mt-4">
                     {selectInputs.map((input) => (
                         <SelectOptions
                             key={input.id}
@@ -91,17 +107,17 @@ export default function AdjustingDefaultPageNumForm() {
                     ))}
                 </div>
                 <div id="form-button" className="items-center mt-4">
-                    <button className="w-40 h-30 bg-[#0F6CBF] text-[#F5F5F5] p-2 rounded-md" onClick={openModal}>Cập nhật</button>
+                    <button className="w-40 h-30 bg-[#0F6CBF] text-[#F5F5F5] p-2 rounded-md" onClick={openModal}>Cập Nhật</button>
                 </div>
             </div>
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
                     <div className="bg-white border-2 border-[#0F6CBF] shadow-lg">
-                        <h2 className="text-xl font-bold m-4">Xác nhận</h2>
+                        <h2 className="text-xl font-bold m-4">Xác Nhận</h2>
                         <hr className="border-[#0F6CBF] w-full my-4" />
                         <div className="flex justify-end">
                             <a>
-                                {modalButton("Xác nhận", confirmUpdate)}
+                                {modalButton("Xác Nhận", confirmUpdate)}
                             </a>
                             {modalButton("Hủy",closeModal)}
                         </div>
@@ -111,9 +127,9 @@ export default function AdjustingDefaultPageNumForm() {
             {isChecked && (
                 <div id="confirm" className="fixed inset-0 flex items-center justify-center z-50">
                     <div className="bg-white border-2 border-[#0F6CBF] shadow-lg">
-                        <h2 className="text-xl font-bold m-4">Cập nhật thành công</h2>
+                        <h2 className="text-xl font-bold m-4">Cập Nhật Thành Công</h2>
                         <hr className="border-[#0F6CBF] w-full my-4" />
-                        {modalButton("Đóng", () => setIsChecked(false))}
+                        {modalButton("Đóng", handleReload)}
                     </div>
                 </div>
             )}

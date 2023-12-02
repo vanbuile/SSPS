@@ -1,7 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
 import { Link, useLocation } from 'react-router-dom'
-import imageBK from '../../assets/images/BK.jpg'
 import {
 	HiOutlineViewGrid,
 	HiPrinter,
@@ -16,8 +15,8 @@ import {
 const DASHBOARD_SIDEBAR_LINKS = [
 	{
 		key: 'information',
-		label: 'Thông tin các nhân',
-		path: '/admin',
+		label: 'Thông tin cá nhân',
+		path: '/admin/infoAdmin',
 		icon: <HiOutlineViewGrid/>
 	},
 	{
@@ -80,6 +79,11 @@ const linkClass =
 	'flex items-center gap-2 px-3 py-2 hover:bg-lightGray hover:no-underline rounded-[12px] text-base font-semibold'
 
 export default function Sidebar() {
+	const logout = async () => {
+		const expirationTime = new Date(Date.now() - 60 * 1000);
+		document.cookie = `SPSO_cookie_id=null; expires=${expirationTime.toUTCString()}; path=/`;
+		window.location.href = 'http://localhost:3000/login';
+    };
 	return (
 		<div className="bg-white w-60 p-3 pt-11 flex flex-col">
 			<p className='text-sm font-semibold text-textGray opacity-50 mb-1'>Chức năng chính</p>
@@ -95,12 +99,12 @@ export default function Sidebar() {
 				{DASHBOARD_SIDEBAR_BOTTOM_LINKS.map((link) => (
 					<SidebarLink key={link.key} link={link} />
 				))}
-				<div className={classNames(linkClass, 'cursor-pointer text-mainRed mb-2 hover:bg-lightRed ')}>
+				<button onClick={logout} className={classNames(linkClass, 'cursor-pointer text-mainRed mb-2 hover:bg-lightRed ')}>
 					<span className="text-xl">
 						<HiOutlineLogout />
 					</span>
 					Đăng xuất
-				</div>
+				</button>
 			</div>
 		</div>
 	)

@@ -120,31 +120,44 @@ export default function PrinterAdmin() {
 		reload(pageNum, null, null, null, null)
 		setPage(pageNum)
 	}
-	if (!printers) return <></>
-	return (
-		<div className="container mx-auto">
-			{/* First row */}
-			<div className="flex flex-row justify-between pb-3 ">
-				<div className="left flex flex-row">
-					<div className="inline-flex items-center justify-center text-lg me-2 font-bold opacity-50 text-md"><p>Sắp xếp</p></div>
-					<div className="inline-flex items-center justify-center">
-						<SortOptions Change={handleSortChange} options={sortOptions} option={sort} type={1} />
+	const handleAuthorization = (role) => {
+        const cookies = document.cookie.split('; ');
+        for (const cookie of cookies) {
+          const [name, value] = cookie.split('=');
+          if(name === role) {
+            return true
+          }
+        }
+        window.location.href = 'http://localhost:3000/login';
+	}
+	if(handleAuthorization('SPSO_cookie_id') == true) {
+		if (!printers) return <></>
+		return (
+			<div className="container mx-auto">
+				{/* First row */}
+				<div className="flex flex-row justify-between pb-3 ">
+					<div className="left flex flex-row">
+						<div className="inline-flex items-center justify-center text-lg me-2 font-bold opacity-50 text-md"><p>Sắp xếp</p></div>
+						<div className="inline-flex items-center justify-center">
+							<SortOptions Change={handleSortChange} options={sortOptions} option={sort} type={1} />
+						</div>
+					</div>
+					<div className="right">
+						<AddPrinter reload={reload}/>
 					</div>
 				</div>
-				<div className="right">
-					<AddPrinter reload={reload}/>
-				</div>
+				<hr className='mb-2'/>
+				{/*Table of printer - Second row*/}
+				<ListPrinter
+					printers={printers}
+					filter={filter}
+					setFilter={setFilter}
+					reload={reload}
+				/>
+	
+				<PrinterPagination changePage={handleChangePage} page={page} num={num}/>
 			</div>
-			<hr className='mb-2'/>
-			 {/*Table of printer - Second row*/}
-			<ListPrinter
-				printers={printers}
-				filter={filter}
-				setFilter={setFilter}
-				reload={reload}
-			/>
-
-			<PrinterPagination changePage={handleChangePage} page={page} num={num}/>
-		</div>
-	);
+		);
+	
+	}
 };
