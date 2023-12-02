@@ -28,12 +28,21 @@ const GetStudentPrintMaxSemester = async()=>
 {
     const query = `CALL GetStudentPrintMaxSemester()`;
     const [result, fields] = await connection.query(query)
-
 	return result[0];
 }
 
-
+const addNewFile = async(name, description, link, isShare) => {
+    try {
+        let q = `call addFile(?,?,?,?);`
+        const [result, fields] = await connection.query(q,[name, description, link, isShare])
+        return result
+    }
+    catch (e) {
+        //console.log(e)
+        throw new Error(e)
+    }
+}
 module.exports = {GetPrintingInfo, 
                 GetWeekInSemester, 
                 GetPrintInSemester, 
-                GetStudentPrintMaxSemester};
+                GetStudentPrintMaxSemester, addNewFile};

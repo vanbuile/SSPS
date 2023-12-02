@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DocumentTextIcon, CloudArrowUpIcon } from '@heroicons/react/20/solid';
 import ShareModal from './ShareForm';
+import APIs from "../util/API";
+import axios from "axios";
 
 const FileUpload = () => {
   function Line() {
@@ -34,15 +36,33 @@ const FileUpload = () => {
     setSelectedFile(file);
   };
 
-  const handleSaveChanges = () => {
-    // Implement the logic to send the file to the backend
-    // For example, you can use a fetch or axios to send the file
-    navigate('/print/ChoosePrinter');
-    console.log('Sending file to the backend:', selectedFile);
-  };
-
   const handleCancel = () => {
     setSelectedFile(null);
+  };
+
+  const handleSaveChanges = async () => {
+    if (!selectedFile) {
+      alert('Please select a file first.');
+      return;
+    }
+    try{
+      const response = await axios.post(APIs.APIaddFile + "/addfile", {
+        name: selectedFile.name,
+        description: 'File: ' + selectedFile.type,
+        link: 'lien ket 3',
+        isShare: 0
+      })
+      if (response.status === 200) {
+        alert("Upload completed");
+        navigate('/print/ChoosePrinter');
+      } else {
+        alert("Upload failed");
+      }
+    }
+    catch (e) {
+      console.error("Error uploading file:", e);
+      alert("Error uploading file: " + e.message); 
+    }
   };
 
   return (
@@ -54,7 +74,7 @@ const FileUpload = () => {
         <button  class="rounded-md bg-lightGray w-8 h-8" onClick={() => document.querySelector('input[type="file"]').click()}>
         <DocumentTextIcon/>
         </button>
-        <div className='ml-4'>Select a file from your folder.</div>
+        <div className='ml-4'>Chọn file</div>
       </div>
       <div><Line/></div>
       <div
@@ -65,20 +85,20 @@ const FileUpload = () => {
         <div style={{marginLeft: '240px'}}>
         <CloudArrowUpIcon className='w-12 h-12'/>
         </div>
-        <p>You can drag and drop files here to add them.</p>
+        <p>Kéo thả vào đây để thêm file</p>
         <input type="file" onChange={handleFileChange} style={{ display: 'none' }} />
 
         {selectedFile && (
         <div className='text-mainBlue'>
-        <p>Selected File: {selectedFile.name}</p>
+        <p>File đã chọn: {selectedFile.name}</p>
         </div>
         )}
       </div>
     </div>
     <div className='flex' style={{marginTop: '30px', marginLeft: '110px'}}>
-      <button onClick={handleSaveChanges} class="rounded-md bg-mainBlue px-3 py-2 text-sm font-semibold text-white ">Save Changes</button>
+      <button onClick={handleSaveChanges} class="rounded-md bg-mainBlue px-3 py-2 text-sm font-semibold text-white ">Lưu thay đổi</button>
       <div style={{marginLeft:'30px'}}>
-        <button onClick={handleCancel}  class="rounded-md bg-mainRed px-3 py-2 text-sm font-semibold text-white ">Cancel</button>
+        <button onClick={handleCancel}  class="rounded-md bg-mainRed px-3 py-2 text-sm font-semibold text-white ">Hủy</button>
       </div>
       <ShareModal/>
     </div>

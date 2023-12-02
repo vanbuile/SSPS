@@ -153,7 +153,8 @@ END //
 
 CREATE PROCEDURE ViewAllPrinter()
 BEGIN
-    SELECT * FROM printer;
+    SELECT * FROM PRINTER; 
+    -- de printer no kh chay
 END //
 
 
@@ -171,10 +172,23 @@ BEGIN
     WHERE `id` = _id;
 END //
 
-CREATE PROCEDURE `DeletePrinter` (IN _id int)
+CREATE PROCEDURE `DeletePrinter` (IN _id int )
 BEGIN
 	DELETE FROM `ssps`.`printer`
 	WHERE `id` = _id;
+END //
+
+CREATE PROCEDURE addFile(IN _name VARCHAR(255), IN _description VARCHAR(255), IN _link VARCHAR(255), IN _isShare INT)
+BEGIN
+    INSERT INTO `SSPS`.`FILE`(`name`, `description`, `link`, `isShare`)
+    VALUES (_name, _description, _link, _isShare);
+END //
+
+CREATE PROCEDURE ViewPrinterByLocation(IN _building varchar(255))
+BEGIN
+    SELECT id, floor, building, `state`, paper
+    FROM `SSPS`.`PRINTER`
+    WHERE `building` = _building;
 END //
 
 DELIMITER ;

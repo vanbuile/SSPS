@@ -46,7 +46,7 @@ export default function ShareModal() {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Chooose Printer !!!
+                    Mô tả file
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
@@ -60,7 +60,7 @@ export default function ShareModal() {
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={closeModal}
                     >
-                      Save
+                      Lưu
                     </button>
                   </div>
                 </Dialog.Panel>
@@ -78,12 +78,12 @@ export default function ShareModal() {
 
 return (
     <>
-      <div className="flex rounded-md bg-textGray px-3 py-2 text-sm font-semibold text-white" style={{marginLeft:'500px'}}>
+      <div className="flex rounded-md bg-textGray px-3 py-2 text-sm font-semibold text-white" style={{marginLeft:'540px'}}>
         <button
           type="button"
           onClick={openModal}
         >
-            Share
+           Chia sẻ 
         </button>
       </div>
       {isOpen && <>{Showmodal()} {handelShare()} </>}

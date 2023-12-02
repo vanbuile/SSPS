@@ -29,8 +29,8 @@ function Bulding({building}){
 
   export default function ChoosePrinter() {
 
-    const buildings = ["BK H1", "BK H2", "BK H3", "BK H4", "BK H5", "BK H6","BK H7", "BK H8", 
-    "BK B1","BK B2", "BK B3", "BK B4", "BK C3", "BK C4", "BK C5", "BK C6"];
+    const buildings = ["BKB1", "BK H2", "BK H3", "BK H4", "BK H5", "BK H6","BK H7", "BK H8", 
+    "BK B0","BK B2", "BK B3", "BK B4", "BK C3", "BK C4", "BK C5", "BK C6"];
 
     return (
         <div>
@@ -44,7 +44,7 @@ function Bulding({building}){
                 <div className="flex mt-50"> 
                     <div>
                         <Bulding building={buildings[0]}></Bulding>
-                        <MyModal/>
+                        <MyModal building = {buildings[0]}/>
                     </div>
                     <div>
                         <Bulding building={buildings[1]}></Bulding>

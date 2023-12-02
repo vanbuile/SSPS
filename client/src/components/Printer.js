@@ -4,7 +4,7 @@ import { BuildingOffice2Icon} from "@heroicons/react/20/solid";
 import Table from './Printertable';
 
 
-export default function MyModal() {
+export default function MyModal({building}) {
   let [isOpen, setIsOpen] = useState(false)
 
   function closeModal() {
@@ -47,11 +47,11 @@ export default function MyModal() {
                     as="h3"
                     className="text-lg font-bold leading-6 text-black-900"
                   >
-                     !!!
+                     Chọn máy in
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                      <Table/>
+                      <Table building = {building}/>
                     </p>
                   </div>
 
@@ -61,7 +61,7 @@ export default function MyModal() {
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={closeModal}
                     >
-                      Save
+                      Lưu
                     </button>
                   </div>
                 </Dialog.Panel>
