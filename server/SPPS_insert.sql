@@ -22,21 +22,15 @@ VALUES
 ('Samsung-QL', 'Model 5', 'Samsung', '2023-11-05', 'Mô tả Máy In 5', 100, 'BKB6', 5, 0);
 
 -- INSERT INTO STUDENT
-INSERT INTO STUDENT (MSSV, name, paper, pass) 
+INSERT INTO STUDENT (MSSV, name, paper) 
 VALUES 
-('2113928', 'Sinh viên 1', 50, '2113928'),
-('2113927', 'Sinh viên 2', 30, '2113927'),
-('2223928', 'Sinh viên 3', 70, '2223928'),
-('2355555', 'Sinh viên 4', 40, '2355555'),
-('2018972', 'Sinh viên 5', 60, '2018972'),
-('1918972', 'Sinh viên 7', 60, '1918972'),
-('1818972', 'Sinh viên 8', 60, '1818972');
-
--- INSERT INTO SPSO
-INSERT INTO SPSO (ID, name, pass) 
-VALUES 
-('SPSO1234', 'Nguyễn Văn A', 'SPSO1234'),
-('SPSO5678', 'Nguyễn Văn B', 'SPSO5678');
+('2113928', 'Sinh viên 1', 50),
+('2113927', 'Sinh viên 2', 30),
+('2223928', 'Sinh viên 3', 70),
+('2355555', 'Sinh viên 4', 40),
+('2018972', 'Sinh viên 5', 60),
+('1918972', 'Sinh viên 7', 60),
+('1818972', 'Sinh viên 8', 60);
 
 -- INSERT INTO STUDENT_BUYPAGE
 INSERT INTO STUDENT_BUYPAGE (MSSV, date, paper) VALUES
@@ -66,11 +60,17 @@ INSERT INTO STUDENT_BUYPAGE (MSSV, date, paper) VALUES
 -- INSERT INTO FILE
 INSERT INTO FILE (name, description, link, isShare) 
 VALUES 
-('Tệp 1', 'Mô tả 1', 'Liên kết 1', 1),
-('Tệp 2', 'Mô tả 2', 'Liên kết 2', 0),
-('Tệp 3', 'Mô tả 3', 'Liên kết 3', 1),
-('Tệp 4', 'Mô tả 4', 'Liên kết 4', 0),
-('Tệp 5', 'Mô tả 5', 'Liên kết 5', 1);
+('Lập trình Java', 'File về lập trình Java từ cơ bản đến nâng cao.', 'Liên kết Java', 1),
+('Toán cao cấp', 'Tài liệu về toán cao cấp, bao gồm các chương từ 1 đến 5.', 'Liên kết Toán cao cấp', 1),
+('Kỹ thuật lập trình', 'Tài liệu về kỹ thuật lập trình, giới thiệu về các ngôn ngữ lập trình.', 'Liên kết Kỹ thuật lập trình', 1),
+('Quản trị mạng', 'Tài liệu hướng dẫn về quản trị mạng, các chương từ 1 đến 10.', 'Liên kết Quản trị mạng', 1),
+('Tiếng Anh giao tiếp', 'Tài liệu học tiếng Anh giao tiếp, từ vựng và ngữ pháp.', 'Liên kết Tiếng Anh', 1),
+('Mạng máy tính', 'File bao gồm chương 1, chương 2 và chương 3 về mạng máy tính.', 'Liên kết Mạng máy tính', 1),
+('Hóa đại cương', 'File chứa nâng cao và cơ bản về hóa đại cương.', 'Liên kết Hóa đại cương', 0),
+('Mạng máy tính', 'File bao gồm chương 1, chương 2 và chương 3 về mạng máy tính.', 'Liên kết Mạng máy tính', 0),
+('Hóa đại cương', 'File chứa nâng cao và cơ bản về hóa đại cương.', 'Liên kết Hóa đại cương', 1);
+
+
 
 -- INSERT INTO PRINTING
 INSERT INTO PRINTING (id_printer, MSSV, id_file, paper, date) 
@@ -113,15 +113,13 @@ VALUES
 ('HK222', '2023-09-01', 8);
 
 -- INSERT INTO FILETYPE
-INSERT INTO FILETYPE (name, value, isUsable) 
+INSERT INTO FILETYPE (name, isUsable) 
 VALUES 
-('.PDF (Portable Document Format)','PDF', 1),
-('.XLSX (Microsoft Excel Spreadsheet)','XLSX', 0),
-('.PPT (Microsoft Powerpoint Presentation)','PPT', 0),
-('.DOCX (Microsoft Word Document)','DOCX', 1),
-('.TXT (Text Document)','TXT', 0),
-('.PNG (Portable Network Graphics)','PNG', 1),
-('.JPEG (Joint Photographic Experts Group)','JPEG', 0);
+('Loại 1', 1),
+('Loại 2', 0),
+('Loại 3', 1),
+('Loại 4', 0),
+('Loại 5', 1);
 
 -- INSERT INTO FILEHAVETYPE
 INSERT INTO FILEHAVETYPE (id_type, id_file) 
