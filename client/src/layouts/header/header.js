@@ -16,6 +16,11 @@ const navigation = [
 
 
 export default function Example() {
+  const logout = async () => {
+		const expirationTime = new Date(Date.now() - 60 * 1000);
+		document.cookie = `Student_cookie_id=null; expires=${expirationTime.toUTCString()}; path=/`;
+		window.location.href = 'http://localhost:3000/login';
+  };
   return (
     <Disclosure as="nav" className=" bg-white sticky top-0 ">
       {({ open }) => (
@@ -105,12 +110,11 @@ export default function Example() {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
+                          <button onClick={logout}
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             Sign out
-                          </a>
+                          </button>
                         )}
                       </Menu.Item>
                     </Menu.Items>

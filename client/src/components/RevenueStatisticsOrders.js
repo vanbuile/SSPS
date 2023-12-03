@@ -27,22 +27,34 @@ export default function RecentOrders() {
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
+  const handleAuthorization = (role) => {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name === role) {
+        return true
+      }
+    }
+    window.location.href = 'http://localhost:3000/login';
+  }
   const handleDownloadExcel = () => {
-    axios({
-      method: 'get',
-      url: APIs.APIadminRevenueStatistics + '/RecentOrdersDownload',
-      responseType: 'blob',
-    })
-      .then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'RecentOrdersInfo.xlsx');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      axios({
+        method: 'get',
+        url: APIs.APIadminRevenueStatistics + '/RecentOrdersDownload',
+        responseType: 'blob',
       })
-      .catch((error) => console.error('Error downloading Excel:', error));
+        .then((response) => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'RecentOrdersInfo.xlsx');
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        })
+        .catch((error) => console.error('Error downloading Excel:', error));
+    }
   };
 
   const generatePageNumbers = () => {

@@ -22,23 +22,35 @@ export default function RecentOrders(props) {
 	}, []); // [] đảm bảo useEffect chỉ chạy một lần khi component được mount
 	if (!data) return <></>;
 
+	const handleAuthorization = (role) => {
+		const cookies = document.cookie.split('; ');
+		for (const cookie of cookies) {
+		  const [name, value] = cookie.split('=');
+		  if(name === role) {
+			return true
+		  }
+		}
+		window.location.href = 'http://localhost:3000/login';
+	}
 	const handleDownloadExcel = () => {
-		axios({
-			method: 'get',
-			url: APIs.APIadminPrinterStatistics + '/PrinterOrdersDownload',
-			responseType: 'blob',
-		  })
-			.then((response) => {
-			  // Tạo một đường dẫn tạm thời để tải xuống
-			  const url = window.URL.createObjectURL(new Blob([response.data]));
-			  const link = document.createElement('a');
-			  link.href = url;
-			  link.setAttribute('download', 'PrinterOrdersInfo.xlsx');
-			  document.body.appendChild(link);
-			  link.click();
-			  document.body.removeChild(link);
+		if(handleAuthorization('SPSO_cookie_id') == true) {
+			axios({
+				method: 'get',
+				url: APIs.APIadminPrinterStatistics + '/PrinterOrdersDownload',
+				responseType: 'blob',
 			})
-			.catch((error) => console.error('Error downloading Excel:', error));
+				.then((response) => {
+				// Tạo một đường dẫn tạm thời để tải xuống
+				const url = window.URL.createObjectURL(new Blob([response.data]));
+				const link = document.createElement('a');
+				link.href = url;
+				link.setAttribute('download', 'PrinterOrdersInfo.xlsx');
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+				})
+				.catch((error) => console.error('Error downloading Excel:', error));
+		}
 	};
 	
 	return (

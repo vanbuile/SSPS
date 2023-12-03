@@ -8,11 +8,13 @@ const bodyParser = require('body-parser');
 
 //import route object
 const printerAdmin = require('./routes/printerAdmin')
+const fileAdmin = require('./routes/fileAdmin')
+const adminInfo = require('./routes/adminInfo')
+const pageNumber = require('./routes/pageNumber');
 const Statistic = require('./routes/Statistic');
 const Revenue = require('./routes/Revenue');
-const ShareFileRoute= require('./routes/share');
-
 const Buy = require('./routes/buy');
+const Login = require('./routes/login');
 //init app object
 const app = express()
 // xác thực khi dùng APIs
@@ -34,8 +36,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/admin/print', printerAdmin);
 app.use('/api/admin/statisticAdmin', Statistic);
 app.use('/api/admin/revenueAdmin', Revenue);
-app.use('/api/share',ShareFileRoute)
+app.use('/api/admin/fileAdmin', fileAdmin);
+app.use('/api/admin/adminInfo', adminInfo);
+app.use('/api/admin/pageNumber', pageNumber);
 app.use('/api/testbuy', Buy);
+app.use('/api/login', Login);
 
 
 // app.listen(3002,'localhost', () => {
