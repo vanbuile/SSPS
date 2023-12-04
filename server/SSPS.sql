@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS PRINTER (
 );
 
 
-CREATE TABLE IF NOT EXISTS STUDENT (
+CREATE TABLE IF NOT EXISTS STUDENT ( 
     MSSV VARCHAR(7) PRIMARY KEY,
     name VARCHAR(255),
     paper INT,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS FILE (
     name VARCHAR(255),
     description VARCHAR(255),
     link VARCHAR(255),
-    isShare INT, 
+    isShare INT, -- nếu =0 thì không share -> link = nullptr, nếu =1 thì share -> link != nullptr
     score INT DEFAULT 0,
     FOREIGN KEY (MSSV) REFERENCES STUDENT(MSSV)
 );

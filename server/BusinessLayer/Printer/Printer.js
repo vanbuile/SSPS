@@ -1,5 +1,5 @@
 const moment = require("moment")
-const {viewListPrinter, addPrinter, editPrinter, deletePrinter } = require('../../PersistenceLayer/PrinterDAO')
+const {viewListPrinter, addPrinter, editPrinter, deletePrinter, viewPrinterByLocation} = require('../../PersistenceLayer/PrinterDAO')
 const locations = [
     'Tất cả',
     'BKB1',
@@ -198,4 +198,19 @@ const DeleteOldPrinter = async (req, res) => {
 
 }
 
-module.exports = {ShowListPrinter, AddNewPrinter, EditOldPrinter, DeleteOldPrinter}
+const ViewPrinterByLocation = async (req, res) => {;
+    let building = req.params.building;
+    if (!building) {
+        return res.status(400).json({ error: 'Building parameter is missing or empty.' });
+    }
+    try{
+        let rs = await viewPrinterByLocation(building)
+        return res.status(200).json({"data":rs})
+    }
+    catch (e) {
+        console.log(e)
+        return res.status(503).send()
+    }
+}
+
+module.exports = {ShowListPrinter, AddNewPrinter, EditOldPrinter, DeleteOldPrinter, ViewPrinterByLocation}

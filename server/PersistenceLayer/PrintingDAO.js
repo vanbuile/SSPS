@@ -28,7 +28,6 @@ const GetStudentPrintMaxSemester = async()=>
 {
     const query = `CALL GetStudentPrintMaxSemester()`;
     const [result, fields] = await connection.query(query)
-
 	return result[0];
 }
 

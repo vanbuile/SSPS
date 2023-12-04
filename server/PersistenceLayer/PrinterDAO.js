@@ -43,4 +43,15 @@ const deletePrinter = async (id) => {
 
 }
 
-module.exports = {viewListPrinter , addPrinter , editPrinter, deletePrinter}
+const viewPrinterByLocation = async (building) => {
+  try {
+    let q = `call ViewPrinterByLocation(?);`
+    const [result,abc] = await connection.query(q, [building]);
+    return result[0];
+  } 
+  catch (e) {
+    throw new Error(e);
+  }
+};
+
+module.exports = {viewListPrinter , addPrinter , editPrinter, deletePrinter, viewPrinterByLocation}

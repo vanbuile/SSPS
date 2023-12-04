@@ -43,6 +43,8 @@ app.use('/api/admin/fileAdmin', fileAdmin);
 app.use('/api/admin/adminInfo', adminInfo);
 app.use('/api/admin/pageNumber', pageNumber);
 app.use('/api/testbuy', Buy);
+app.use('/api/chooseprinter', print);
+app.use('/api/file', file);
 app.use('/api/login', Login);
 app.use('/api/print', print);
 app.use('/api/chooseprinter', print);

@@ -183,7 +183,8 @@ BEGIN
 END //
 CREATE PROCEDURE ViewAllPrinter()
 BEGIN
-    SELECT * FROM printer;
+    SELECT * FROM PRINTER; 
+    -- de printer no kh chay
 END //
 
 CREATE PROCEDURE AddPrinter(IN _name varchar(255), IN _brand varchar(255), IN _model varchar(255), IN _building varchar(255),IN _floor INT,IN _paper int, IN _day date, IN _description varchar(255),IN _state int)
@@ -200,7 +201,7 @@ BEGIN
     WHERE `id` = _id;
 END //
 
-CREATE PROCEDURE `DeletePrinter` (IN _id int)
+CREATE PROCEDURE `DeletePrinter` (IN _id int )
 BEGIN
 	DELETE FROM `ssps`.`printer`
 	WHERE `id` = _id;

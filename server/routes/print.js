@@ -1,14 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const{PermmitedFileTypesList}=require('../BusinessLayer/FileType/FileType');
+const {ViewPrinterByLocation} = require('../BusinessLayer/Printer/Printer');
 
 
-router.get("/filetype", PermmitedFileTypesList);
+router.get('/view/:building', ViewPrinterByLocation);
 
-
-
-
-
-
-
-module.exports = router;
+module.exports = router

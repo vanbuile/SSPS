@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ChoosePrintStyle from '../../components/ChoosePrintStyle';
 import FileUpload from '../../components/DragDropfile'
-import axios from 'axios';
-import APIs from '../../util/API';
 
 function VerticalLine() {
   return (
@@ -21,14 +19,14 @@ export default function Print() {
   const handleAuthorization = (role) => {
     const cookies = document.cookie.split('; ');
     for (const cookie of cookies) {
-      const [name, value] = cookie.split('=');
+      const [name] = cookie.split('=');
       if(name === role) {
         return true
       }
     }
     window.location.href = 'http://localhost:3000/login';
   }
-  if(handleAuthorization('Student_cookie_id') == true) {
+  if(handleAuthorization('Student_cookie_id') === true) {
     return (
       <div className="flex flex-1"
       style={{marginLeft: "80px"}}
