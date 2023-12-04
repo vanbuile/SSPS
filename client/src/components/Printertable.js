@@ -2,24 +2,37 @@ import React, { useEffect, useState, useCallback } from 'react';
 import APIs from "../util/API";
 import axios from "axios";
 
-const Table = ({building}) => {
+const Table = ({ building, onSelectRow }) => {
   const [data, setData] = useState([
     { id: 1, floor: '1st', building: 'A', state: 1, paper: 'A4' },
   ]);
-
+  const [selectedRow, setSelectedRowId] = useState(null);
   const getAPIdata = useCallback(async () => {
-    const response = await axios.get(APIs.APIviewprinterbylocation + `/view/${building}`);
-    if (response.status === 200) {
-      console.log(response.data.data);
-      setData(response.data.data);
+    try {
+      const response = await axios.get(APIs.APIviewprinterbylocation + `/view/${building}`);
+      if (response.status === 200) {
+        setData(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
   }, [building]);
 
-  useEffect (() => {
-    getAPIdata()
-  }, [getAPIdata])
+  useEffect(() => {
+    if (building) {
+      getAPIdata();
+    }
+  }, [building, getAPIdata]);
 
-  if (!data) return <></>
+  const handleRowClick = (rowId) => {
+    onSelectRow(rowId);
+    setSelectedRowId(rowId);
+  };
+
+  if (!data) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <table className="border-collapse w-full">
       <thead>
@@ -35,8 +48,8 @@ const Table = ({building}) => {
         {data.map((row) => (
           <tr
             key={row.id}
-            className="cursor-pointer hover:bg-gray-100"
-            onClick={getAPIdata}
+            className={`cursor-pointer hover:bg-lightBlue-200 ${selectedRow === row.id ? 'bg-yellow-200' : ''}`}
+            onClick={() => handleRowClick(row.id)}
           >
             <td className="border border-gray-300 p-2">{row.id}</td>
             <td className="border border-gray-300 p-2">{row.floor}</td>

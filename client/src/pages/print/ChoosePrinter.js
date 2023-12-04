@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaBackward } from "react-icons/fa";
-import { BuildingOffice2Icon } from "@heroicons/react/20/solid";
 import MyModal from '../../components/Printer'
 
 function VerticalLine() {
@@ -20,7 +19,7 @@ function Bulding({building}){
     return (
         <div className="bg-mainBlue text-white"
         style={{
-            marginLeft: '50px', marginTop: '50px', 
+            marginLeft: '90px', marginTop: '50px', 
             width: '100px', height: '50px',
             padding: '10px', textAlign: 'center', borderRadius: '5px'}}
         >{building}</div>
@@ -29,19 +28,19 @@ function Bulding({building}){
 
   export default function ChoosePrinter() {
 
-    const buildings = ["BKB1", "BK H2", "BK H3", "BK H4", "BK H5", "BK H6","BK H7", "BK H8", 
-    "BK B0","BK B2", "BK B3", "BK B4", "BK C3", "BK C4", "BK C5", "BK C6"];
+    const buildings = ["BKB1", "BKB2", "BKB3", "BKB4", "BKB5", "BKB6","A1", "A2", 
+    "A3","A4", "A5", "A6"];
     const handleAuthorization = (role) => {
         const cookies = document.cookie.split('; ');
         for (const cookie of cookies) {
-          const [name, value] = cookie.split('=');
+          const [name] = cookie.split('=');
           if(name === role) {
             return true
           }
         }
         window.location.href = 'http://localhost:3000/login';
       }
-      if(handleAuthorization('Student_cookie_id') == true) {
+      if(handleAuthorization('Student_cookie_id') === true) {
           return (
               <div>
                   <Link to="/print" ><FaBackward style={{ marginLeft:"80px", }}/></Link>
@@ -50,7 +49,7 @@ function Bulding({building}){
                   >
                   <div className="w-1/2">
                       <h2 className='text-4xl font-bold ml-20'>Printer</h2>
-                      <h3 className="text-2xl font-bold mt-10"  style={{marginLeft: "200px"}}>Bách Khoa CS2</h3>
+                      <h3 className="text-2xl font-bold mt-10"  style={{marginLeft: "200px"}}>Bách Khoa CS1</h3>
                       <div className="flex mt-50"> 
                           <div>
                               <Bulding building={buildings[0]}></Bulding>
@@ -58,103 +57,57 @@ function Bulding({building}){
                           </div>
                           <div>
                               <Bulding building={buildings[1]}></Bulding>
-                              <button style={{marginLeft: '60px', marginTop: '5px'}}>
-                                  <BuildingOffice2Icon className="w-20 h-50"/>
-                              </button>
+                              <MyModal building = {buildings[1]}/>
                           </div>
                           <div>
                               <Bulding building={buildings[2]}></Bulding>
-                              <button style={{marginLeft: '60px', marginTop: '5px'}}>
-                                  <BuildingOffice2Icon className="w-20 h-50"/>
-                              </button>
-                          </div>
-                          <div>
-                              <Bulding building={buildings[3]}></Bulding>
-                              <button style={{marginLeft: '60px', marginTop: '5px'}}>
-                                  <BuildingOffice2Icon className="w-20 h-50"/>
-                              </button>
+                              <MyModal building = {buildings[2]}/>
                           </div>
                       </div>
-                      <div className="flex mt-10 ml-10"> 
+                      <div className="flex mt-10"> 
+                            <div>
+                              <Bulding building={buildings[3]}></Bulding>
+                              <MyModal building = {buildings[3]}/>
+                          </div>
                           <div>
                               <Bulding building={buildings[4]}></Bulding>
-                              <button style={{marginLeft: '60px', marginTop: '5px'}}>
-                                  <BuildingOffice2Icon className="w-20 h-50"/>
-                              </button>
+                              <MyModal building = {buildings[4]}/>
                           </div>
                           <div>
                               <Bulding building={buildings[5]}></Bulding>
-                              <button style={{marginLeft: '60px', marginTop: '5px'}}>
-                                  <BuildingOffice2Icon className="w-20 h-50"/>
-                              </button>
-                          </div>
-                          <div>
-                              <Bulding building={buildings[6]}></Bulding>
-                              <button style={{marginLeft: '60px', marginTop: '5px'}}>
-                                  <BuildingOffice2Icon className="w-20 h-50"/>
-                              </button>
-                          </div>
-                          <div>
-                              <Bulding building={buildings[7]}></Bulding>
-                              <button style={{marginLeft: '60px', marginTop: '5px'}}>
-                                  <BuildingOffice2Icon className="w-20 h-50"/>
-                              </button>
+                              <MyModal building = {buildings[5]}/>
                           </div>
                       </div>
                   </div>
                   <div><VerticalLine /></div>
                   <div className="w-1/2">
                       <h3 className="text-2xl font-bold mt-20"  style={{marginLeft: "200px"}}>Bách Khoa CS1</h3>
-                      <div className="flex mt-50"> 
+                      <div className="flex mt-50" style={{marginLeft: "25px"}}> 
                           <div>
-                              <Bulding building={buildings[8]}></Bulding>
-                              <button style={{marginLeft: '60px', marginTop: '5px'}}>
-                                  <BuildingOffice2Icon className="w-20 h-50"/>
-                              </button>
+                              <Bulding building={buildings[6]}></Bulding>
+                              <MyModal building = {buildings[6]}/>
                           </div>
                           <div>
+                              <Bulding building={buildings[7]}></Bulding>
+                              <MyModal building = {buildings[7]}/>
+                          </div>
+                          <div>
+                              <Bulding building={buildings[8]}></Bulding>
+                              <MyModal building = {buildings[8]}/>
+                          </div>
+                      </div>
+                      <div className="flex mt-10" style={{marginLeft: "25px"}}> 
+                          <div>
                               <Bulding building={buildings[9]}></Bulding>
-                              <button style={{marginLeft: '60px', marginTop: '5px'}}>
-                                  <BuildingOffice2Icon className="w-20 h-50"/>
-                              </button>
+                              <MyModal building = {buildings[9]}/>
                           </div>
                           <div>
                               <Bulding building={buildings[10]}></Bulding>
-                              <button style={{marginLeft: '60px', marginTop: '5px'}}>
-                                  <BuildingOffice2Icon className="w-20 h-50"/>
-                              </button>
+                              <MyModal building = {buildings[10]}/>
                           </div>
                           <div>
                               <Bulding building={buildings[11]}></Bulding>
-                              <button style={{marginLeft: '60px', marginTop: '5px'}}>
-                                  <BuildingOffice2Icon className="w-20 h-50"/>
-                              </button>
-                          </div>
-                      </div>
-                      <div className="flex mt-10 ml-10"> 
-                          <div>
-                              <Bulding building={buildings[12]}></Bulding>
-                              <button style={{marginLeft: '60px', marginTop: '5px'}}>
-                                  <BuildingOffice2Icon className="w-20 h-50"/>
-                              </button>
-                          </div>
-                          <div>
-                              <Bulding building={buildings[13]}></Bulding>
-                              <button style={{marginLeft: '60px', marginTop: '5px'}}>
-                                  <BuildingOffice2Icon className="w-20 h-50"/>
-                              </button>
-                          </div>
-                          <div>
-                              <Bulding building={buildings[14]}></Bulding>
-                              <button style={{marginLeft: '60px', marginTop: '5px'}}>
-                                  <BuildingOffice2Icon className="w-20 h-50"/>
-                              </button>
-                          </div>
-                          <div>
-                              <Bulding building={buildings[15]}></Bulding>
-                              <button style={{marginLeft: '60px', marginTop: '5px'}}>
-                                  <BuildingOffice2Icon className="w-20 h-50"/>
-                              </button>
+                              <MyModal building = {buildings[11]}/>
                           </div>
                       </div>
                   </div>

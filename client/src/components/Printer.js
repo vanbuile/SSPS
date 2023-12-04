@@ -1,16 +1,42 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { BuildingOffice2Icon} from "@heroicons/react/20/solid";
+import moment from 'moment-timezone';
 import Table from './Printertable';
+import axios from 'axios';
+import APIs from '../util/API';
 
 
 export default function MyModal({building}) {
   let [isOpen, setIsOpen] = useState(false)
-
-  function closeModal() {
+  let RowID = 0
+  const handleRowClick = (rowId) => {
+    RowID = rowId
+  }
+  function closeModal () {
     setIsOpen(false)
   }
-
+  const Savechange = async () => {
+    setIsOpen(false)
+    const currentDate = moment().tz('Asia/Ho_Chi_Minh');
+    const formattedDateTime = currentDate.format('YYYY-MM-DD HH:mm:ss');
+    try{
+      const res = await axios.post(APIs.APIaddFile + "/addprinting", {
+        id_printer: RowID,
+        mssv: document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1],
+        id_file: document.cookie.split('; ').find((cookie) => cookie.startsWith(`file_id=`)).split('=')[1], 
+        paper: 13,
+        date: formattedDateTime
+      })
+      if (res.status === 200){
+        alert("Printing....")
+      }
+    }
+    catch (e) {
+      console.error("Error printing:", e);
+      alert("Error printing: " + e.message);
+    }
+  }
   function openModal() {
     setIsOpen(true)
   }
@@ -51,7 +77,7 @@ export default function MyModal({building}) {
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                      <Table building = {building}/>
+                      <Table building = {building} onSelectRow={handleRowClick}/>
                     </p>
                   </div>
 
@@ -59,7 +85,7 @@ export default function MyModal({building}) {
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
+                      onClick={Savechange}
                     >
                       Lưu
                     </button>
@@ -78,7 +104,7 @@ export default function MyModal({building}) {
         <button
           type="button"
           onClick={openModal}
-          style={{marginLeft: '60px', marginTop: '5px'}}
+          style={{marginLeft: '97px', marginTop: '5px'}}
         >
             <BuildingOffice2Icon className="w-20 h-50"/>
         </button>

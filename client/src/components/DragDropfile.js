@@ -39,24 +39,29 @@ const FileUpload = () => {
   const handleCancel = () => {
     setSelectedFile(null);
   };
-
+  let description = ""
+  const handleTextareaChange = (value) => {
+    description = value
+  };
   const handleSaveChanges = async () => {
     if (!selectedFile) {
       alert('Please select a file first.');
       return;
     }
     try{
+      const mssv = document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1]
+      let isShare = 0
+      if (description !== '')  isShare = 1
       const response = await axios.post(APIs.APIaddFile + "/addfile", {
+        mssv: mssv,
         name: selectedFile.name,
-        description: 'File: ' + selectedFile.type,
+        description: description,
         link: 'lien ket 3',
-        isShare: 0
+        isShare: isShare
       })
       if (response.status === 200) {
-        alert("Upload completed");
+        document.cookie = `file_id=${response.data["file_id"]}; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`
         navigate('/print/ChoosePrinter');
-      } else {
-        alert("Upload failed");
       }
     }
     catch (e) {
@@ -100,7 +105,7 @@ const FileUpload = () => {
       <div style={{marginLeft:'30px'}}>
         <button onClick={handleCancel}  class="rounded-md bg-mainRed px-3 py-2 text-sm font-semibold text-white ">Hủy</button>
       </div>
-      <ShareModal/>
+      <ShareModal onTextareaChange={handleTextareaChange}/>
     </div>
     </div>
   );
