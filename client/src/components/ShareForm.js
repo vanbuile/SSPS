@@ -80,7 +80,7 @@ export default function ShareModal({ onTextareaChange}) {
 
 return (
     <>
-      <div className="flex rounded-md bg-textGray px-3 py-2 text-sm font-semibold text-white" style={{marginLeft:'540px'}}>
+      <div className="flex rounded-md bg-textGray px-3 py-2 text-sm font-semibold text-white" style={{marginLeft:'30px'}}>
         <button
           type="button"
           onClick={openModal}

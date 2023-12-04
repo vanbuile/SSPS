@@ -46,7 +46,9 @@ export default function Print() {
               </i>
             </div>
             <p>Số lượng:</p>
-            <input type="text" name="copies" id="copies" autocomplete="given-name" class="block w-5 rounded-md border-1 py-1.4 text-gray-900 shadow-sm ring-1 ring-inset ring-black placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-100 sm:text-sm sm:leading-6"placeholder='1'/>
+            <input type="number" min="0" name="copies" id="copies" autocomplete="given-name" class="block w-5 rounded-md border-1 py-1.4 
+            text-gray-900 shadow-sm ring-1 ring-inset ring-black placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
+            focus:ring-indigo-100 sm:text-sm sm:leading-6"placeholder='1' style={{width: '30px'}}/>
           </div>     
           <p class="text-xl text-[#a3a3a3] font-bold ml-10">Cài đặt</p>
           <div className='ml-10'><ChoosePrintStyle/></div>

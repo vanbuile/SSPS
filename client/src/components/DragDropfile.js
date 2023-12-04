@@ -20,6 +20,7 @@ const FileUpload = () => {
   }
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
+  const [numPages, setNumPages] = useState('');
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -49,6 +50,8 @@ const FileUpload = () => {
       return;
     }
     try{
+      const pageNumber = parseInt(numPages, 10); //so trang kieu INT
+      
       const mssv = document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1]
       let isShare = 0
       if (description !== '')  isShare = 1
@@ -69,7 +72,12 @@ const FileUpload = () => {
       alert("Error uploading file: " + e.message); 
     }
   };
-
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      setNumPages(value);
+    }
+  };
   return (
     <div>
     <div 
@@ -101,7 +109,26 @@ const FileUpload = () => {
       </div>
     </div>
     <div className='flex' style={{marginTop: '30px', marginLeft: '110px'}}>
-      <button onClick={handleSaveChanges} class="rounded-md bg-mainBlue px-3 py-2 text-sm font-semibold text-white ">Lưu thay đổi</button>
+      <div>
+        {/* input Page number*/}
+        <form>
+            <label>
+              Number of Pages:
+              <input
+                type="number"
+                value={numPages}
+                onChange={handleInputChange}
+                placeholder="  Page..."
+                style={{width: '40px', marginLeft: '10px', height: '30px'}}
+                class="rounded-md text-sm border-1 ring-1 ring-black"
+              />
+            </label>
+          </form>
+          {/* input Page number*/}
+      </div>
+      <div style={{marginLeft: '320px'}}>
+        <button onClick={handleSaveChanges} class="rounded-md bg-mainBlue px-3 py-2 text-sm font-semibold text-white ">Lưu thay đổi</button>
+      </div>
       <div style={{marginLeft:'30px'}}>
         <button onClick={handleCancel}  class="rounded-md bg-mainRed px-3 py-2 text-sm font-semibold text-white ">Hủy</button>
       </div>
