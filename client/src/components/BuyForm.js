@@ -15,8 +15,8 @@ import momocheckimage from "../assets/images/momocheck.png";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import axios from "axios";
-import APIs from '../util/API';
-const data = [{ name: "Nguyễn Văn An", email: "an.nguyen@hcmutedu.vn" }];
+import APIs from "../util/API";
+const data = [{ name: "Sinh viên 1", MSSV: "2113928" }];
 BuyForm.propTypes = {
   onSubmit: PropTypes.func,
 };
@@ -25,8 +25,8 @@ function BuyForm(props) {
   const form = useForm({
     defaultValues: {
       name: data[0].name,
-      email: data[0].email,
-      number: 1,
+      MSSV: data[0].MSSV,
+      number: 10,
     },
   });
   const navigate = useNavigate();
@@ -35,35 +35,23 @@ function BuyForm(props) {
       navigate("/buy/paymentcheck");
     }, 500);
   };
-  const handleAuthorization = (role) => {
-    const cookies = document.cookie.split('; ');
-    for (const cookie of cookies) {
-      const [name, value] = cookie.split('=');
-      if(name === role) {
-        return true
-      }
-    }
-    window.location.href = 'http://localhost:3000/login';
-  }
   const handleSubmit = (values) => {
-    if (handleAuthorization('Student_cookie_id') == true) {
-      console.log("values: ", values);
-      
-      console.log("paymethod: ", paymethod);
-      const fetchApiData = async () => {
-        try {
-          let res= await axios.post(APIs.APIbuy + "/create_payment_url");
-          console.log(res);
-          //redirect to payment page
-          window.location.href = res.data;
-          
-        } catch (error) {
-        console.error('Error fetching data:', error);
-        }
-      };
-      //openModal();
-      fetchApiData();
-    }
+    console.log("values: ", values);
+
+    console.log("paymethod: ", paymethod);
+    const param = { amount: values.number * 2000, name: values.name, MSSV: values.MSSV };
+    const fetchApiData = async () => {
+      try {
+        let res = await axios.post(APIs.APIbuy + "/create_payment_url", param);
+        console.log(res);
+        //redirect to payment page
+        window.location.href = res.data;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    //openModal();
+    fetchApiData();
   };
   let [isOpen, setIsOpen] = useState(false);
   function closeModal() {
@@ -160,12 +148,13 @@ function BuyForm(props) {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="  font-semibold">Email</span>
+                <span className="  font-semibold">MSSV</span>
                 <TextFieldInput
-                  name="email"
-                  label="Email"
-                  type="email"
+                  name="MSSV"
+                  label="MSSV"
+                  type="number"
                   form={form}
+                  disabled
                 />
               </div>
               <div className="flex flex-col">
@@ -177,7 +166,7 @@ function BuyForm(props) {
                   type="number"
                   InputProps={{
                     inputProps: {
-                      min: 1,
+                      min: 10,
                     },
                   }}
                   style={{ width: 200 }}

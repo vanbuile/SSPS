@@ -17,4 +17,3 @@ router.get('/vnpay_return', VnpayReturn);
 
 
 module.exports = router;
-

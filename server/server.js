@@ -17,6 +17,7 @@ const Buy = require('./routes/buy');
 const print = require('./routes/print');
 const file = require('./routes/file');
 const Login = require('./routes/login');
+const Print= require('./routes/print');
 //init app object
 const app = express()
 // xác thực khi dùng APIs
@@ -45,6 +46,7 @@ app.use('/api/testbuy', Buy);
 app.use('/api/chooseprinter', print);
 app.use('/api/file', file);
 app.use('/api/login', Login);
+app.use('/api/print', Print);
 
 
 // app.listen(3002,'localhost', () => {

@@ -10,22 +10,52 @@ const FileUpload = () => {
     return (
       <div
         style={{
-          marginTop:'10px',
-          height: '1px', // Adjust the height as needed
-          width: '750px',   // Adjust the thickness of the line
-          backgroundColor: 'black', // Adjust the color of the line
+          marginTop: "10px",
+          height: "1px", // Adjust the height as needed
+          width: "750px", // Adjust the thickness of the line
+          backgroundColor: "black", // Adjust the color of the line
         }}
       ></div>
     );
   }
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
+
+  const fetchPermitedType = async () => {
+    try {
+      let res = await axios.get(APIs.APIprint + "/filetype");
+      console.log(res);
+      return res.data;
+      //redirect to payment page
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   const [numPages, setNumPages] = useState('');
 
   const handleDrop = (e) => {
     e.preventDefault();
+    //call API to get list of permitted file types
+    var permitedType=false;
+    const fileExtension = e.dataTransfer.files[0].name.split(".").pop();
     const file = e.dataTransfer.files[0];
-    setSelectedFile(file);
+    fetchPermitedType().then((res) => {
+      for (var i = 0; i < res.length; i++) {
+        //lowercase all file extension
+        if (fileExtension.toLowerCase() === res[i].value.toLowerCase()) {
+          permitedType = true;
+
+        }
+      }
+      if (permitedType === false) {
+        alert("File type is not permitted");
+        
+      }
+      else {
+        setSelectedFile(file);
+      }
+    });
+ 
   };
 
   const handleDragOver = (e) => {
@@ -34,7 +64,26 @@ const FileUpload = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setSelectedFile(file);
+    const fileExtension = file.name.split(".").pop();
+    var permitedType=false;
+    console.log(fileExtension);
+    fetchPermitedType().then((res) => {
+      for (var i = 0; i < res.length; i++) {
+        //lowercase all file extension
+        if (fileExtension.toLowerCase() === res[i].value.toLowerCase()) {
+          permitedType = true;
+
+        }
+      }
+      if (permitedType === false) {
+        alert("File type is not permitted");
+        
+      }
+      else {
+        setSelectedFile(file);
+      }
+    });
+    
   };
 
   const handleCancel = () => {
@@ -80,20 +129,41 @@ const FileUpload = () => {
   };
   return (
     <div>
-    <div 
-    style={{ border: '2px solid black',borderRadius: '10px',marginLeft: '110px', marginTop: '130px', width: '800px', height: '400px', padding: '20px', textAlign: 'center' }}
-    >
-      <div className='flex'>
-        <button  class="rounded-md bg-lightGray w-8 h-8" onClick={() => document.querySelector('input[type="file"]').click()}>
-        <DocumentTextIcon/>
-        </button>
-        <div className='ml-4'>Chọn file</div>
-      </div>
-      <div><Line/></div>
       <div
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        style={{ border: '2px dashed #ccc', marginTop: '10px', width: '750px', height: '300px', padding: '90px', textAlign: 'center' }}
+        style={{
+          border: "2px solid black",
+          borderRadius: "10px",
+          marginLeft: "110px",
+          marginTop: "130px",
+          width: "800px",
+          height: "400px",
+          padding: "20px",
+          textAlign: "center",
+        }}
+      >
+        <div className="flex">
+          <button
+            class="rounded-md bg-lightGray w-8 h-8"
+            onClick={() => document.querySelector('input[type="file"]').click()}
+          >
+            <DocumentTextIcon />
+          </button>
+          <div className="ml-4">Chọn file</div>
+        </div>
+        <div>
+          <Line />
+        </div>
+        <div
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          style={{
+            border: "2px dashed #ccc",
+            marginTop: "10px",
+            width: "750px",
+            height: "300px",
+            padding: "90px",
+            textAlign: "center",
+          }}
         >
         <div style={{marginLeft: '240px'}}>
         <CloudArrowUpIcon className='w-12 h-12'/>
@@ -136,6 +206,6 @@ const FileUpload = () => {
     </div>
     </div>
   );
-}
+};
 
 export default FileUpload;
