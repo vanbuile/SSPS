@@ -16,8 +16,6 @@ const Revenue = require('./routes/Revenue');
 const Buy = require('./routes/buy');
 const print = require('./routes/print');
 const file = require('./routes/file');
-
-
 const Login = require('./routes/login');
 //init app object
 const app = express()
@@ -45,7 +43,8 @@ app.use('/api/admin/adminInfo', adminInfo);
 app.use('/api/admin/pageNumber', pageNumber);
 app.use('/api/testbuy', Buy);
 app.use('/api/chooseprinter', print);
-app.use('/api/file', file);app.use('/api/login', Login);
+app.use('/api/file', file);
+app.use('/api/login', Login);
 
 
 // app.listen(3002,'localhost', () => {

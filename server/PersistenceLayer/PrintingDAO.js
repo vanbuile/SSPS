@@ -31,18 +31,30 @@ const GetStudentPrintMaxSemester = async()=>
 	return result[0];
 }
 
-const addNewFile = async(name, description, link, isShare) => {
+const addNewFile = async(mssv, name, description, link, isShare) => {
     try {
-        let q = `call addFile(?,?,?,?);`
-        const [result, fields] = await connection.query(q,[name, description, link, isShare])
+        let q = `SELECT addFile(?,?,?,?,?) AS lastID;`
+        const [rows, fields] = await connection.query(q,[mssv, name, description, link, isShare])
+        return rows
+    }
+    catch (e) {
+        console.log(e)
+        throw new Error(e)
+    }
+}
+
+const addPrinting = async (id_printer, mssv, id_file, paper, date) => {
+    try {
+        let q = 'CALL aPrinting(?, ?, ? ,? ,?)'
+        const [result, fields] = await connection.query(q, [id_printer, mssv, id_file, paper, date])
         return result
     }
     catch (e) {
-        //console.log(e)
+        console.log(e)
         throw new Error(e)
     }
 }
 module.exports = {GetPrintingInfo, 
                 GetWeekInSemester, 
-                GetPrintInSemester, 
-                GetStudentPrintMaxSemester, addNewFile};
+                GetPrintInSemester,
+                GetStudentPrintMaxSemester, addNewFile, addPrinting};

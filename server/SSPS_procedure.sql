@@ -1,3 +1,6 @@
+
+USE SSPS;
+
 DELIMITER //
 
 -- ! SelectAllPrinting ! 
@@ -71,8 +74,8 @@ BEGIN
 END //
 
 
-CREATE PROCEDURE GetStudentPrintMaxSemester()
-BEGIN
+-- CREATE PROCEDURE GetStudentPrintMaxSemester()s
+-- BEGIN
 
    --  DECLARE dateVar DATE;
 --     DECLARE weekVar INT;
@@ -103,7 +106,7 @@ BEGIN
 --     JOIN
 --         STUDENT S ON P.MSSV = S.MSSV
 --     GROUP BY number_pager_printer DESC LIMIT 10;
-END //
+-- END //
 
 CREATE PROCEDURE GetStudentCourseRevenue()
 BEGIN
@@ -204,12 +207,6 @@ BEGIN
 	WHERE `id` = _id;
 END //
 
-CREATE PROCEDURE addFile(IN _name VARCHAR(255), IN _description VARCHAR(255), IN _link VARCHAR(255), IN _isShare INT)
-BEGIN
-    INSERT INTO `SSPS`.`FILE`(`name`, `description`, `link`, `isShare`)
-    VALUES (_name, _description, _link, _isShare);
-END //
-
 CREATE PROCEDURE ViewPrinterByLocation(IN _building varchar(255))
 BEGIN
     SELECT id, floor, building, `state`, paper
@@ -217,17 +214,21 @@ BEGIN
     WHERE `building` = _building;
 END //
 
-CREATE PROCEDURE addFile(IN _name VARCHAR(255), IN _description VARCHAR(255), IN _link VARCHAR(255), IN _isShare INT)
+CREATE FUNCTION addFile(_mssv VARCHAR(7), _name VARCHAR(255), _description VARCHAR(255), _link VARCHAR(255), _isShare INT)
+RETURNS BIGINT
+READS SQL DATA
+DETERMINISTIC
 BEGIN
-    INSERT INTO `SSPS`.`FILE`(`name`, `description`, `link`, `isShare`)
-    VALUES (_name, _description, _link, _isShare);
-END //
+    INSERT INTO `SSPS`.`FILE`(`MSSV`,`name`, `description`, `link`, `isShare`)
+    VALUES (_mssv, _name, _description, _link, _isShare);
+RETURN LAST_INSERT_ID();
+END; //
 
-CREATE PROCEDURE ViewPrinterByLocation(IN _building varchar(255))
+CREATE PROCEDURE aPrinting(IN id_printer INT, IN mssv VARCHAR(7), IN id_file INT, IN paper INT, IN date DATETIME)
 BEGIN
-    SELECT id, floor, building, `state`, paper
-    FROM `SSPS`.`PRINTER`
-    WHERE `building` = _building;
+	INSERT INTO `SSPS`.`PRINTING`(`id_printer`,`MSSV`,`id_file`,`paper`,`date`)
+VALUES
+(id_printer, mssv, id_file, paper, date);
 END //
 
 CREATE PROCEDURE SPSOLogin(IN p_id VARCHAR(255), IN p_pass VARCHAR(255))
