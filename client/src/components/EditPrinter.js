@@ -6,7 +6,6 @@ import APIs from "../util/API";
 import axios from "axios";
 import {PencilSquareIcon} from "@heroicons/react/20/solid";
 
-
 const options = [
   "BKB1",
   "BKB2",
@@ -64,13 +63,6 @@ export default function EditPrinter({printer, reload}) {
       setIsRefill(false)
       setIsCommit(false)
     }
-  }
-  function openRefill() {
-    setIsRefill(true)
-  }
-  function closeRefill() {
-    setIsRefill(false)
-    setIsCommit(false)
   }
   function openRefill() {
     setIsRefill(true)

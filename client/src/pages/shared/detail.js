@@ -232,70 +232,67 @@ export default function Detail() {
     window.location.href = 'http://localhost:3000/login';
   }
   if(handleAuthorization('Student_cookie_id') == true) {
-    return (
+    return (       
       <div>
-        
-          <div>
-            <Link to="/shared">
-              <FaBackward style={{ marginLeft: "80px" }} />
-            </Link>
-            <div style={styles.frame}>
-              <div style={styles.header}>
-                <div>
-                  <h2 style={styles.title}>{fileDetails.name}</h2>
-                  <p style={styles.description}>{fileDetails.description}</p>
-                  {/* <p style={styles.user}>{article.author}</p> */}
-                </div>
-                <div style={styles.buttonFrame}>
-                  <p style={styles.score}>Score: {fileDetails.score}/5</p>
-                  {renderStarRating()}
-                  <button onClick={handleView} style={styles.button}>
-                    <FaEye />
-                  </button>
-                  <button onClick={handleDownload} style={styles.button}>
-                    <FaDownload />
-                  </button>
-                  <button onClick={handleDelete} style={styles.button}>
-                    <FaTrash />
-                    <Link to="/shared">
-                    </Link>
-                  </button>
-                </div>
-              </div>
+        <Link to="/shared">
+          <FaBackward style={{ marginLeft: "80px" }} />
+        </Link>
+        <div style={styles.frame}>
+          <div style={styles.header}>
+            <div>
+              <h2 style={styles.title}>{fileDetails.name}</h2>
+              <p style={styles.description}>{fileDetails.description}</p>
+              {/* <p style={styles.user}>{article.author}</p> */}
             </div>
-            <div style={styles.comment}>
-              <h3 style={{ fontWeight: "bold", fontSize: "150%" }}>Comment</h3>
-              <div style={styles.commentInput}>
-                <textarea
-                  style={styles.commentTextarea}
-                  placeholder="Write your comment..."
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                />
-                <button onClick={handleSendComment} style={styles.sendButton}>
-                  Send
-                </button>
-              </div>
-              <h3 style={{ fontWeight: "bold", fontSize: "150%" }}>Other Comments</h3>
-              {!commentList || commentList.length === 0 ? (
-                <p>No comments yet.</p>
-              ) : (
-                <ul>
-                  {commentList && commentList.map((comment) => (
-                    <li key={comment.id} style={styles.commentlist}>
-                      {comment.Content}
-                      <br />
-                      <span style={{ color: "gray", fontSize: "60%" }}>
-                        {comment.date}
-                        <br />
-                      {/* {comment.author} */}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              )}
+            <div style={styles.buttonFrame}>
+              <p style={styles.score}>Score: {fileDetails.score}/5</p>
+              {renderStarRating()}
+              <button onClick={handleView} style={styles.button}>
+                <FaEye />
+              </button>
+              <button onClick={handleDownload} style={styles.button}>
+                <FaDownload />
+              </button>
+              <button onClick={handleDelete} style={styles.button}>
+                <FaTrash />
+                <Link to="/shared">
+                </Link>
+              </button>
             </div>
           </div>
+        </div>
+        <div style={styles.comment}>
+          <h3 style={{ fontWeight: "bold", fontSize: "150%" }}>Comment</h3>
+          <div style={styles.commentInput}>
+            <textarea
+              style={styles.commentTextarea}
+              placeholder="Write your comment..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+            />
+            <button onClick={handleSendComment} style={styles.sendButton}>
+              Send
+            </button>
+          </div>
+          <h3 style={{ fontWeight: "bold", fontSize: "150%" }}>Other Comments</h3>
+          {!commentList || commentList.length === 0 ? (
+            <p>No comments yet.</p>
+          ) : (
+            <ul>
+              {commentList && commentList.map((comment) => (
+                <li key={comment.id} style={styles.commentlist}>
+                  {comment.Content}
+                  <br />
+                  <span style={{ color: "gray", fontSize: "60%" }}>
+                    {comment.date}
+                    <br />
+                  {/* {comment.author} */}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     );
   }

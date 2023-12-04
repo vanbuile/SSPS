@@ -218,7 +218,6 @@ export default function AddPrinter({reload}) {
     const value = event.target.value;
     setInputs(values => ({...values, [name]: value}))
   }
-
   return (
     <>  
         <button 
