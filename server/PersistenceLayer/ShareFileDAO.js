@@ -23,7 +23,7 @@ const searchByKey = async (key) => {
         return [];
     }
 };
-const sortBy = async (key) => {
+const sortBy = async (key,mssv) => {
     try {
         let query = `SELECT * FROM file WHERE isShare = 1`;
         if (key === 'star_asc') {
@@ -31,8 +31,12 @@ const sortBy = async (key) => {
         } else if (key === 'star_desc') {
             query += ` ORDER BY score DESC`;
         }
+        else if (key ==='mssv')
+        {
+            query+=` AND MSSV=?`;
+        }
 
-        const [result, fields] = await connection.query(query);
+        const [result, fields] = await connection.query(query,[mssv]);
         return result;
     } catch (error) {
         throw error;
@@ -59,6 +63,16 @@ const getCommentList = async (fileid) => {
         throw error;
     }
 };
+const getStar = async (fileid,mssv) => {
+    try {
+        const query = `SELECT star FROM RATING WHERE id_file = ? AND MSSV = ?;`; 
+        const [result,field] = await connection.query(query, [fileid,mssv]);
+        //console.log(result[0]);
+        return result[0];
+    } catch (error) {
+        throw error;
+    }
+};
 const insertComment = async (fileId, mssv, content, date) => {
     try {
         const query = `INSERT INTO COMMENT (MSSV, id_file, Content, date) VALUES (?, ?, ?, ?);`;
@@ -67,10 +81,28 @@ const insertComment = async (fileId, mssv, content, date) => {
         throw error;
     }
 };
+
 const insertRating = async (fileId, mssv, star, date) => {
     try {
         const query = `INSERT INTO RATING (MSSV, id_file, star, date) VALUES (?, ?, ?, ?);`;
         const [result] = await connection.query(query, [mssv, fileId, star, date]);
+    } catch (error) {
+        throw error;
+    }
+};
+const checkRated = async (fileId, mssv) => {
+    try {
+        const query = `SELECT * FROM RATING WHERE id_file = ? AND MSSV = ?;`;
+        const [result, fields] = await connection.query(query, [fileId, mssv]);
+        return result.length > 0; 
+    } catch (error) {
+        throw error;
+    }
+};
+const updateRating = async (fileId, mssv, star,date) => {
+    try {
+            const query = `UPDATE RATING SET star = ?, date =? WHERE id_file = ? AND MSSV = ? ;`;
+            const [result] = await connection.query(query, [star,date,fileId,mssv]);
     } catch (error) {
         throw error;
     }
@@ -94,4 +126,7 @@ module.exports = {
     sortBy,
     insertRating,
     deleteFile,
+    updateRating,
+    checkRated,
+    getStar,
 };

@@ -12,7 +12,7 @@ export default function Shared() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchResults, setSearchResults] = useState([]); 
   const [filterKeyword, setFilterKeyword] = useState([]); 
-
+  const uid = document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1];
   useEffect(async () => {
     const fetchData = async () => {
       try {
@@ -48,7 +48,6 @@ export default function Shared() {
   };
   const handleFilterSelect = async (value) => {
     setSelectedFilter(value); 
-    setFilterKeyword(value);
     setIsFilterOpen(false);
     try {
       let url = APIs.APIshareFile + "/";
@@ -57,9 +56,11 @@ export default function Shared() {
       } else {
         url = `${APIs.APIshareFile}/?sort=${value}`;
       }
+      if (value === 'mssv') {
+        url += `&mssv=${uid}`;
+      }
       const response = await axios.get(url);
       setSearchResults(response.data.data);
-      //console.log(response.data);
     } catch (error) {
       if (error.response) {
         console.log(error.response.data.message);
@@ -156,6 +157,17 @@ export default function Shared() {
       handleSearch(); 
     }
   };
+  const handleAuthorization = (role) => {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name === role) {
+        return true
+      }
+    }
+    window.location.href = 'http://localhost:3000/login';
+  }
+  if(handleAuthorization('Student_cookie_id') == true)
   return (
     <div style={{ display: "block", justifyContent: "center" }}>
       <div style={styles.topframe}>
@@ -172,8 +184,8 @@ export default function Shared() {
           />
           
         </div>
-        <div style={styles.filterButton}>
-        <FaFilter isOpen={isFilterOpen} onClick={() => setIsFilterOpen(!isFilterOpen)} /> Filter
+        <div style={styles.filterButton} isOpen={isFilterOpen} onClick={() => setIsFilterOpen(!isFilterOpen)}>
+        <FaFilter  /> Filter
         </div>
       </div>
       <div style={styles.filterDialog}>
@@ -184,28 +196,30 @@ export default function Shared() {
         >
           <option value="star_desc">Đánh giá cao</option>
           <option value="star_asc">Đánh giá thấp</option>
+          <option value="mssv">File của bạn</option>
         </select>
       </div>
       <div style={styles.content}>
-      {searchResults.length > 0 ? (
-  searchResults.map((article, index) => (
-    <div key={index} style={styles.article}>
-      <h2 style={{ color: "#0F6CBF", fontSize: "120%", paddingBottom: "5px" }}>
-        <Link to={`/detail/${article.id}`}>{article.name}</Link>
-      </h2>
-      <p style={{ color: "gray" }}>{article.description}</p>
-    </div>
-  ))
-) : (
-  dataFromServer.map((article, index) => (
-    <div key={index} style={styles.article}>
-      <h2 style={{ color: "#0F6CBF", fontSize: "120%", paddingBottom: "5px" }}>
-        <Link to={`detail/${article.ID}`}>{article.name}</Link>
-      </h2>
-      <p style={{ color: "gray" }}>{article.description}</p>
-    </div>
-  ))
-)}
+        {searchKeyword||filterKeyword ? (
+          searchResults.length>0 ? (
+          searchResults.map((article, index) => (
+          <div key={index} style={styles.article}>
+            <h2 style={{ color: "#0F6CBF", fontSize: "120%", paddingBottom: "5px" }}>
+              <Link to={`/detail/${article.id}`}>{article.name}</Link>
+            </h2>
+            <p style={{ color: "gray" }}>{article.description}</p>
+          </div>
+        ))):(<p>Không có kết quả hiển thị</p>)
+      ) : (
+        dataFromServer.map((article, index) => (
+          <div key={index} style={styles.article}>
+            <h2 style={{ color: "#0F6CBF", fontSize: "120%", paddingBottom: "5px" }}>
+              <Link to={`detail/${article.ID}`}>{article.name}</Link>
+            </h2>
+            <p style={{ color: "gray" }}>{article.description}</p>
+          </div>
+        ))
+      )}
     </div>
     </div>
   );

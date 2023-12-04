@@ -15,6 +15,7 @@ const Statistic = require('./routes/Statistic');
 const Revenue = require('./routes/Revenue');
 const Buy = require('./routes/buy');
 const Login = require('./routes/login');
+const Share = require('./routes/share');
 //init app object
 const app = express()
 // xác thực khi dùng APIs
@@ -41,7 +42,7 @@ app.use('/api/admin/adminInfo', adminInfo);
 app.use('/api/admin/pageNumber', pageNumber);
 app.use('/api/testbuy', Buy);
 app.use('/api/login', Login);
-
+app.use('/api/share', Share);
 
 // app.listen(3002,'localhost', () => {
 //     console.log(`Example app listening on port 3001`)

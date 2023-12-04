@@ -14,7 +14,10 @@ export default function Detail() {
   const [fileDetails, setFileDetails] = useState({});
   const [commentList, setCommentList] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [star,setStar]=useState(-1);
   const navigate = useNavigate();
+  const uid = document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1];
+
   const fetchData = async () => {
     try {
       const response = await axios.get(`${APIs.APIshareFile}/detail/${id}`);
@@ -22,7 +25,7 @@ export default function Detail() {
       //console.log('Not found, redirecting...');
       
         const data = response.data;
-        console.log('Data from server:', data.commentList);
+        //console.log('Data from server:', data.commentList);
         setFileDetails(data.fileDetails);
         setCommentList(data.commentList);
         setIsLoaded(true);
@@ -33,8 +36,21 @@ export default function Detail() {
     }
   };
 
+  const getStar = async () => {
+    try {
+      const response = await axios.get(`${APIs.APIshareFile}/detail/${id}/star?mssv=${uid}`);
+      if (response) {
+        const star = response.data.star;
+        setStar(star);
+      }
+    } catch (error) {
+      console.error('Error Get', error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
+    getStar();
   }, [id]);
 
   if (!isLoaded) {
@@ -47,7 +63,7 @@ export default function Detail() {
     try {
       const response = await axios.post(`${APIs.APIshareFile}/detail/${id}/comment`, {
         content: newComment,
-        mssv:'1818972',
+        mssv:uid,
       });
       if (response){
         fetchData()
@@ -63,24 +79,20 @@ export default function Detail() {
     }
   };
   const handleRate = async (value) => {
-    if (!rated) {
       setRated(value); 
       try {
         const response = await axios.post(`${APIs.APIshareFile}/detail/${id}/rating`, {
           star: value,
-          mssv:'1818972',
+          mssv:uid,
         });
         if (response){
           fetchData()
+          getStar()
         }
       } catch (error) {
         console.error('Error to rating:', error);
       }
-      
-    } else {
-      window.alert("Bạn chỉ có thể đánh giá 1 lần!");
-    }
-    
+
   };
   const styles = {
     frame: {
@@ -180,7 +192,7 @@ export default function Detail() {
 
   const handleDownload = async () => {
     try {
-    
+        window.alert("Vui lòng mở link google drive và thực hiện download !")
     } catch (error) {
       window.alert('Error downloading file...');
     }
@@ -189,6 +201,8 @@ export default function Detail() {
   const handleDelete = async () => {
     const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa không?");
     if (confirmDelete) {
+      if(uid==fileDetails.MSSV)
+      {
       try {
         const response = await axios.post(`${APIs.APIshareFile}/detail/${id}/delete`);
         navigate('/shared');
@@ -196,11 +210,16 @@ export default function Detail() {
       } catch (error) {
         console.error('Error Deleting', error);
       }
+    }
+    else
+    {
+      window.alert('Bạn không có quyền xóa file không thuộc về bạn !');
+    }
     } else {
       console.log("Cancel deleting...");
     }
   };
-
+  
   const handleView = () => {
 
     console.log("Viewing article...");
@@ -208,19 +227,43 @@ export default function Detail() {
   };
 
   
-  const renderStarRating = () => {
-    return (
-      <div style={styles.rating}>
-        {[1, 2, 3, 4, 5].map((star) => (
-          <FaStar
-            key={star}
-            onClick={() => handleRate(star)}
-            style={{ cursor: 'pointer', color: rated >= star ? '#FFD700' : 'gray' }}
-          />
-        ))}
-      </div>
-    );
-  };
+
+  // const renderStarRating = () => {
+  //   const getStar = async () => {
+  //     try {
+  //       const response = await axios.get(`${APIs.APIshareFile}/detail/${id}/star`, { mssv: uid });
+  //       if (response) {
+  //         const star = response.data.star;
+  //         setStar(star);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error Get', error);
+  //     }
+  //   };
+  
+  //   return (
+  //     <div style={styles.rating}>
+  //       {[1, 2, 3, 4, 5].map((starIdx) => (
+  //         <FaStar
+  //           key={starIdx}
+  //           onClick={() => handleRate(starIdx)}
+  //           style={{ cursor: 'pointer', color: star >= starIdx ? '#FFD700' : 'gray' }}
+  //         />
+  //       ))}
+  //     </div>
+  //   );
+  // };
+  const handleAuthorization = (role) => {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name === role) {
+        return true
+      }
+    }
+    window.location.href = 'http://localhost:3000/login';
+  }
+  if(handleAuthorization('Student_cookie_id') == true)
   return (
     <div>
       
@@ -237,7 +280,15 @@ export default function Detail() {
               </div>
               <div style={styles.buttonFrame}>
                 <p style={styles.score}>Score: {fileDetails.score}/5</p>
-                {renderStarRating()}
+                {star && <div style={styles.rating}>
+                        {[1, 2, 3, 4, 5].map((starIdx) => (
+                          <FaStar
+                            key={starIdx}
+                            onClick={() => handleRate(starIdx)}
+                            style={{ cursor: 'pointer', color: star >= starIdx ? '#FFD700' : 'gray' }}
+                          />
+                        ))}
+                      </div>}
                 <button onClick={handleView} style={styles.button}>
                   <FaEye />
                 </button>

@@ -22,9 +22,16 @@ CREATE TABLE IF NOT EXISTS PRINTER (
 CREATE TABLE IF NOT EXISTS STUDENT (
     MSSV VARCHAR(7) PRIMARY KEY,
     name VARCHAR(255),
-    paper INT
+    paper INT,
+    pass VARCHAR(255)
 );
 
+
+CREATE TABLE IF NOT EXISTS SPSO (
+    ID VARCHAR(255) PRIMARY KEY,
+    name VARCHAR(255),
+    pass VARCHAR(255)
+);
 CREATE TABLE IF NOT EXISTS STUDENT_BUYPAGE (
     MSSV VARCHAR(7),
     ID INT AUTO_INCREMENT PRIMARY KEY ,
@@ -35,11 +42,13 @@ CREATE TABLE IF NOT EXISTS STUDENT_BUYPAGE (
 
 CREATE TABLE IF NOT EXISTS FILE (
     ID INT AUTO_INCREMENT PRIMARY KEY,
+    MSSV VARCHAR(7),
     name VARCHAR(255),
     description VARCHAR(255),
     link VARCHAR(255),
     isShare INT, 
-    score INT DEFAULT 0
+    score INT DEFAULT 0,
+    FOREIGN KEY (MSSV) REFERENCES STUDENT(MSSV)
 );
 
 CREATE TABLE IF NOT EXISTS PRINTING (
@@ -69,7 +78,7 @@ CREATE TABLE IF NOT EXISTS COMMENT (
     id_file INT,
     Content TEXT,
     date DATETIME,
-    PRIMARY KEY (MSSV, id_file),
+    PRIMARY KEY (MSSV, date),
     FOREIGN KEY (MSSV) REFERENCES STUDENT(MSSV),
     FOREIGN KEY (id_file) REFERENCES FILE(id)
 );
@@ -103,10 +112,22 @@ FOR EACH ROW
 BEGIN
     DECLARE avg_score DECIMAL(5, 2);
     
-    -- Calculate the average score for the file
     SELECT AVG(star) INTO avg_score FROM RATING WHERE id_file = NEW.id_file;
     
-    -- Update the score in the FILE table
+    UPDATE FILE SET score = avg_score WHERE ID = NEW.id_file;
+END//
+
+DELIMITER ;
+DELIMITER //
+
+CREATE TRIGGER update_score_after_rating_update
+AFTER UPDATE ON RATING
+FOR EACH ROW
+BEGIN
+    DECLARE avg_score DECIMAL(5, 2);
+    
+    SELECT AVG(star) INTO avg_score FROM RATING WHERE id_file = NEW.id_file;
+    
     UPDATE FILE SET score = avg_score WHERE ID = NEW.id_file;
 END//
 
