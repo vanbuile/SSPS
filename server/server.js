@@ -17,6 +17,7 @@ const Buy = require('./routes/buy');
 const file = require('./routes/file');
 const Login = require('./routes/login');
 const print= require('./routes/print');
+const Share = require('./routes/share');
 //init app object
 const app = express()
 // xác thực khi dùng APIs
@@ -46,6 +47,7 @@ app.use('/api/login', Login);
 app.use('/api/print', print);
 app.use('/api/chooseprinter', print);
 app.use('/api/file', file);
+app.use('/api/share', Share);
 
 
 // app.listen(3002,'localhost', () => {

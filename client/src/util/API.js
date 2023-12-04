@@ -11,6 +11,7 @@ const APIadminPageNumber = localhost + "/admin/pageNumber";//cập nhật số t
 const APILogin = localhost + "/login";//đăng nhập
 const APIadminGetInfo = localhost + "/admin/adminInfo";//cập nhật hồ sơ
 const APIprint = localhost + "/print";//in file
+const APIshareFile = localhost + "/share";
 
-const APIs = {APIadminPrinterStatistics, APIadminRevenueStatistics, APIbuy, APIadminPrinter, APIadminFileTypes, APIadminPageNumber, APILogin, APIadminGetInfo, APIprint};
+const APIs = {APIadminPrinterStatistics, APIadminRevenueStatistics, APIbuy, APIadminPrinter, APIadminFileTypes, APIadminPageNumber, APILogin, APIadminGetInfo, APIprint, APIshareFile};
 export default APIs;

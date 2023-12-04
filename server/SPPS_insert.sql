@@ -66,17 +66,20 @@ INSERT INTO STUDENT_BUYPAGE (MSSV, date, paper) VALUES
 ('2223928', '2023-11-30 14:30:00', 10);
 
 
-INSERT INTO FILE (MSSV, name, description, link, isShare) 
+-- INSERT INTO FILE
+INSERT INTO FILE (MSSV,name, description, link, isShare) 
 VALUES 
-('Lập trình Java', 'File về lập trình Java từ cơ bản đến nâng cao.', 'Liên kết Java', 1),
-('Toán cao cấp', 'Tài liệu về toán cao cấp, bao gồm các chương từ 1 đến 5.', 'Liên kết Toán cao cấp', 1),
-('Kỹ thuật lập trình', 'Tài liệu về kỹ thuật lập trình, giới thiệu về các ngôn ngữ lập trình.', 'Liên kết Kỹ thuật lập trình', 1),
-('Quản trị mạng', 'Tài liệu hướng dẫn về quản trị mạng, các chương từ 1 đến 10.', 'Liên kết Quản trị mạng', 1),
-('Tiếng Anh giao tiếp', 'Tài liệu học tiếng Anh giao tiếp, từ vựng và ngữ pháp.', 'Liên kết Tiếng Anh', 1),
-('Mạng máy tính', 'File bao gồm chương 1, chương 2 và chương 3 về mạng máy tính.', 'Liên kết Mạng máy tính', 1),
-('Hóa đại cương', 'File chứa nâng cao và cơ bản về hóa đại cương.', 'Liên kết Hóa đại cương', 0),
-('Mạng máy tính', 'File bao gồm chương 1, chương 2 và chương 3 về mạng máy tính.', 'Liên kết Mạng máy tính', 0),
-('Hóa đại cương', 'File chứa nâng cao và cơ bản về hóa đại cương.', 'Liên kết Hóa đại cương', 1);
+('1818972','Lập trình Java', 'File về lập trình Java từ cơ bản đến nâng cao.', 'Liên kết Java', 1),
+('1818972','Toán cao cấp', 'Tài liệu về toán cao cấp, bao gồm các chương từ 1 đến 5.', 'Liên kết Toán cao cấp', 1),
+('1818972','Kỹ thuật lập trình', 'Tài liệu về kỹ thuật lập trình, giới thiệu về các ngôn ngữ lập trình.', 'Liên kết Kỹ thuật lập trình', 1),
+('1818972','Quản trị mạng', 'Tài liệu hướng dẫn về quản trị mạng, các chương từ 1 đến 10.', 'Liên kết Quản trị mạng', 1),
+('1818972','Tiếng Anh giao tiếp', 'Tài liệu học tiếng Anh giao tiếp, từ vựng và ngữ pháp.', 'Liên kết Tiếng Anh', 1),
+('1818972','Mạng máy tính', 'File bao gồm chương 1, chương 2 và chương 3 về mạng máy tính.', 'Liên kết Mạng máy tính', 1),
+('1818972','Hóa đại cương', 'File chứa nâng cao và cơ bản về hóa đại cương.', 'Liên kết Hóa đại cương', 0),
+('1818972','Mạng máy tính', 'File bao gồm chương 1, chương 2 và chương 3 về mạng máy tính.', 'Liên kết Mạng máy tính', 0),
+('1818972','Hóa đại cương', 'File chứa nâng cao và cơ bản về hóa đại cương.', 'Liên kết Hóa đại cương', 1);
+
+
 
 -- INSERT INTO PRINTING
 INSERT INTO PRINTING (id_printer, MSSV, id_file, paper, date) 
