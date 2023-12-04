@@ -23,11 +23,7 @@ const searchByKey = async (key) => {
         return [];
     }
 };
-<<<<<<< HEAD
-const sortBy = async (key) => {
-=======
 const sortBy = async (key,mssv) => {
->>>>>>> origin/feature/share#2
     try {
         let query = `SELECT * FROM file WHERE isShare = 1`;
         if (key === 'star_asc') {
@@ -35,17 +31,12 @@ const sortBy = async (key,mssv) => {
         } else if (key === 'star_desc') {
             query += ` ORDER BY score DESC`;
         }
-<<<<<<< HEAD
-
-        const [result, fields] = await connection.query(query);
-=======
         else if (key ==='mssv')
         {
             query+=` AND MSSV=?`;
         }
 
         const [result, fields] = await connection.query(query,[mssv]);
->>>>>>> origin/feature/share#2
         return result;
     } catch (error) {
         throw error;
@@ -72,8 +63,6 @@ const getCommentList = async (fileid) => {
         throw error;
     }
 };
-<<<<<<< HEAD
-=======
 const getStar = async (fileid,mssv) => {
     try {
         const query = `SELECT star FROM RATING WHERE id_file = ? AND MSSV = ?;`; 
@@ -84,7 +73,6 @@ const getStar = async (fileid,mssv) => {
         throw error;
     }
 };
->>>>>>> origin/feature/share#2
 const insertComment = async (fileId, mssv, content, date) => {
     try {
         const query = `INSERT INTO COMMENT (MSSV, id_file, Content, date) VALUES (?, ?, ?, ?);`;
@@ -93,10 +81,6 @@ const insertComment = async (fileId, mssv, content, date) => {
         throw error;
     }
 };
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/feature/share#2
 const insertRating = async (fileId, mssv, star, date) => {
     try {
         const query = `INSERT INTO RATING (MSSV, id_file, star, date) VALUES (?, ?, ?, ?);`;
@@ -105,8 +89,6 @@ const insertRating = async (fileId, mssv, star, date) => {
         throw error;
     }
 };
-<<<<<<< HEAD
-=======
 const checkRated = async (fileId, mssv) => {
     try {
         const query = `SELECT * FROM RATING WHERE id_file = ? AND MSSV = ?;`;
@@ -124,7 +106,6 @@ const updateRating = async (fileId, mssv, star,date) => {
         throw error;
     }
 };
->>>>>>> origin/feature/share#2
 const deleteFile = async (id)  =>
 {
     try {
@@ -144,10 +125,7 @@ module.exports = {
     sortBy,
     insertRating,
     deleteFile,
-<<<<<<< HEAD
-=======
     updateRating,
     checkRated,
     getStar,
->>>>>>> origin/feature/share#2
 };
