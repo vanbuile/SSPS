@@ -14,8 +14,9 @@ const pageNumber = require('./routes/pageNumber');
 const Statistic = require('./routes/Statistic');
 const Revenue = require('./routes/Revenue');
 const Buy = require('./routes/buy');
+const file = require('./routes/file');
 const Login = require('./routes/login');
-const Print= require('./routes/print');
+const print= require('./routes/print');
 //init app object
 const app = express()
 // xác thực khi dùng APIs
@@ -42,7 +43,9 @@ app.use('/api/admin/adminInfo', adminInfo);
 app.use('/api/admin/pageNumber', pageNumber);
 app.use('/api/testbuy', Buy);
 app.use('/api/login', Login);
-app.use('/api/print', Print);
+app.use('/api/print', print);
+app.use('/api/chooseprinter', print);
+app.use('/api/file', file);
 
 
 // app.listen(3002,'localhost', () => {
