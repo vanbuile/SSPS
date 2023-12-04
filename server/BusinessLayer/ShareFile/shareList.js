@@ -5,21 +5,15 @@ const viewListSharedFile = async (req, res) => {
     let sharedFiles;
     const searchKey = req.query.search;
     const sortBy = req.query.sort;
-    //console.log(searchKey);
-    //console.log(sortBy);
-
+    const mssv = req.query.mssv; 
     if (searchKey && sortBy) {
       const searchResult = await ShareFileDAO.searchByKey(searchKey);
-      sharedFiles = await ShareFileDAO.sortBy(sortBy, searchResult);
+      const sortReasult = await ShareFileDAO.sortBy(sortBy, mssv);
+      sharedFiles = sortResult.filter(file => searchResult.some(searchedFile => searchedFile.id === file.id));
     } else if (searchKey) {
       sharedFiles = await ShareFileDAO.searchByKey(searchKey);
     } else if (sortBy) {
-      if (sortBy === 'mssv') {
-        const mssv = req.query.mssv; 
-        sharedFiles = await ShareFileDAO.sortBy(sortBy, mssv);
-      } else {
-        sharedFiles = await ShareFileDAO.sortBy(sortBy);
-      }
+      sharedFiles = await ShareFileDAO.sortBy(sortBy, mssv);
     } else {
       sharedFiles = await ShareFileDAO.getListSharedFile();
     }

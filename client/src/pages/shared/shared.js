@@ -11,7 +11,7 @@ export default function Shared() {
   const [dataFromServer, setDataFromServer] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchResults, setSearchResults] = useState([]); 
-  const [filterKeyword, setFilterKeyword] = useState([]); 
+  const [filterKeyword, setFilterKeyword] = useState(""); 
   const uid = document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1];
   useEffect(async () => {
     const fetchData = async () => {
@@ -48,6 +48,7 @@ export default function Shared() {
   };
   const handleFilterSelect = async (value) => {
     setSelectedFilter(value); 
+    setFilterKeyword(value);
     setIsFilterOpen(false);
     try {
       let url = APIs.APIshareFile + "/";
@@ -200,7 +201,7 @@ export default function Shared() {
         </select>
       </div>
       <div style={styles.content}>
-        {searchKeyword||filterKeyword ? (
+        {searchKeyword ||filterKeyword? (
           searchResults.length>0 ? (
           searchResults.map((article, index) => (
           <div key={index} style={styles.article}>
