@@ -24,7 +24,6 @@ const editPrinter = async (id, name, brand, model, building, floor, paper, day, 
   try {
     let q = `call EditPrinter(?,?, ?, ?, ?, ?, ?, ?, ?, ?);`
     const [result, fields] = await connection.query(q, [id, name, brand, model, building,floor, paper, day, description, status])
-    console.log([id, name, brand, model, building, floor, paper, day, description, status])
     return result
   }
   catch (e) {
@@ -44,4 +43,15 @@ const deletePrinter = async (id) => {
 
 }
 
-module.exports = {viewListPrinter , addPrinter , editPrinter, deletePrinter}
+const viewPrinterByLocation = async (building) => {
+  try {
+    let q = `call ViewPrinterByLocation(?);`
+    const [result,abc] = await connection.query(q, [building]);
+    return result[0];
+  } 
+  catch (e) {
+    throw new Error(e);
+  }
+};
+
+module.exports = {viewListPrinter , addPrinter , editPrinter, deletePrinter, viewPrinterByLocation}

@@ -18,17 +18,17 @@ const initialInputs = {
   state: null
 }
 const options = [
-    "BKB1",
-    "BKB2",
-    "BKB3",
-    "BKB5",
-    "BKB6",
-    "A1",
-    "A2",
-    "A3",
-    "A4",
-    "A5",
-    "A6"
+  "BKB1",
+  "BKB2",
+  "BKB3",
+  "BKB5",
+  "BKB6",
+  "A1",
+  "A2",
+  "A3",
+  "A4",
+  "A5",
+  "A6"
 ]
 
 export default function AddPrinter({reload}) {
@@ -39,7 +39,7 @@ export default function AddPrinter({reload}) {
   const [alertContent, setAlertContent] = useState(["",""])
   const [isSuccess, setIsSuccess] = useState(true)
   const [isRefill, setIsRefill] = useState(false)
-  
+
   const handleAuthorization = (role) => {
     const cookies = document.cookie.split('; ');
     for (const cookie of cookies) {
@@ -181,15 +181,15 @@ export default function AddPrinter({reload}) {
       try {
         console.log(inputs)
         const response = await axios.post(APIs.APIadminPrinter +"/add", {
-            name: inputs.name,
-            model: inputs.model,
-            brand: inputs.brand,
-            building: inputs.building,
-            floor: inputs.floor,
-            day: inputs.day,
-            paper: inputs.paper,
-            description: inputs.description,
-            state: inputs.state
+          name: inputs.name,
+          model: inputs.model,
+          brand: inputs.brand,
+          building: inputs.building,
+          floor: inputs.floor,
+          day: inputs.day,
+          paper: inputs.paper,
+          description: inputs.description,
+          state: inputs.state
         })
         if (response.status == 200) {
           openAlertSuccess()
@@ -199,7 +199,7 @@ export default function AddPrinter({reload}) {
           openAlertFailed()
         }
       }
-      // Alert that change has success
+          // Alert that change has success
       catch (e) {
         openAlertFailed()
         console.log("Error when add data")

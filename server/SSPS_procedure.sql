@@ -1,3 +1,6 @@
+
+USE SSPS;
+
 DELIMITER //
 
 -- ! SelectAllPrinting ! 
@@ -22,13 +25,13 @@ BEGIN
     DECLARE dateVar DATE;
     DECLARE weekVar INT;
 
-    SELECT date,week INTO dateVar, weekVar FROM Semester 
+    SELECT date, week INTO dateVar, weekVar FROM Semester 
     ORDER BY date DESC LIMIT 1;
 
     SELECT 
         PR.name,
-        P.paper,
-        SUM(P.week) AS totalWeek
+        SUM(P.paper) AS totalPaper,
+        P.week
     FROM 
         (SELECT 
             P.paper, 
@@ -39,10 +42,11 @@ BEGIN
     JOIN 
         PRINTER PR ON P.id_printer = PR.id
     WHERE 
-        P.week <= weekVar and P.week > 0
+        P.week <= weekVar AND P.week > 0
     GROUP BY 
         PR.name, P.week;
 END //
+
 
 
 CREATE PROCEDURE GetPrintInSemester()
@@ -73,37 +77,38 @@ END //
 
 CREATE PROCEDURE GetStudentPrintMaxSemester()
 BEGIN
+    DECLARE dateVar DATE;
+    DECLARE weekVar INT;
 
-   --  DECLARE dateVar DATE;
---     DECLARE weekVar INT;
+    SELECT date, week INTO dateVar, weekVar FROM Semester 
+    ORDER BY date DESC LIMIT 1;
 
---     SELECT date,week INTO dateVar, weekVar FROM Semester 
---     ORDER BY date DESC LIMIT 1;
-
---     SELECT
---         S.MSSV AS id,
---         S.name AS student,
---         P.paper AS number_pager_printer,
---         s.paper AS number_pager_remaining,
---         P.number_file_share as number_file_share,
---         P.number_file as number_file
---     FROM
---         (SELECT 
---             sum(P.paper) as paper, 
---             P.MSSV,
---             sum(F.isShare) as number_file_share,
---             count(F.isShare) as number_file
---         FROM 
---             PRINTING P
---         JOIN
---             FILE F ON P.id_file = F.ID
---         WHERE 
---              FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 <= weekVar and FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 > 0
---         GROUP BY P.MSSV) AS P
---     JOIN
---         STUDENT S ON P.MSSV = S.MSSV
---     GROUP BY number_pager_printer DESC LIMIT 10;
+    SELECT
+        S.MSSV AS id,
+        S.name AS student,
+        P.paper AS number_pager_printer,
+        S.paper AS number_pager_remaining,
+        P.number_file_share AS number_file_share,
+        P.number_file AS number_file
+    FROM
+        (SELECT 
+            SUM(P.paper) AS paper, 
+            P.MSSV,
+            SUM(F.isShare) AS number_file_share,
+            COUNT(F.isShare) AS number_file
+        FROM 
+            PRINTING P
+        JOIN
+            FILE F ON P.id_file = F.ID
+        WHERE 
+            FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 <= weekVar AND FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 > 0
+        GROUP BY P.MSSV) AS P
+    JOIN
+        STUDENT S ON P.MSSV = S.MSSV
+    ORDER BY number_pager_printer DESC
+    LIMIT 10;
 END //
+
 
 CREATE PROCEDURE GetStudentCourseRevenue()
 BEGIN
@@ -176,11 +181,12 @@ END //
 CREATE PROCEDURE UpdatePageNumber(quantity INT)
 BEGIN
     UPDATE STUDENT
-    SET paper = quantity;
+    SET paper = quantity + paper;
 END //
 CREATE PROCEDURE ViewAllPrinter()
 BEGIN
-    SELECT * FROM printer;
+    SELECT * FROM PRINTER; 
+    -- de printer no kh chay
 END //
 
 CREATE PROCEDURE AddPrinter(IN _name varchar(255), IN _brand varchar(255), IN _model varchar(255), IN _building varchar(255),IN _floor INT,IN _paper int, IN _day date, IN _description varchar(255),IN _state int)
@@ -197,10 +203,34 @@ BEGIN
     WHERE `id` = _id;
 END //
 
-CREATE PROCEDURE `DeletePrinter` (IN _id int)
+CREATE PROCEDURE `DeletePrinter` (IN _id int )
 BEGIN
 	DELETE FROM `ssps`.`printer`
 	WHERE `id` = _id;
+END //
+
+CREATE PROCEDURE ViewPrinterByLocation(IN _building varchar(255))
+BEGIN
+    SELECT id, floor, building, `state`, paper
+    FROM `SSPS`.`PRINTER`
+    WHERE `building` = _building;
+END //
+
+CREATE FUNCTION addFile(_mssv VARCHAR(7), _name VARCHAR(255), _description VARCHAR(255), _link VARCHAR(255), _isShare INT)
+RETURNS BIGINT
+READS SQL DATA
+DETERMINISTIC
+BEGIN
+    INSERT INTO `SSPS`.`FILE`(`MSSV`,`name`, `description`, `link`, `isShare`)
+    VALUES (_mssv, _name, _description, _link, _isShare);
+RETURN LAST_INSERT_ID();
+END; //
+
+CREATE PROCEDURE aPrinting(IN id_printer INT, IN mssv VARCHAR(7), IN id_file INT, IN paper INT, IN date DATETIME)
+BEGIN
+	INSERT INTO `SSPS`.`PRINTING`(`id_printer`,`MSSV`,`id_file`,`paper`,`date`)
+VALUES
+(id_printer, mssv, id_file, paper, date);
 END //
 
 CREATE PROCEDURE SPSOLogin(IN p_id VARCHAR(255), IN p_pass VARCHAR(255))

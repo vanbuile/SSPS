@@ -54,16 +54,16 @@ export default function EditPrinter({printer, reload}) {
     }
   }
   function closeRefill() {
-      if(handleAuthorization('SPSO_cookie_id') == true) {
-        setIsRefill(false)
-        setIsCommit(false)
-      }
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsRefill(false)
+      setIsCommit(false)
+    }
   }
   function openRefill() {
-      if(handleAuthorization('SPSO_cookie_id') == true) {
-        setIsRefill(true)
-      }
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsRefill(true)
     }
+  }
   function openCommitModal(){
     if(handleAuthorization('SPSO_cookie_id') == true) {
       setIsCommit(true)
@@ -92,78 +92,78 @@ export default function EditPrinter({printer, reload}) {
     }
   }
   async function Commit(){
-      if(!inputs.name) {
-        setAlertContent(["Tên máy in không được để trống", "Vui lòng điền lại thông tin"])
-        openRefill()
-        return
-      }
-      if(!inputs.name.length > 30) {
-        setAlertContent(["Tên máy in không được quá 30 kí tự", "Vui lòng điền lại thông tin"])
-        openRefill()
-        return
-      }
-      if (!inputs.brand) {
-        setAlertContent(["Hãng máy in không được để trống", "Vui lòng điền lại thông tin"])
-        openRefill()
-        return
-      }
-      if(!inputs.brand.length > 30) {
-        setAlertContent(["Hãng máy in không được quá 30 kí tự", "Vui lòng điền lại thông tin"])
-        openRefill()
-        return
-      }
-      if(!inputs.model) {
-        setAlertContent(["Model máy in không được để trống", "Vui lòng điền lại thông tin"])
-        openRefill()
-        return
-      }
-      if(!inputs.model.length > 30) {
-        setAlertContent(["Hãng máy in không được quá 30 kí tự", "Vui lòng điền lại thông tin"])
-        openRefill()
-        return
-      }
+    if(!inputs.name) {
+      setAlertContent(["Tên máy in không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if(!inputs.name.length > 30) {
+      setAlertContent(["Tên máy in không được quá 30 kí tự", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if (!inputs.brand) {
+      setAlertContent(["Hãng máy in không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if(!inputs.brand.length > 30) {
+      setAlertContent(["Hãng máy in không được quá 30 kí tự", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if(!inputs.model) {
+      setAlertContent(["Model máy in không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if(!inputs.model.length > 30) {
+      setAlertContent(["Hãng máy in không được quá 30 kí tự", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
 
-      if (inputs.paper === '') {
-        setAlertContent(["Số lượng giấy không được để trống", "Vui lòng điền lại thông tin"])
-        openRefill()
-        return
-      }
-      if (inputs.paper < 0) {
-        setAlertContent(["Số lượng giấy không được nhỏ hơn 0", "Vui lòng điền lại thông tin"])
-        openRefill()
-        return
-      }
-      if (!inputs.day) {
-        setAlertContent(["Ngày mua không được để trống", "Vui lòng điền lại thông tin"])
-        openRefill()
-        return
-      }
-      if(isNaN(Date.parse(inputs.day))) {
-        setAlertContent(["Ngày bị sai cú pháp", "Vui lòng điền lại thông tin"])
-        openRefill()
-        return
-      }
-      if (!inputs.description) {
-        setAlertContent(["Mô tả không được để trống", "Vui lòng điền lại thông tin"])
-        openRefill()
-        return
-      }
+    if (inputs.paper === '') {
+      setAlertContent(["Số lượng giấy không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if (inputs.paper < 0) {
+      setAlertContent(["Số lượng giấy không được nhỏ hơn 0", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if (!inputs.day) {
+      setAlertContent(["Ngày mua không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if(isNaN(Date.parse(inputs.day))) {
+      setAlertContent(["Ngày bị sai cú pháp", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if (!inputs.description) {
+      setAlertContent(["Mô tả không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
 
-      if (!inputs.building) {
-        setAlertContent(["Tòa nhà không được để trống", "Vui lòng điền lại thông tin"])
-        openRefill()
-        return
-      }
-      if (inputs.floor === '') {
-        setAlertContent(["Tầng không được để trống", "Vui lòng điền lại thông tin"])
-        openRefill()
-        return
-      }
-      if (inputs.floor < 0){
-        setAlertContent(["Tầng không được nhỏ hơn không", "Vui lòng điền lại thông tin"])
-        openRefill()
-        return
-      }
+    if (!inputs.building) {
+      setAlertContent(["Tòa nhà không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if (inputs.floor === '') {
+      setAlertContent(["Tầng không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if (inputs.floor < 0){
+      setAlertContent(["Tầng không được nhỏ hơn không", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
 
 
 

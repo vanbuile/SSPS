@@ -1,11 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
-import Table from './Printertable';
 
-
-export default function ShareModal() {
+export default function ShareModal({ onTextareaChange}) {
   let [isOpen, setIsOpen] = useState(false)
-
+  const [localTextareaValue, setLocalTextareaValue] = useState('');
   function closeModal() {
     setIsOpen(false)
   }
@@ -13,7 +11,14 @@ export default function ShareModal() {
   function openModal() {
     setIsOpen(true)
   }
-
+  function handleTextareaChange(event) {
+    const value = event.target.value;
+    setLocalTextareaValue(value);
+  }
+  function handleShare() {  
+    setIsOpen(false)   
+    onTextareaChange(localTextareaValue)
+  }
   function Showmodal(){
     return(
         <Transition appear show={isOpen} as={Fragment}>
@@ -44,23 +49,24 @@ export default function ShareModal() {
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-bold leading-6 text-gray-900"
                   >
-                    Chooose Printer !!!
+                    Mô tả file
                   </Dialog.Title>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      <Table/>
-                    </p>
+                    <div> 
+                      <textarea style={{ width: "350px", borderRadius: "15px", padding: "15px 0 15px 15px", margin: "20px 0 20px 20px", border: "1px solid gray",}}
+                        placeholder="Write description...." value={localTextareaValue} onChange={handleTextareaChange}
+                      />
+                    </div>
                   </div>
-
                   <div className="mt-4">
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
+                      onClick={handleShare}
                     >
-                      Save
+                      Share
                     </button>
                   </div>
                 </Dialog.Panel>
@@ -72,21 +78,17 @@ export default function ShareModal() {
     );
   }
 
-  function handelShare() {     
-    console.log("heheehehheehehe");
-  }
-
 return (
     <>
-      <div className="flex rounded-md bg-textGray px-3 py-2 text-sm font-semibold text-white" style={{marginLeft:'500px'}}>
+      <div className="flex rounded-md bg-textGray px-3 py-2 text-sm font-semibold text-white" style={{marginLeft:'30px'}}>
         <button
           type="button"
           onClick={openModal}
         >
-            Share
+           Chia sẻ 
         </button>
       </div>
-      {isOpen && <>{Showmodal()} {handelShare()} </>}
+      {isOpen && <>{Showmodal()} </>}
     </>
   )
 }

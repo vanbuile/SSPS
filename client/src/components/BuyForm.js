@@ -35,23 +35,35 @@ function BuyForm(props) {
       navigate("/buy/paymentcheck");
     }, 500);
   };
-  const handleSubmit = (values) => {
-    console.log("values: ", values);
-
-    console.log("paymethod: ", paymethod);
-    const param = { amount: values.number * 2000, name: values.name, MSSV: values.MSSV };
-    const fetchApiData = async () => {
-      try {
-        let res = await axios.post(APIs.APIbuy + "/create_payment_url", param);
-        console.log(res);
-        //redirect to payment page
-        window.location.href = res.data;
-      } catch (error) {
-        console.error("Error fetching data:", error);
+  const handleAuthorization = (role) => {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name === role) {
+        return true
       }
-    };
-    //openModal();
-    fetchApiData();
+    }
+    window.location.href = 'http://localhost:3000/login';
+  }
+  const handleSubmit = (values) => {
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      console.log("values: ", values);
+  
+      console.log("paymethod: ", paymethod);
+      const param = { amount: values.number * 2000, name: values.name, MSSV: values.MSSV };
+      const fetchApiData = async () => {
+        try {
+          let res = await axios.post(APIs.APIbuy + "/create_payment_url", param);
+          console.log(res);
+          //redirect to payment page
+          window.location.href = res.data;
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      //openModal();
+      fetchApiData();
+    }
   };
   let [isOpen, setIsOpen] = useState(false);
   function closeModal() {

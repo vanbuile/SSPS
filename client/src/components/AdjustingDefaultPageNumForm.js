@@ -77,7 +77,7 @@ export default function AdjustingDefaultPageNumForm() {
     };
     const modalButton = (label, onClick) => (
         <button
-            className="bg-[#0F6CBF] text-[#F5F5F5] px-4 py-2 rounded-md m-4"
+            className="bg-[#2563EB] text-[#F5F5F5] px-4 py-2 rounded-md m-4"
             onClick={onClick}
         >
             {label}
@@ -89,8 +89,8 @@ export default function AdjustingDefaultPageNumForm() {
         }
     };
     return (
-        <div className="mb-10 mt-10 bg-[#F5F5F5] pt-3 pb-4 border-2 border-[#0F6CBF] flex-1 text-center text-[20px]">
-            <strong id="form-title" className="text-[#374151] text-[20px]">Chọn Số Lượng Giấy In Cấp Lại Cho Toàn Bộ Sinh Viên Của Trường</strong>
+        <div className="mb-10 mt-10 bg-white rounded-2xl pt-3 pb-4 border-2 flex-1 text-center text-[20px]">
+            <strong id="form-title" className="text-[#374151] text-[20px]">Chọn Số Lượng Giấy In Cấp Cho Toàn Bộ Sinh Viên Của Trường</strong>
             <hr className="border-[#0F6CBF] w-full my-10" />
             <div id="form-select" className="grid grid-rows-2 gap-4">
                 <div className="grid grid-cols-1 gap-4 flex justify-between items-center mt-4">
@@ -107,7 +107,7 @@ export default function AdjustingDefaultPageNumForm() {
                     ))}
                 </div>
                 <div id="form-button" className="items-center mt-4">
-                    <button className="w-40 h-30 bg-[#0F6CBF] text-[#F5F5F5] p-2 rounded-md" onClick={openModal}>Cập Nhật</button>
+                    <button className="w-40 h-30 bg-[#2563EB] text-[#F5F5F5] p-2 rounded-md" onClick={openModal}>Cập Nhật</button>
                 </div>
             </div>
             {isModalOpen && (
