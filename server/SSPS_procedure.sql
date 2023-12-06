@@ -74,35 +74,35 @@ END //
 CREATE PROCEDURE GetStudentPrintMaxSemester()
 BEGIN
 
-    DECLARE dateVar DATE;
-    DECLARE weekVar INT;
+   --  DECLARE dateVar DATE;
+--     DECLARE weekVar INT;
 
-    SELECT date,week INTO dateVar, weekVar FROM Semester 
-    ORDER BY date DESC LIMIT 1;
+--     SELECT date,week INTO dateVar, weekVar FROM Semester 
+--     ORDER BY date DESC LIMIT 1;
 
-    SELECT
-        S.MSSV AS id,
-        S.name AS student,
-        P.paper AS number_pager_printer,
-        s.paper AS number_pager_remaining,
-        P.number_file_share as number_file_share,
-        P.number_file as number_file
-    FROM
-        (SELECT 
-            sum(P.paper) as paper, 
-            P.MSSV,
-            sum(F.isShare) as number_file_share,
-            count(F.isShare) as number_file
-        FROM 
-            PRINTING P
-        JOIN
-            FILE F ON P.id_file = F.ID
-        WHERE 
-             FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 <= weekVar and FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 > 0
-        GROUP BY P.MSSV) AS P
-    JOIN
-        STUDENT S ON P.MSSV = S.MSSV
-    GROUP BY number_pager_printer DESC LIMIT 10;
+--     SELECT
+--         S.MSSV AS id,
+--         S.name AS student,
+--         P.paper AS number_pager_printer,
+--         s.paper AS number_pager_remaining,
+--         P.number_file_share as number_file_share,
+--         P.number_file as number_file
+--     FROM
+--         (SELECT 
+--             sum(P.paper) as paper, 
+--             P.MSSV,
+--             sum(F.isShare) as number_file_share,
+--             count(F.isShare) as number_file
+--         FROM 
+--             PRINTING P
+--         JOIN
+--             FILE F ON P.id_file = F.ID
+--         WHERE 
+--              FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 <= weekVar and FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 > 0
+--         GROUP BY P.MSSV) AS P
+--     JOIN
+--         STUDENT S ON P.MSSV = S.MSSV
+--     GROUP BY number_pager_printer DESC LIMIT 10;
 END //
 
 CREATE PROCEDURE GetStudentCourseRevenue()
@@ -151,11 +151,37 @@ BEGIN
     ORDER BY number_pager_buy DESC;
 END //
 
+CREATE PROCEDURE GetFileTypesList()
+BEGIN
+    SELECT
+		*
+    FROM
+		FILETYPE;
+END //
+
+CREATE PROCEDURE AddFileTypes(typ VARCHAR(255))
+BEGIN
+	UPDATE FILETYPE
+    SET isUsable = 1
+    WHERE value = typ;
+END //
+
+CREATE PROCEDURE RemoveFileTypes(typ VARCHAR(255))
+BEGIN
+    UPDATE FILETYPE
+    SET isUsable = 0
+    WHERE value = typ;
+END //
+
+CREATE PROCEDURE UpdatePageNumber(quantity INT)
+BEGIN
+    UPDATE STUDENT
+    SET paper = quantity;
+END //
 CREATE PROCEDURE ViewAllPrinter()
 BEGIN
     SELECT * FROM printer;
 END //
-
 
 CREATE PROCEDURE AddPrinter(IN _name varchar(255), IN _brand varchar(255), IN _model varchar(255), IN _building varchar(255),IN _floor INT,IN _paper int, IN _day date, IN _description varchar(255),IN _state int)
 BEGIN
@@ -177,4 +203,24 @@ BEGIN
 	WHERE `id` = _id;
 END //
 
+CREATE PROCEDURE SPSOLogin(IN p_id VARCHAR(255), IN p_pass VARCHAR(255))
+BEGIN
+    SELECT *
+    FROM SPSO
+    WHERE ID = p_id AND pass = p_pass;
+END //
+
+CREATE PROCEDURE StudentLogin(IN p_id VARCHAR(255), IN p_pass VARCHAR(255))
+BEGIN
+    SELECT *
+    FROM STUDENT
+    WHERE MSSV = p_id AND pass = p_pass;
+END //
+
+CREATE PROCEDURE GetAdminInfo(IN p_id VARCHAR(255))
+BEGIN
+	SELECT ID, name
+    FROM SPSO
+    WHERE ID = p_id;
+END //
 DELIMITER ;

@@ -1,9 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState  } from 'react'
+import { Fragment, useState } from 'react'
 import { CheckIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import APIs from "../util/API";
 import axios from "axios";
-
+import card from "@material-tailwind/react/theme/components/card";
 
 
 const initialInputs = {
@@ -15,7 +15,7 @@ const initialInputs = {
   day:"",
   paper: 0,
   description: "",
-  status: null
+  state: null
 }
 const options = [
     "BKB1",
@@ -39,23 +39,47 @@ export default function AddPrinter({reload}) {
   const [alertContent, setAlertContent] = useState(["",""])
   const [isSuccess, setIsSuccess] = useState(true)
   const [isRefill, setIsRefill] = useState(false)
-
-
-  function closeModal() {
-
-    setIsOpen(false)
+  
+  const handleAuthorization = (role) => {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name === role) {
+        return true
+      }
+    }
+    window.location.href = 'http://localhost:3000/login';
   }
-
+  function closeModal() {
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsOpen(false)
+    }
+  }
   function openModal() {
-
-    setIsOpen(true)
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsOpen(true)
+    }
+  }
+  function closeRefill() {
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsRefill(false)
+      setIsCommit(false)
+    }
+  }
+  function openRefill() {
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsRefill(true)
+    }
   }
   function openCommitModal(){
-
-    setIsCommit(true)
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsCommit(true)
+    }
   }
   function closeCommitModal(){
-    setIsCommit(false)
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsCommit(false)
+    }
   }
   function openAlertSuccess(){
     setAlertContent(["Bạn đã thêm máy in thành công!", "Bạn có thể xem kết quả ngay!"])
@@ -68,16 +92,11 @@ export default function AddPrinter({reload}) {
     setIsAlert(true)
   }
   function closeAlert(){
-    setIsAlert(false)
-    closeCommitModal()
-    closeModal()
-  }
-  function closeRefill() {
-    setIsRefill(false)
-    setIsCommit(false)
-  }
-  function openRefill() {
-    setIsRefill(true)
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsAlert(false)
+      closeCommitModal()
+      closeModal()
+    }
   }
   async function Commit(){
     if(!inputs.name) {
@@ -111,7 +130,7 @@ export default function AddPrinter({reload}) {
       return
     }
 
-    if (!inputs.paper) {
+    if (inputs.paper === '') {
       setAlertContent(["Số lượng giấy không được để trống", "Vui lòng điền lại thông tin"])
       openRefill()
       return
@@ -142,7 +161,7 @@ export default function AddPrinter({reload}) {
       openRefill()
       return
     }
-    if (!inputs.floor) {
+    if (inputs.floor ==='') {
       setAlertContent(["Tầng không được để trống", "Vui lòng điền lại thông tin"])
       openRefill()
       return
@@ -152,39 +171,39 @@ export default function AddPrinter({reload}) {
       openRefill()
       return
     }
-
     if (!inputs.state) {
       setAlertContent(["Trạng thái máy in không được để trống", "Vui lòng điền lại thông tin"])
       openRefill()
       return
     }
 
-
-    try {
-      console.log(inputs)
-      const response = await axios.post(APIs.APIadminPrinter +"/add", {
-          name: inputs.name,
-          model: inputs.model,
-          brand: inputs.brand,
-          building: inputs.building,
-          floor: inputs.floor,
-          day: inputs.day,
-          paper: inputs.paper,
-          description: inputs.description,
-          state: inputs.state
-      })
-      if (response.status === 200) {
-        openAlertSuccess()
-        reload()
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      try {
+        console.log(inputs)
+        const response = await axios.post(APIs.APIadminPrinter +"/add", {
+            name: inputs.name,
+            model: inputs.model,
+            brand: inputs.brand,
+            building: inputs.building,
+            floor: inputs.floor,
+            day: inputs.day,
+            paper: inputs.paper,
+            description: inputs.description,
+            state: inputs.state
+        })
+        if (response.status == 200) {
+          openAlertSuccess()
+          reload()
+        }
+        else {
+          openAlertFailed()
+        }
       }
-      else {
+      // Alert that change has success
+      catch (e) {
         openAlertFailed()
+        console.log("Error when add data")
       }
-    }
-    // Alert that change has success
-    catch (e) {
-      openAlertFailed()
-      console.log("Error when add data")
     }
   }
   const handleChange = (event) => {
@@ -192,294 +211,233 @@ export default function AddPrinter({reload}) {
     const value = event.target.value;
     setInputs(values => ({...values, [name]: value}))
   }
-
   return (
-    <>  
-        <button 
-        onClick={openModal} 
-        type="button" 
-        className="text-white bg-mainBlue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-        Thêm máy in
+      <>
+        <button
+            onClick={openModal}
+            type="button"
+            className="text-white bg-mainBlue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+          Thêm máy in
         </button>
 
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
+        <Transition appear show={isOpen} as={Fragment}>
+          <Dialog as="div" className="relative z-10" onClose={closeModal}>
+            <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
                 leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                    <button  
-                        onClick={closeModal} 
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black bg-opacity-25" />
+            </Transition.Child>
+
+            <div className="fixed inset-0 overflow-y-auto">
+              <div className="flex min-h-full items-center justify-center p-4 text-center">
+                <Transition.Child
+                    as={Fragment}
+                    enter="ease-out duration-300"
+                    enterFrom="opacity-0 scale-95"
+                    enterTo="opacity-100 scale-100"
+                    leave="ease-in duration-200"
+                    leaveFrom="opacity-100 scale-100"
+                    leaveTo="opacity-0 scale-95"
+                >
+                  <Dialog.Panel className="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                    <button
+                        onClick={closeModal}
                         type="button"
                         className='absolute right-2 top-2 p-2 hover:bg-red-100 focus:outline-none focus-visible:ring focus-visible:ring-lightBlue-200 focus-visible:ring-opacity-75 rounded-full'>
-                        <XMarkIcon className='h-5 w-5 text-red-600'/>
+                      <XMarkIcon className='h-5 w-5 text-red-600'/>
                     </button>
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
-                  >
-                    Thêm thông tin máy in mới
-                    
-                  </Dialog.Title>
-                  <hr className='mt-2'/>
+                    <Dialog.Title
+                        as="h3"
+                        className="text-lg font-medium leading-6 text-gray-900"
+                    >
+                      Thêm thông tin máy in mới
 
-                  <div>
-                  <form>
-                    <div class="space-y-8">
-                      <div className="border-b border-gray-900/10 pb-6">
-                        <div class="mt-8 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                          <div class="sm:col-span-4">
-                            <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Tên máy in</label>
-                            <div class="mt-1">
-                              <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                <input onChange={handleChange} type="text" name="name" id="name"  class="focus:outline-none  w-full block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6" placeholder="Từ 1-30 ký tự"/>
+                    </Dialog.Title>
+                    <hr className='mt-2'/>
+
+                    <div>
+                      <form>
+                        <div class="space-y-8">
+                          <div className="border-b border-gray-900/10 pb-6">
+                            <div class="mt-8 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                              <div class="sm:col-span-4">
+                                <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Tên máy in</label>
+                                <div class="mt-1">
+                                  <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
+                                    <input onChange={handleChange} type="text" name="name" id="name"  class="focus:outline-none  w-full block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6" placeholder="Từ 1-30 ký tự"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="sm:col-span-2">
+                                <label for="brand" class="block text-sm font-medium leading-6 text-gray-900">Hãng</label>
+                                <div class="mt-1">
+                                  <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
+                                    <input onChange={handleChange} type="text" name="brand" id="brand"  class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Từ 1-30 ký tự"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="sm:col-span-4">
+                                <label for="model" class="block text-sm font-medium leading-6 text-gray-900">Mẫu số</label>
+                                <div class="mt-1">
+                                  <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
+                                    <input onChange={handleChange} type="text" name="model" id="model"   class="focus:outline-none  w-full block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6" placeholder="Từ 1-30 ký tự"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="sm:col-span-2">
+                                <label for="paper" class="block text-sm font-medium leading-6 text-gray-900">SL Giấy</label>
+                                <div class="mt-1">
+                                  <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
+                                    <input onChange={handleChange}  type="number" name="paper" id="paper" class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Từ 1-30 ký tự"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="sm:col-span-3">
+                                <label for="day" class="block text-sm font-medium leading-6 text-gray-900">Ngày mua</label>
+                                <div class="mt-1">
+                                  <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
+                                    <input onChange={handleChange} type="date" name="day" id="day"   class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Từ 1-30 ký tự"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-span-full">
+                                <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Mô tả</label>
+                                <div class="mt-2">
+                                  <textarea onChange={handleChange} id="description" name="description" rows="3"  class="focus:outline-none block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-2 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-300 sm:text-sm sm:leading-6" placeholder='Không quá 200 kí tự'></textarea>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div class="sm:col-span-2">
-                            <label for="brand" class="block text-sm font-medium leading-6 text-gray-900">Hãng</label>
-                            <div class="mt-1">
-                              <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                <input onChange={handleChange} type="text" name="brand" id="brand"  class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Từ 1-30 ký tự"/>
+
+
+                            {/*<fieldset className='mt-2 float-left'>*/}
+                            {/*    <legend class="text-sm font-semibold leading-6 text-gray-900">Vị trí</legend>*/}
+                            {/*    /!*<div class="mt-2 space-y-2">*!/*/}
+                            {/*    /!*  <div class="flex items-center gap-x-3">*!/*/}
+                            {/*    /!*    <input onChange={handleChange} id="type1" name="type" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>*!/*/}
+                            {/*    /!*    <label for="type1" class="block text-sm font-medium leading-6 text-gray-900">In thường</label>*!/*/}
+                            {/*    /!*  </div>*!/*/}
+                            {/*    /!*  <div class="flex items-center gap-x-3">*!/*/}
+                            {/*    /!*    <input onChange={handleChange} id="type2" name="type" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>*!/*/}
+                            {/*    /!*    <label for="type2" class="block text-sm font-medium leading-6 text-gray-900">In màu</label>*!/*/}
+                            {/*    /!*  </div>*!/*/}
+                            {/*    /!* *!/*/}
+                            {/*    /!*</div>*!/*/}
+                            {/*  */}
+                            {/*</fieldset>*/}
+                            <fieldset className='mt-2 float-left'>
+                              <legend className="text-sm font-semibold leading-6 text-gray-900">Vị trí</legend>
+                              <div className="mt-2 space-y-2">
+                                <div className="flex items-center gap-x-3">
+                                  <label htmlFor="building" className="block text-sm font-medium leading-6 text-gray-900">
+                                    Tòa
+                                  </label>
+                                  <div className="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md w-full">
+                                    <select value={"BKB1"} name="building" id="building"   onChange={handleChange} class="focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6">
+                                      {
+                                        options.map((item, idx) => (
+                                            <option value={item} id={idx}>{item}</option>
+                                        ))
+                                      }
+                                    </select>
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-x-3">
+                                  <label htmlFor="floor" className="block text-sm font-medium leading-6 text-gray-900">Tầng</label>
+                                  <div className="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
+                                    <input onChange={handleChange} type="number" name="floor" id="floor"  className=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Tầng thứ .."/>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                          <div class="sm:col-span-4">
-                            <label for="model" class="block text-sm font-medium leading-6 text-gray-900">Mẫu số</label>
-                            <div class="mt-1">
-                              <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                <input onChange={handleChange} type="text" name="model" id="model"   class="focus:outline-none  w-full block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6" placeholder="Từ 1-30 ký tự"/>
+                            </fieldset>
+                            <fieldset className='mt-2 float-right mr-6'>
+                              <legend class="text-sm font-semibold leading-6 text-gray-900">Tình trạng</legend>
+                              <div class="mt-2 space-y-2">
+                                <div class="flex items-center gap-x-3">
+                                  <input onChange={handleChange} value={0} id="state1" name="state" type="radio"  class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
+                                  <label for="state1" class="block text-sm font-medium leading-6 text-gray-900">Bảo trì</label>
+                                </div>
+                                <div class="flex items-center gap-x-3">
+                                  <input onChange={handleChange} value={1} id="state2" name="state" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
+                                  <label for="state2" class="block text-sm font-medium leading-6 text-gray-900">Hoạt động</label>
+                                </div>
                               </div>
-                            </div>
+                            </fieldset>
+                            <div className='clear-both'></div>
                           </div>
-                          <div class="sm:col-span-2">
-                            <label for="paper" class="block text-sm font-medium leading-6 text-gray-900">SL Giấy</label>
-                            <div class="mt-1">
-                              <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                <input onChange={handleChange}  type="number" name="paper" id="paper" class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Từ 1-30 ký tự"/>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="sm:col-span-3">
-                            <label for="day" class="block text-sm font-medium leading-6 text-gray-900">Ngày mua</label>
-                            <div class="mt-1">
-                              <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                <input onChange={handleChange} type="date" name="day" id="day"   class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Từ 1-30 ký tự"/>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-span-full">
-                            <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Mô tả</label>
-                            <div class="mt-2">
-                              <textarea onChange={handleChange} id="description" name="description" rows="3"  class="focus:outline-none block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-2 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-300 sm:text-sm sm:leading-6" placeholder='Không quá 200 kí tự'></textarea>
-                            </div>
-                          </div>
+
+
+                          {/* Show to refill  */}
                         </div>
 
 
-                        {/*<fieldset className='mt-2 float-left'>*/}
-                        {/*    <legend class="text-sm font-semibold leading-6 text-gray-900">Vị trí</legend>*/}
-                        {/*    /!*<div class="mt-2 space-y-2">*!/*/}
-                        {/*    /!*  <div class="flex items-center gap-x-3">*!/*/}
-                        {/*    /!*    <input onChange={handleChange} id="type1" name="type" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>*!/*/}
-                        {/*    /!*    <label for="type1" class="block text-sm font-medium leading-6 text-gray-900">In thường</label>*!/*/}
-                        {/*    /!*  </div>*!/*/}
-                        {/*    /!*  <div class="flex items-center gap-x-3">*!/*/}
-                        {/*    /!*    <input onChange={handleChange} id="type2" name="type" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>*!/*/}
-                        {/*    /!*    <label for="type2" class="block text-sm font-medium leading-6 text-gray-900">In màu</label>*!/*/}
-                        {/*    /!*  </div>*!/*/}
-                        {/*    /!* *!/*/}
-                        {/*    /!*</div>*!/*/}
-                        {/*  */}
-                        {/*</fieldset>*/}
-                        <fieldset className='mt-2 float-left'>
-                          <legend className="text-sm font-semibold leading-6 text-gray-900">Vị trí</legend>
-                          <div className="mt-2 space-y-2">
-                            <div className="flex items-center gap-x-3">
-                              <label htmlFor="building" className="block text-sm font-medium leading-6 text-gray-900">
-                                Tòa
-                              </label>
-                              <div className="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md w-full">
-                                <select value={"BKB1"} name="building" id="building"   onChange={handleChange} class="focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6">
-                                  {
-                                    options.map((item, idx) => (
-                                        <option value={item} id={idx}>{item}</option>
-                                    ))
-                                  }
-                                </select>
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-x-3">
-                              <label htmlFor="floor" className="block text-sm font-medium leading-6 text-gray-900">Tầng</label>
-                              <div className="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                <input onChange={handleChange} type="number" name="floor" id="floor"  className=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Tầng thứ .."/>
-                              </div>
-                            </div>
-                          </div>
-                        </fieldset>
-                        <fieldset className='mt-2 float-right mr-6'>
-                            <legend class="text-sm font-semibold leading-6 text-gray-900">Tình trạng</legend>
-                            <div class="mt-2 space-y-2">
-                              <div class="flex items-center gap-x-3">
-                                <input onChange={handleChange} value={0} id="state1" name="state" type="radio"  class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
-                                <label for="state1" class="block text-sm font-medium leading-6 text-gray-900">Bảo trì</label>
-                              </div>
-                              <div class="flex items-center gap-x-3">
-                                <input onChange={handleChange} value={1} id="state2" name="state" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
-                                <label for="state2" class="block text-sm font-medium leading-6 text-gray-900">Hoạt động</label>
-                              </div>
-                            </div>
-                        </fieldset>
-                          <div className='clear-both'></div>
-                      </div>
-
-                  
-                    {/* Show to refill  */}
-                    </div>
-
-
-                    {/*Commit to add modal*/}
-                    <div class="mt-2 flex items-center justify-end gap-x-6">
-                      <button type="reset" class="text-sm font-semibold text-gray-900 border border-transparent hover:border-black font-semibold rounded-md px-3 py-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">Reset</button>
-                      <button type="button" onClick={openCommitModal} class="rounded-md bg-transparent hover:bg-mainBlue px-3 py-2 text-sm font-semibold hover:text-white text-mainBlue shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mainBlue border border-mainBlue">Xác nhận</button>
-                      <Transition appear show={isCommit} as={Fragment}>
-                          <Dialog as="div" className="relative z-10" onClose={closeCommitModal}>
-                            <Transition.Child
-                              as={Fragment}
-                              enter="ease-out duration-300"
-                              enterFrom="opacity-0"
-                              enterTo="opacity-100"
-                              leave="ease-in duration-200"
-                              leaveFrom="opacity-100"
-                              leaveTo="opacity-0"
-                            >
-                              <div className="fixed inset-0 bg-black bg-opacity-25" />
-                            </Transition.Child>
-
-                            <div className="fixed inset-0 overflow-y-auto">
-                              <div className="flex min-h-full items-center justify-center p-4 text-center">
-                                <Transition.Child
+                        {/*Commit to add modal*/}
+                        <div class="mt-2 flex items-center justify-end gap-x-6">
+                          <button type="reset" class="text-sm font-semibold text-gray-900 border border-transparent hover:border-black font-semibold rounded-md px-3 py-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">Reset</button>
+                          <button type="button" onClick={openCommitModal} class="rounded-md bg-transparent hover:bg-mainBlue px-3 py-2 text-sm font-semibold hover:text-white text-mainBlue shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mainBlue border border-mainBlue">Xác nhận</button>
+                          <Transition appear show={isCommit} as={Fragment}>
+                            <Dialog as="div" className="relative z-10" onClose={closeCommitModal}>
+                              <Transition.Child
                                   as={Fragment}
                                   enter="ease-out duration-300"
-                                  enterFrom="opacity-0 scale-95"
-                                  enterTo="opacity-100 scale-100"
+                                  enterFrom="opacity-0"
+                                  enterTo="opacity-100"
                                   leave="ease-in duration-200"
-                                  leaveFrom="opacity-100 scale-100"
-                                  leaveTo="opacity-0 scale-95"
-                                >
-                                  <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                                    <Dialog.Title
-                                      as="h3"
-                                      className="text-lg font-medium leading-6 text-gray-900"
-                                    >
-                                      Bạn có chắc muốn thêm máy in này không ?
-                                    </Dialog.Title>
-                                    
-                                    <div className="mt-4">
-                                      <button
-                                        type="button"
-                                        className="float-right inline-flex  ml-1 justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                        onClick={Commit}
+                                  leaveFrom="opacity-100"
+                                  leaveTo="opacity-0"
+                              >
+                                <div className="fixed inset-0 bg-black bg-opacity-25" />
+                              </Transition.Child>
+
+                              <div className="fixed inset-0 overflow-y-auto">
+                                <div className="flex min-h-full items-center justify-center p-4 text-center">
+                                  <Transition.Child
+                                      as={Fragment}
+                                      enter="ease-out duration-300"
+                                      enterFrom="opacity-0 scale-95"
+                                      enterTo="opacity-100 scale-100"
+                                      leave="ease-in duration-200"
+                                      leaveFrom="opacity-100 scale-100"
+                                      leaveTo="opacity-0 scale-95"
+                                  >
+                                    <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                                      <Dialog.Title
+                                          as="h3"
+                                          className="text-lg font-medium leading-6 text-gray-900"
                                       >
-                                        Có
-                                      </button>
-                                      <button
-                                        type="button"
-                                        className="float-right inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                        onClick={closeCommitModal}
-                                      >
-                                        Không
-                                      </button>
-                                      <Transition show={isRefill} as={Fragment}>
-                                        <Dialog as="div" className="relative z-10" onClose={setIsAlert}>
-                                          <Transition.Child
-                                              as={Fragment}
-                                              enter="ease-out duration-300"
-                                              enterFrom="opacity-0"
-                                              enterTo="opacity-100"
-                                              leave="ease-in duration-200"
-                                              leaveFrom="opacity-100"
-                                              leaveTo="opacity-0"
-                                          >
-                                            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-                                          </Transition.Child>
+                                        Bạn có chắc muốn thêm máy in này không ?
+                                      </Dialog.Title>
 
-                                          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                                            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                                              <Transition.Child
-                                                  as={Fragment}
-                                                  enter="ease-out duration-300"
-                                                  enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                                                  enterTo="opacity-100 translate-y-0 sm:scale-100"
-                                                  leave="ease-in duration-200"
-                                                  leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                                                  leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                                              >
-                                                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                                                  <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                                                    <div className="sm:flex sm:items-start">
-                                                      <div className={`mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-200 sm:mx-0 sm:h-10 sm:w-10`}>
-
-                                                        <XMarkIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
-
-                                                      </div>
-                                                      <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                                        <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                                                          {alertContent[0]}
-                                                        </Dialog.Title>
-                                                        <div className="mt-2">
-                                                          <p className="text-sm text-gray-500">
-                                                            {alertContent[1]}
-                                                          </p>
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                  <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                                    <button
-                                                        type="button"
-                                                        className={`border border-red-600 text-red-600 hover:bg-red-600 inline-flex w-full justify-center rounded-md bg-transparent px-3 py-2 text-sm font-semibold  shadow-sm  hover:text-white sm:ml-3 sm:w-auto`}
-                                                        onClick={closeRefill}
-                                                    >
-                                                      Thoát
-                                                    </button>
-                                                  </div>
-                                                </Dialog.Panel>
-                                              </Transition.Child>
-                                            </div>
-                                          </div>
-                                        </Dialog>
-                                      </Transition>
-                                      <Transition show={isAlert} as={Fragment}>
+                                      <div className="mt-4">
+                                        <button
+                                            type="button"
+                                            className="float-right inline-flex  ml-1 justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                            onClick={Commit}
+                                        >
+                                          Có
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="float-right inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                            onClick={closeCommitModal}
+                                        >
+                                          Không
+                                        </button>
+                                        <Transition show={isRefill} as={Fragment}>
                                           <Dialog as="div" className="relative z-10" onClose={setIsAlert}>
                                             <Transition.Child
-                                              as={Fragment}
-                                              enter="ease-out duration-300"
-                                              enterFrom="opacity-0"
-                                              enterTo="opacity-100"
-                                              leave="ease-in duration-200"
-                                              leaveFrom="opacity-100"
-                                              leaveTo="opacity-0"
+                                                as={Fragment}
+                                                enter="ease-out duration-300"
+                                                enterFrom="opacity-0"
+                                                enterTo="opacity-100"
+                                                leave="ease-in duration-200"
+                                                leaveFrom="opacity-100"
+                                                leaveTo="opacity-0"
                                             >
                                               <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
                                             </Transition.Child>
@@ -487,13 +445,73 @@ export default function AddPrinter({reload}) {
                                             <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                                               <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                                                 <Transition.Child
-                                                  as={Fragment}
-                                                  enter="ease-out duration-300"
-                                                  enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                                                  enterTo="opacity-100 translate-y-0 sm:scale-100"
-                                                  leave="ease-in duration-200"
-                                                  leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                                                  leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                                    as={Fragment}
+                                                    enter="ease-out duration-300"
+                                                    enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                                    enterTo="opacity-100 translate-y-0 sm:scale-100"
+                                                    leave="ease-in duration-200"
+                                                    leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                                                    leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                                >
+                                                  <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                                                    <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                                      <div className="sm:flex sm:items-start">
+                                                        <div className={`mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-200 sm:mx-0 sm:h-10 sm:w-10`}>
+
+                                                          <XMarkIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+
+                                                        </div>
+                                                        <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                                          <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                                                            {alertContent[0]}
+                                                          </Dialog.Title>
+                                                          <div className="mt-2">
+                                                            <p className="text-sm text-gray-500">
+                                                              {alertContent[1]}
+                                                            </p>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                                      <button
+                                                          type="button"
+                                                          className={`border border-red-600 text-red-600 hover:bg-red-600 inline-flex w-full justify-center rounded-md bg-transparent px-3 py-2 text-sm font-semibold  shadow-sm  hover:text-white sm:ml-3 sm:w-auto`}
+                                                          onClick={closeRefill}
+                                                      >
+                                                        Thoát
+                                                      </button>
+                                                    </div>
+                                                  </Dialog.Panel>
+                                                </Transition.Child>
+                                              </div>
+                                            </div>
+                                          </Dialog>
+                                        </Transition>
+                                        <Transition show={isAlert} as={Fragment}>
+                                          <Dialog as="div" className="relative z-10" onClose={setIsAlert}>
+                                            <Transition.Child
+                                                as={Fragment}
+                                                enter="ease-out duration-300"
+                                                enterFrom="opacity-0"
+                                                enterTo="opacity-100"
+                                                leave="ease-in duration-200"
+                                                leaveFrom="opacity-100"
+                                                leaveTo="opacity-0"
+                                            >
+                                              <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                                            </Transition.Child>
+
+                                            <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                                              <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                                                <Transition.Child
+                                                    as={Fragment}
+                                                    enter="ease-out duration-300"
+                                                    enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                                    enterTo="opacity-100 translate-y-0 sm:scale-100"
+                                                    leave="ease-in duration-200"
+                                                    leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                                                    leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                                                 >
                                                   <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                                                     <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
@@ -517,9 +535,9 @@ export default function AddPrinter({reload}) {
                                                     </div>
                                                     <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                                       <button
-                                                        type="button"
-                                                        className={`border ${isSuccess? "border-lime-600 text-lime-600 hover:bg-lime-600": "border-red-600 text-red-600 hover:bg-red-600"} inline-flex w-full justify-center rounded-md bg-transparent px-3 py-2 text-sm font-semibold  shadow-sm  hover:text-white sm:ml-3 sm:w-auto`}
-                                                        onClick={closeAlert}
+                                                          type="button"
+                                                          className={`border ${isSuccess? "border-lime-600 text-lime-600 hover:bg-lime-600": "border-red-600 text-red-600 hover:bg-red-600"} inline-flex w-full justify-center rounded-md bg-transparent px-3 py-2 text-sm font-semibold  shadow-sm  hover:text-white sm:ml-3 sm:w-auto`}
+                                                          onClick={closeAlert}
                                                       >
                                                         Thoát
                                                       </button>
@@ -529,23 +547,23 @@ export default function AddPrinter({reload}) {
                                               </div>
                                             </div>
                                           </Dialog>
-                                          </Transition>
-                                    </div>
-                                  </Dialog.Panel>
-                                </Transition.Child>
+                                        </Transition>
+                                      </div>
+                                    </Dialog.Panel>
+                                  </Transition.Child>
+                                </div>
                               </div>
-                            </div>
-                          </Dialog>
-                      </Transition>
+                            </Dialog>
+                          </Transition>
+                        </div>
+                      </form>
                     </div>
-                  </form>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
             </div>
-          </div>
-        </Dialog>
-      </Transition>
-    </>
+          </Dialog>
+        </Transition>
+      </>
   )
 }

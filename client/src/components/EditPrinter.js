@@ -6,7 +6,6 @@ import APIs from "../util/API";
 import axios from "axios";
 import {PencilSquareIcon} from "@heroicons/react/20/solid";
 
-
 const options = [
   "BKB1",
   "BKB2",
@@ -22,7 +21,7 @@ const options = [
 ]
 
 export default function EditPrinter({printer, reload}) {
-  const [inputs, setInputs] = useState()
+  const [inputs, setInputs] = useState(printer)
   const [isOpen, setIsOpen] = useState(false)
   const [isCommit, setIsCommit] = useState(false)
   const [isAlert, setIsAlert] = useState(false)
@@ -32,26 +31,48 @@ export default function EditPrinter({printer, reload}) {
   useEffect(() => {
     setInputs(printer)
   }, [printer]);
-  function closeModal() {
-    setIsOpen(false)
-    setInputs(printer)
-  }
 
+  const handleAuthorization = (role) => {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name === role) {
+        return true
+      }
+    }
+    window.location.href = 'http://localhost:3000/login';
+  }
+  function closeModal() {
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsOpen(false)
+      setInputs(printer)
+    }
+  }
   function openModal() {
-    setIsOpen(true)
-  }
-  function openCommitModal(){
-    setIsCommit(true)
-  }
-  function closeCommitModal(){
-    setIsCommit(false)
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsOpen(true)
+    }
   }
   function closeRefill() {
-    setIsRefill(false)
-    setIsCommit(false)
+      if(handleAuthorization('SPSO_cookie_id') == true) {
+        setIsRefill(false)
+        setIsCommit(false)
+      }
   }
   function openRefill() {
-    setIsRefill(true)
+      if(handleAuthorization('SPSO_cookie_id') == true) {
+        setIsRefill(true)
+      }
+    }
+  function openCommitModal(){
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsCommit(true)
+    }
+  }
+  function closeCommitModal(){
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsCommit(false)
+    }
   }
   function openAlertSuccess(){
     setAlertContent(["Sửa máy in thành công!", "Bạn có thể xem ngay kết quả!"])
@@ -64,9 +85,11 @@ export default function EditPrinter({printer, reload}) {
     setIsAlert(true)
   }
   function closeAlert(){
-    setIsAlert(false)
-    closeCommitModal()
-    closeModal()
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsAlert(false)
+      closeCommitModal()
+      closeModal()
+    }
   }
   async function Commit(){
       if(!inputs.name) {
@@ -100,7 +123,7 @@ export default function EditPrinter({printer, reload}) {
         return
       }
 
-      if (!inputs.paper) {
+      if (inputs.paper === '') {
         setAlertContent(["Số lượng giấy không được để trống", "Vui lòng điền lại thông tin"])
         openRefill()
         return
@@ -131,7 +154,7 @@ export default function EditPrinter({printer, reload}) {
         openRefill()
         return
       }
-      if (!inputs.floor) {
+      if (inputs.floor === '') {
         setAlertContent(["Tầng không được để trống", "Vui lòng điền lại thông tin"])
         openRefill()
         return
@@ -142,35 +165,33 @@ export default function EditPrinter({printer, reload}) {
         return
       }
 
-      if (!inputs.state) {
-        setAlertContent(["Trạng thái máy in không được để trống", "Vui lòng điền lại thông tin"])
-        openRefill()
-        return
-      }
 
+
+    if(handleAuthorization('SPSO_cookie_id') == true) {
       try {
-      const response = await axios.put(APIs.APIadminPrinter + `/edit`, {
-        id: inputs.id,
-        name: inputs.name,
-        model: inputs.model,
-        brand: inputs.brand,
-        paper: inputs.paper,
-        day: inputs.day,
-        building: inputs.building,
-        floor: inputs.floor,
-        description: inputs.description,
-        state: inputs.state
-      })
-      if (response.status === 200){
-        reload(null, null, null, null, null)
-        openAlertSuccess()
+        const response = await axios.put(APIs.APIadminPrinter + `/edit`, {
+          id: inputs.id,
+          name: inputs.name,
+          model: inputs.model,
+          brand: inputs.brand,
+          paper: inputs.paper,
+          day: inputs.day,
+          building: inputs.building,
+          floor: inputs.floor,
+          description: inputs.description,
+          state: inputs.state
+        })
+        if (response.status == 200){
+          reload(null, null, null, null, null)
+          openAlertSuccess()
+        }
+        else
+          openAlertFailed()
       }
-      else
+      catch (e) {
         openAlertFailed()
-    }
-    catch (e) {
-      openAlertFailed()
-      console.log(`Error when edit printer: ${e}`)
+        console.log(`Error when edit printer: ${e}`)
+      }
     }
   }
   const handleChange = (event) => {

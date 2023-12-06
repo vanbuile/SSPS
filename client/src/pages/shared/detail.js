@@ -1,31 +1,99 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import React, { useState,useEffect } from 'react';
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { FaPrint, FaTrash } from 'react-icons/fa';
 import { FaDownload } from 'react-icons/fa';
 import { FaComment } from 'react-icons/fa';
-import { FaStar } from 'react-icons/fa';
-import { FaBackward } from "react-icons/fa";
-import { FaEye } from "react-icons/fa";
+import { saveAs } from 'file-saver';
+import { FaStar, FaBackward, FaEye } from 'react-icons/fa';
+import axios from "axios";
+import APIs from "../../util/API.js";
 export default function Detail() {
-  const { articleId } = useParams();
-  const rating = 3; // Change this to your actual rating
-  const maxRating = 5; // Change this to your maximum rating
-  const article = {
-    user:"Nguyễn Ngọc Bảo Châu - 2110842",
-    title: "Nguyên lý về mối liên hệ phổ biến",
-    description: "Phép biện chứng duy vật được xây dựng trên cơ sở một hệ thống những nguyên lý,những phạm trù cơ bản, những quy luật phổ biến phản ánh đúng đắn hiện thực.........biến phản ánh  ",
+  const { id } = useParams();
+  const [rated, setRated] = useState(false);
+  const [newComment, setNewComment] = useState('');
+  const [fileDetails, setFileDetails] = useState({});
+  const [commentList, setCommentList] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [star,setStar]=useState(-1);
+  const navigate = useNavigate();
+  const uid = document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1];
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`${APIs.APIshareFile}/detail/${id}`);
+      //console.log(response);
+      //console.log('Not found, redirecting...');
+      
+        const data = response.data;
+        //console.log('Data from server:', data.commentList);
+        setFileDetails(data.fileDetails);
+        setCommentList(data.commentList);
+        setIsLoaded(true);
+      
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      navigate('/shared');
+    }
   };
-  const comments = [
-    { id: 1, text: "Comment 1", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê"},
-    { id: 2, text: "Comment 2", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
-    { id: 3, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
-    { id: 4, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
-    { id: 5, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê"},
-    { id: 6, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
-    { id: 7, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
-    { id: 8, text: "Comment 3", date:"Fri,October 20, 2023", user:"Nguyễn Văn Bê" },
-  ];
+
+  const getStar = async () => {
+    try {
+      const response = await axios.get(`${APIs.APIshareFile}/detail/${id}/star?mssv=${uid}`);
+      if (response) {
+        const star = response.data.star;
+        setStar(star);
+      }
+    } catch (error) {
+      console.error('Error Get', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    getStar();
+  }, [id]);
+
+  if (!isLoaded) {
+    return <div>Loading...</div>; // Hiển thị loading khi fetchData đang thực hiện
+  }
+
+  const handleSendComment = async () => {
+    if(newComment)
+    {
+    try {
+      const response = await axios.post(`${APIs.APIshareFile}/detail/${id}/comment`, {
+        content: newComment,
+        mssv:uid,
+      });
+      if (response){
+        fetchData()
+      }
+      console.log('Comment sent:', response.data)
+      setNewComment('');
+    } catch (error) {
+      console.error('Error sending comment:', error);
+    }}
+    else
+    {
+      window.alert("Vui lòng nhập bình luận !");
+    }
+  };
+  const handleRate = async (value) => {
+      setRated(value); 
+      try {
+        const response = await axios.post(`${APIs.APIshareFile}/detail/${id}/rating`, {
+          star: value,
+          mssv:uid,
+        });
+        if (response){
+          fetchData()
+          getStar()
+        }
+      } catch (error) {
+        console.error('Error to rating:', error);
+      }
+
+  };
   const styles = {
     frame: {
       border:"1px solid #0f6cbf",
@@ -49,6 +117,12 @@ export default function Detail() {
     },
     description: {
       color: "gray",
+    },
+    score:
+    {
+      color:"#FFD700",
+      padding:"10px",
+      fontWeight:"bold",
     },
     user: {
       marginTop:"20px",
@@ -84,12 +158,13 @@ export default function Detail() {
       display: "flex",
       justifyContent: "flex-end",
       alignItems: "center",
+      padding:"10px",
     },
     commentText: {
-      flex: 1, // Takes up available space (pushes date to the right)
+      flex: 1, 
     },
     commentDate: {
-      marginLeft: "10px", // Adds some space to the left of the date
+      marginLeft: "10px", 
     },
     commentInput: {
       display: "flex",
@@ -113,93 +188,154 @@ export default function Detail() {
       marginRight:"15px",
     },
   };
-  const handleSendComment = () => {
-    // Implement your comment logic here
-    console.log("Sending a comment...");
-  };
-  // Function to handle downloading the article
-  const handleDownload = () => {
-    // Implement your download logic here
-    console.log("Downloading article...");
-  };
+ 
 
-  // Function to handle commenting
-  const handleDelete = () => {
-    // Implement your comment logic here
-    console.log("Commenting on the article...");
+  const handleDownload = async () => {
+    try {
+        window.alert("Vui lòng mở link google drive và thực hiện download !")
+    } catch (error) {
+      window.alert('Error downloading file...');
+    }
   };
+  
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm("Bạn có chắc chắn muốn xóa không?");
+    if (confirmDelete) {
+      if(uid==fileDetails.MSSV)
+      {
+      try {
+        const response = await axios.post(`${APIs.APIshareFile}/detail/${id}/delete`);
+        navigate('/shared');
+        
+      } catch (error) {
+        console.error('Error Deleting', error);
+      }
+    }
+    else
+    {
+      window.alert('Bạn không có quyền xóa file không thuộc về bạn !');
+    }
+    } else {
+      console.log("Cancel deleting...");
+    }
+  };
+  
   const handleView = () => {
-    // Implement your comment logic here
-    console.log("Commenting on the article...");
+
+    console.log("Viewing article...");
+    window.open(fileDetails.link, "_blank");
   };
 
-  // Function to handle rating
-  const handleRate = () => {
-    // Implement your rating logic here
-    console.log("Rating the article...");
-  };
+  
 
+  // const renderStarRating = () => {
+  //   const getStar = async () => {
+  //     try {
+  //       const response = await axios.get(`${APIs.APIshareFile}/detail/${id}/star`, { mssv: uid });
+  //       if (response) {
+  //         const star = response.data.star;
+  //         setStar(star);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error Get', error);
+  //     }
+  //   };
+  
+  //   return (
+  //     <div style={styles.rating}>
+  //       {[1, 2, 3, 4, 5].map((starIdx) => (
+  //         <FaStar
+  //           key={starIdx}
+  //           onClick={() => handleRate(starIdx)}
+  //           style={{ cursor: 'pointer', color: star >= starIdx ? '#FFD700' : 'gray' }}
+  //         />
+  //       ))}
+  //     </div>
+  //   );
+  // };
+  const handleAuthorization = (role) => {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split('=');
+      if(name === role) {
+        return true
+      }
+    }
+    window.location.href = 'http://localhost:3000/login';
+  }
+  if(handleAuthorization('Student_cookie_id') == true)
   return (
     <div>
-      <Link to="/shared" >
-        <FaBackward style={{ marginLeft:"80px", }}/>
-      </Link>
-      <div style={styles.frame}>
-        <div style={styles.header}>
-          <div>
-            <h2 style={styles.title}>{article.title}</h2>
-            <p style={styles.description}>{article.description}</p>
-            <p style={styles.user}>{article.user}</p>
-          </div>
-          <div style={styles.buttonFrame}>
-            <button onClick={handleView} style={styles.button}>
-              <FaEye />
-            </button>
-            <button onClick={handleDownload} style={styles.button}>
-              <FaDownload />
-            </button>
-            <button onClick={handleRate} style={styles.button}>
-              <FaPrint />
-            </button>
-            <button onClick={handleDelete} style={styles.button}>
-              <FaTrash />
-            </button>
-            <div style={styles.rating}>
-              {Array.from({ length: maxRating }, (_, index) => (
-                <FaStar
-                  key={index}
-                  style={{
-                    color: index < rating ? 'gold' : 'grey',
-                    fontSize: '24px',
-                  }}
-                />
-              ))}
+      
+        <div>
+          <Link to="/shared">
+            <FaBackward style={{ marginLeft: "80px" }} />
+          </Link>
+          <div style={styles.frame}>
+            <div style={styles.header}>
+              <div>
+                <h2 style={styles.title}>{fileDetails.name}</h2>
+                <p style={styles.description}>{fileDetails.description}</p>
+                {/* <p style={styles.user}>{article.author}</p> */}
+              </div>
+              <div style={styles.buttonFrame}>
+                <p style={styles.score}>Score: {fileDetails.score}/5</p>
+                {star && <div style={styles.rating}>
+                        {[1, 2, 3, 4, 5].map((starIdx) => (
+                          <FaStar
+                            key={starIdx}
+                            onClick={() => handleRate(starIdx)}
+                            style={{ cursor: 'pointer', color: star >= starIdx ? '#FFD700' : 'gray' }}
+                          />
+                        ))}
+                      </div>}
+                <button onClick={handleView} style={styles.button}>
+                  <FaEye />
+                </button>
+                <button onClick={handleDownload} style={styles.button}>
+                  <FaDownload />
+                </button>
+                <button onClick={handleDelete} style={styles.button}>
+                  <FaTrash />
+                  <Link to="/shared">
+                  </Link>
+                </button>
+              </div>
             </div>
           </div>
+          <div style={styles.comment}>
+            <h3 style={{ fontWeight: "bold", fontSize: "150%" }}>Comment</h3>
+            <div style={styles.commentInput}>
+              <textarea
+                style={styles.commentTextarea}
+                placeholder="Write your comment..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+              />
+              <button onClick={handleSendComment} style={styles.sendButton}>
+                Send
+              </button>
+            </div>
+            <h3 style={{ fontWeight: "bold", fontSize: "150%" }}>Other Comments</h3>
+            {!commentList || commentList.length === 0 ? (
+              <p>No comments yet.</p>
+            ) : (
+              <ul>
+                {commentList && commentList.map((comment) => (
+                  <li key={comment.id} style={styles.commentlist}>
+                    {comment.Content}
+                    <br />
+                    <span style={{ color: "gray", fontSize: "60%" }}>
+                      {comment.date}
+                      <br />
+                    {/* {comment.author} */}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
-      </div>
-      <div style={styles.comment}>
-        <h3 style={{fontWeight:"bold",fontSize:"150%"}}>Comment</h3>
-        <div style={styles.commentInput}> 
-            <textarea
-              style={styles.commentTextarea}
-              placeholder="Write your comment..."
-            />
-            <button onClick={handleSendComment} style={styles.sendButton}>
-              Send
-            </button>
-        </div>
-        <h3 style={{fontWeight:"bold",fontSize:"150%"}}>Các bình luận khác</h3>
-        <ul>
-          {comments.map((comment) => (
-            <li key={comment.id} style={styles.commentlist}>
-              {comment.text}
-              <br></br>
-              <span style={{color:"gray",fontSize:"60%"}}>{comment.date}<br/>{comment.user}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }

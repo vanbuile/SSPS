@@ -16,6 +16,11 @@ const navigation = [
 
 
 export default function Example() {
+  const logout = async () => {
+		const expirationTime = new Date(Date.now() - 60 * 1000);
+		document.cookie = `Student_cookie_id=null; expires=${expirationTime.toUTCString()}; path=/`;
+		window.location.href = 'http://localhost:3000/login';
+  };
   return (
     <Disclosure as="nav" className=" bg-white sticky top-0 ">
       {({ open }) => (
@@ -105,12 +110,11 @@ export default function Example() {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
+                          <button onClick={logout}
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             Sign out
-                          </a>
+                          </button>
                         )}
                       </Menu.Item>
                     </Menu.Items>
@@ -153,7 +157,7 @@ function SidebarLink({ link }) {
 	return (  
 		<Link
 			to={link.path}
-			className={classNames(pathname === link.path ? 'bg-gray-200 text-3xl font-medium text-gray-600 dark:text-white' : ' text-3xl font-medium text-gray-900 dark:text-white', linkClass)}
+			className={classNames(pathname === link.path ? 'bg-blue-500 text-3xl font-medium text-white' : 'text-3xl font-medium hover:bg-blue-300 hover:text-white text-gray-700', linkClass)}
 		>
 			<span className="text-xl">{link.icon}</span>
 			{link.label}
