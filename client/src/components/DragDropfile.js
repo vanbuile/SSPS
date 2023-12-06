@@ -112,6 +112,7 @@ const FileUpload = () => {
         isShare: isShare
       })
       if (response.status === 200) {
+        console.log("abasbcjsbcasjk")
         document.cookie = `file_id=${response.data["file_id"]}; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`
         navigate('/print/ChoosePrinter');
       }
