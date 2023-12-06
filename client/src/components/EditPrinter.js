@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import {Fragment, useEffect, useState} from 'react'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 import { CheckIcon } from '@heroicons/react/24/outline'
 import APIs from "../util/API";
@@ -22,15 +22,19 @@ const options = [
 ]
 
 export default function EditPrinter({printer, reload}) {
-  const [inputs, setInputs] = useState(printer)
+  const [inputs, setInputs] = useState()
   const [isOpen, setIsOpen] = useState(false)
   const [isCommit, setIsCommit] = useState(false)
   const [isAlert, setIsAlert] = useState(false)
   const [alertContent, setAlertContent] = useState(["Sửa máy in thành công!", "Bạn có thể xem ngay kết quả!"])
   const [isSuccess, setIsSuccess] = useState(true)
   const [isRefill, setIsRefill] = useState(false)
+  useEffect(() => {
+    setInputs(printer)
+  }, [printer]);
   function closeModal() {
     setIsOpen(false)
+    setInputs(printer)
   }
 
   function openModal() {
@@ -65,7 +69,6 @@ export default function EditPrinter({printer, reload}) {
     closeModal()
   }
   async function Commit(){
-
       if(!inputs.name) {
         setAlertContent(["Tên máy in không được để trống", "Vui lòng điền lại thông tin"])
         openRefill()
@@ -175,7 +178,7 @@ export default function EditPrinter({printer, reload}) {
     const value = event.target.value;
     setInputs(values => ({...values, [name]: value}))
   }
-
+  if (!inputs) return <></>
   return (
       <>
         <button
@@ -235,7 +238,7 @@ export default function EditPrinter({printer, reload}) {
                                 <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Tên máy in</label>
                                 <div class="mt-1">
                                   <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                    <input value={printer.name} onChange={handleChange} type="text" name="name" id="name"  class="focus:outline-none  w-full block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6" placeholder="Từ 1-20 ký tự"/>
+                                    <input value={inputs.name} onChange={handleChange} type="text" name="name" id="name"  class="focus:outline-none  w-full block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6" placeholder="Từ 1-20 ký tự"/>
                                   </div>
                                 </div>
                               </div>
@@ -243,7 +246,7 @@ export default function EditPrinter({printer, reload}) {
                                 <label for="brand" class="block text-sm font-medium leading-6 text-gray-900">Hãng</label>
                                 <div class="mt-1">
                                   <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                    <input value={printer.brand} onChange={handleChange} type="text" name="brand" id="brand" class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Từ 1-20 ký tự"/>
+                                    <input value={inputs.brand} onChange={handleChange} type="text" name="brand" id="brand" class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Từ 1-20 ký tự"/>
                                   </div>
                                 </div>
                               </div>
@@ -251,7 +254,7 @@ export default function EditPrinter({printer, reload}) {
                                 <label for="model" class="block text-sm font-medium leading-6 text-gray-900">Mẫu số</label>
                                 <div class="mt-1">
                                   <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                    <input value={printer.model} onChange={handleChange} type="text" name="model" id="model" autocomplete="model" class="focus:outline-none  w-full block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6" />
+                                    <input value={inputs.model} onChange={handleChange} type="text" name="model" id="model" autocomplete="model" class="focus:outline-none  w-full block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6" />
                                   </div>
                                 </div>
                               </div>
@@ -259,7 +262,7 @@ export default function EditPrinter({printer, reload}) {
                                 <label for="paper" class="block text-sm font-medium leading-6 text-gray-900">SL Giấy</label>
                                 <div class="mt-1">
                                   <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                    <input value={printer.paper} onChange={handleChange}  type="number" name="paper" id="paper" class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6"/>
+                                    <input value={inputs.paper} onChange={handleChange}  type="number" name="paper" id="paper" class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6"/>
                                   </div>
                                 </div>
                               </div>
@@ -267,14 +270,14 @@ export default function EditPrinter({printer, reload}) {
                                 <label for="day" class="block text-sm font-medium leading-6 text-gray-900">Ngày mua</label>
                                 <div class="mt-1">
                                   <div class="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                    <input value={printer.day} onChange={handleChange} type="date" name="day" id="day"  class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6"/>
+                                    <input value={inputs.day} onChange={handleChange} type="date" name="day" id="day"  class=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6"/>
                                   </div>
                                 </div>
                               </div>
                               <div class="col-span-full">
                                 <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Mô tả</label>
                                 <div class="mt-2">
-                                  <textarea value={printer.description} onChange={handleChange} id="description" name="description" rows="3" class="focus:outline-none block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-2 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-300 sm:text-sm sm:leading-6" ></textarea>
+                                  <textarea value={inputs.description} onChange={handleChange} id="description" name="description" rows="3" class="focus:outline-none block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-2 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-lightBlue-300 sm:text-sm sm:leading-6" ></textarea>
                                 </div>
                               </div>
                             </div>
@@ -304,7 +307,7 @@ export default function EditPrinter({printer, reload}) {
                                     Tòa
                                   </label>
                                   <div className="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md w-full">
-                                    <select value={printer.building} name="building" id="building" onChange={handleChange} className="focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6">
+                                    <select value={inputs.building} name="building" id="building" onChange={handleChange} className="focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6">
                                       {
                                         options.map((item, idx) => (
                                             <option value={item} id={idx}>{item}</option>
@@ -316,7 +319,7 @@ export default function EditPrinter({printer, reload}) {
                                 <div className="flex items-center gap-x-3">
                                   <label htmlFor="floor" className="block text-sm font-medium leading-6 text-gray-900">Tầng</label>
                                   <div className="flex rounded-md shadow-sm ring-2 ring-inset ring-gray-300 focus-within:ring-lightBlue-300 sm:max-w-md">
-                                    <input value={printer.floor} onChange={handleChange} type="number" name="floor" id="floor"  className=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6"/>
+                                    <input value={inputs.floor} onChange={handleChange} type="number" name="floor" id="floor"  className=" focus:outline-none  w-full flex-1 border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6"/>
                                   </div>
                                 </div>
                               </div>
@@ -326,11 +329,11 @@ export default function EditPrinter({printer, reload}) {
                               <legend class="text-sm font-semibold leading-6 text-gray-900">Tình trạng</legend>
                               <div class="mt-2 space-y-2">
                                 <div class="flex items-center gap-x-3">
-                                  <input checked={printer.state == 0} onChange={handleChange} value={1} id="state1" name="status" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
+                                  <input checked={inputs.state == 0} onChange={handleChange} value={0} id="state1" name="state" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
                                   <label for="state1" class="block text-sm font-medium leading-6 text-gray-900">Bảo trì</label>
                                 </div>
                                 <div class="flex items-center gap-x-3">
-                                  <input checked={printer.state == 1} onChange={handleChange} value={2} id="state2" name="status" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
+                                  <input checked={inputs.state == 1} onChange={handleChange} value={1} id="state2" name="state" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
                                   <label for="state2" class="block text-sm font-medium leading-6 text-gray-900">Hoạt động</label>
                                 </div>
                               </div>
