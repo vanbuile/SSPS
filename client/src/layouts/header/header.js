@@ -157,7 +157,7 @@ function SidebarLink({ link }) {
 	return (  
 		<Link
 			to={link.path}
-			className={classNames(pathname === link.path ? 'bg-gray-200 text-3xl font-medium text-gray-600 dark:text-white' : ' text-3xl font-medium text-gray-900 dark:text-white', linkClass)}
+			className={classNames(pathname === link.path ? 'bg-blue-500 text-3xl font-medium text-white' : 'text-3xl font-medium hover:bg-blue-300 hover:text-white text-gray-700', linkClass)}
 		>
 			<span className="text-xl">{link.icon}</span>
 			{link.label}

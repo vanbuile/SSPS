@@ -17,6 +17,7 @@ const Buy = require('./routes/buy');
 const print = require('./routes/print');
 const file = require('./routes/file');
 const Login = require('./routes/login');
+const Share = require('./routes/share');
 const Print= require('./routes/print');
 //init app object
 const app = express()
@@ -46,6 +47,7 @@ app.use('/api/testbuy', Buy);
 app.use('/api/chooseprinter', print);
 app.use('/api/file', file);
 app.use('/api/login', Login);
+app.use('/api/share', Share);
 app.use('/api/print', Print);
 
 
