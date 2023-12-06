@@ -58,6 +58,7 @@ export default function SPSOLogin() {
                         type="text"
                         id="query"
                         name="id"
+                        required
                         placeholder="Tên Đăng Nhập"
                         className="w-full h-full rounded-2xl border border-gray-200 overflow-hidden px-4 text-base font-semibold bg-gray-200 outline-none"
                         value={formData.id}
@@ -76,7 +77,7 @@ export default function SPSOLogin() {
                         className="w-full h-full rounded-2xl border border-gray-200 overflow-hidden px-4 text-base font-semibold bg-gray-200 outline-none"
                         />
                 </p>
-                <p className="w-80 h-10 rounded-full overflow-hidden bg-[#0F6CBF] text-[#F5F5F5] cursor-pointer transition duration-300 hover:bg-blue-800 flex items-center justify-center mb-16">
+                <p className="w-80 h-10 rounded-full overflow-hidden bg-[#2563EB] text-[#F5F5F5] cursor-pointer transition duration-300 hover:bg-blue-800 flex items-center justify-center mb-16">
                     <input className="cursor-pointer transition duration-300 hover:bg-blue-800" type="submit" value="Đăng nhập" />
                 </p>
             </form>

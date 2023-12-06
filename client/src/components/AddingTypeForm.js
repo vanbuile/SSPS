@@ -83,7 +83,7 @@ export default function AddingTypeForm() {
 
     const modalButton = (name, onClick, disabled = false) => (
         <button
-            className={`bg-[#0F6CBF] text-[#F5F5F5] px-4 py-2 rounded-md m-4 ${disabled && 'opacity-50 cursor-not-allowed'}`}
+            className={`bg-[#2563EB] text-[#F5F5F5] px-4 py-2 rounded-md m-4 ${disabled && 'opacity-50 cursor-not-allowed'}`}
             onClick={onClick}
             disabled={disabled}
         >
@@ -96,7 +96,7 @@ export default function AddingTypeForm() {
         }
     };
     return (
-        <div className="mb-10 mt-10 bg-[#F5F5F5] pt-3 pb-4 border-2 border-[#0F6CBF] flex-1 text-center text-[20px]">
+        <div className="mb-10 mt-10 bg-white rounded-2xl pt-3 pb-4 border-2 flex-1 text-center text-[20px]">
             <strong id="form-title" className="text-[#374151] text-[20px] p-5">Danh Sách Các Kiểu File Chưa Được Thêm</strong>
             <hr className="border-[#0F6CBF] w-full my-4" />
             {checkboxData.length == 0 && (
@@ -106,7 +106,7 @@ export default function AddingTypeForm() {
                 <div id="form-checkbox" className="col-span-6 p-4">
                     <div className="h-full flex flex-col justify-center">
                         {checkboxData.map((item) => (
-                            <div key={`checkbox${item.ID}`} className="mb-4 bg-[#FFFFFF] p-4 flex items-center justify-between">
+                            <div key={`checkbox${item.ID}`} className="mb-4 bg-[#80DDEE80] rounded-2xl p-4 flex items-center justify-between">
                                 <name htmlFor={item.ID}>{item.name}</name>
                                 <input
                                     type="checkbox"
@@ -122,7 +122,7 @@ export default function AddingTypeForm() {
                 <div id="form-button" className="col-span-2 pl-4 pr-4 flex items-center">
                     {checkboxData.length > 0 && (
                         <button
-                            className="w-40 h-30 bg-[#0F6CBF] text-[#F5F5F5] p-2 rounded-md"
+                            className="w-40 h-30 bg-[#2563EB] text-[#F5F5F5] p-2 rounded-md"
                             onClick={openModal}
                             disabled={isButtonDisabled}
                         >

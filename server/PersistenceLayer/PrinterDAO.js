@@ -24,7 +24,6 @@ const editPrinter = async (id, name, brand, model, building, floor, paper, day, 
   try {
     let q = `call EditPrinter(?,?, ?, ?, ?, ?, ?, ?, ?, ?);`
     const [result, fields] = await connection.query(q, [id, name, brand, model, building,floor, paper, day, description, status])
-    console.log([id, name, brand, model, building, floor, paper, day, description, status])
     return result
   }
   catch (e) {

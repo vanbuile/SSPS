@@ -13,7 +13,7 @@ export default function Shared() {
   const [searchResults, setSearchResults] = useState([]); 
   const [filterKeyword, setFilterKeyword] = useState(""); 
   const uid = document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1];
-  useEffect(async () => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const url = APIs.APIshareFile + "/";

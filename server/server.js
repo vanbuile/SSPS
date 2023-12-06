@@ -14,11 +14,11 @@ const pageNumber = require('./routes/pageNumber');
 const Statistic = require('./routes/Statistic');
 const Revenue = require('./routes/Revenue');
 const Buy = require('./routes/buy');
-const print = require('./routes/print');
 const file = require('./routes/file');
 const Login = require('./routes/login');
-const Share = require('./routes/share');
+const print= require('./routes/print');
 const Print= require('./routes/print');
+const Share = require('./routes/share');
 //init app object
 const app = express()
 // xác thực khi dùng APIs
@@ -47,8 +47,8 @@ app.use('/api/testbuy', Buy);
 app.use('/api/chooseprinter', print);
 app.use('/api/file', file);
 app.use('/api/login', Login);
-app.use('/api/share', Share);
 app.use('/api/print', Print);
+app.use('/api/share', Share);
 
 
 // app.listen(3002,'localhost', () => {
