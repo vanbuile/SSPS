@@ -181,7 +181,7 @@ END //
 CREATE PROCEDURE UpdatePageNumber(quantity INT)
 BEGIN
     UPDATE STUDENT
-    SET paper = quantity;
+    SET paper = quantity + paper;
 END //
 CREATE PROCEDURE ViewAllPrinter()
 BEGIN
