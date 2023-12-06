@@ -136,7 +136,7 @@ export default function Shared() {
     },
     content: {
       display:"block",
-      padding:"0 40px",
+      padding:"0 65px",
       margin:"0 40px",
     },
     article: {
