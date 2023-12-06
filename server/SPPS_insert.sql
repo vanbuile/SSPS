@@ -67,7 +67,7 @@ INSERT INTO STUDENT_BUYPAGE (MSSV, date, paper) VALUES
 
 
 -- INSERT INTO FILE
-INSERT INTO FILE (name, description, link, isShare) 
+INSERT INTO FILE (MSSV, name, description, link, isShare) 
 VALUES 
 ('1818972','Lập trình Java', 'File về lập trình Java từ cơ bản đến nâng cao.', 'Liên kết Java', 1),
 ('1818972','Toán cao cấp', 'Tài liệu về toán cao cấp, bao gồm các chương từ 1 đến 5.', 'Liên kết Toán cao cấp', 1),
