@@ -64,13 +64,19 @@ INSERT INTO STUDENT_BUYPAGE (MSSV, date, paper) VALUES
 
 
 -- INSERT INTO FILE
-INSERT INTO FILE (name, description, link, isShare) 
+INSERT INTO FILE (MSSV,name, description, link, isShare) 
 VALUES 
-('Tệp 1', 'Mô tả 1', 'Liên kết 1', 1),
-('Tệp 2', 'Mô tả 2', 'Liên kết 2', 0),
-('Tệp 3', 'Mô tả 3', 'Liên kết 3', 1),
-('Tệp 4', 'Mô tả 4', 'Liên kết 4', 0),
-('Tệp 5', 'Mô tả 5', 'Liên kết 5', 1);
+('1818972','Lập trình Java', 'File về lập trình Java từ cơ bản đến nâng cao.', 'Liên kết Java', 1),
+('1818972','Toán cao cấp', 'Tài liệu về toán cao cấp, bao gồm các chương từ 1 đến 5.', 'Liên kết Toán cao cấp', 1),
+('1818972','Kỹ thuật lập trình', 'Tài liệu về kỹ thuật lập trình, giới thiệu về các ngôn ngữ lập trình.', 'Liên kết Kỹ thuật lập trình', 1),
+('1818972','Quản trị mạng', 'Tài liệu hướng dẫn về quản trị mạng, các chương từ 1 đến 10.', 'Liên kết Quản trị mạng', 1),
+('1818972','Tiếng Anh giao tiếp', 'Tài liệu học tiếng Anh giao tiếp, từ vựng và ngữ pháp.', 'Liên kết Tiếng Anh', 1),
+('1818972','Mạng máy tính', 'File bao gồm chương 1, chương 2 và chương 3 về mạng máy tính.', 'Liên kết Mạng máy tính', 1),
+('1818972','Hóa đại cương', 'File chứa nâng cao và cơ bản về hóa đại cương.', 'Liên kết Hóa đại cương', 0),
+('1818972','Mạng máy tính', 'File bao gồm chương 1, chương 2 và chương 3 về mạng máy tính.', 'Liên kết Mạng máy tính', 0),
+('1818972','Hóa đại cương', 'File chứa nâng cao và cơ bản về hóa đại cương.', 'Liên kết Hóa đại cương', 1);
+
+
 
 -- INSERT INTO PRINTING
 INSERT INTO PRINTING (id_printer, MSSV, id_file, paper, date) 
@@ -113,15 +119,13 @@ VALUES
 ('HK222', '2023-09-01', 8);
 
 -- INSERT INTO FILETYPE
-INSERT INTO FILETYPE (name, value, isUsable) 
+INSERT INTO FILETYPE (name, isUsable) 
 VALUES 
-('.PDF (Portable Document Format)','PDF', 1),
-('.XLSX (Microsoft Excel Spreadsheet)','XLSX', 0),
-('.PPT (Microsoft Powerpoint Presentation)','PPT', 0),
-('.DOCX (Microsoft Word Document)','DOCX', 1),
-('.TXT (Text Document)','TXT', 0),
-('.PNG (Portable Network Graphics)','PNG', 1),
-('.JPEG (Joint Photographic Experts Group)','JPEG', 0);
+('Loại 1', 1),
+('Loại 2', 0),
+('Loại 3', 1),
+('Loại 4', 0),
+('Loại 5', 1);
 
 -- INSERT INTO FILEHAVETYPE
 INSERT INTO FILEHAVETYPE (id_type, id_file) 

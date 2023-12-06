@@ -15,6 +15,7 @@ const Statistic = require('./routes/Statistic');
 const Revenue = require('./routes/Revenue');
 const Buy = require('./routes/buy');
 const Login = require('./routes/login');
+const Share = require('./routes/share');
 const Print= require('./routes/print');
 //init app object
 const app = express()
@@ -42,6 +43,7 @@ app.use('/api/admin/adminInfo', adminInfo);
 app.use('/api/admin/pageNumber', pageNumber);
 app.use('/api/testbuy', Buy);
 app.use('/api/login', Login);
+app.use('/api/share', Share);
 app.use('/api/print', Print);
 
 
