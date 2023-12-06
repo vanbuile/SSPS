@@ -25,7 +25,7 @@ const connection =  mysql.createPool({
 
 
 if(connection){
-  console.log("Connect database succesfull")
+    console.log("Connect database succesfull")
 }
 else {
   console.log("Connect database failed")

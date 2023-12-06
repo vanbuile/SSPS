@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ChoosePrintStyle from '../../components/ChoosePrintStyle';
 import FileUpload from '../../components/DragDropfile'
-import axios from 'axios';
-import APIs from '../../util/API';
 
 function VerticalLine() {
   return (
@@ -21,14 +19,14 @@ export default function Print() {
   const handleAuthorization = (role) => {
     const cookies = document.cookie.split('; ');
     for (const cookie of cookies) {
-      const [name, value] = cookie.split('=');
+      const [name] = cookie.split('=');
       if(name === role) {
         return true
       }
     }
     window.location.href = 'http://localhost:3000/login';
   }
-  if(handleAuthorization('Student_cookie_id') == true) {
+  if(handleAuthorization('Student_cookie_id') === true) {
     return (
       <div className="flex flex-1"
       style={{marginLeft: "80px"}}
@@ -48,7 +46,9 @@ export default function Print() {
               </i>
             </div>
             <p>Số lượng:</p>
-            <input type="text" name="copies" id="copies" autocomplete="given-name" class="block w-5 rounded-md border-1 py-1.4 text-gray-900 shadow-sm ring-1 ring-inset ring-black placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-100 sm:text-sm sm:leading-6"placeholder='1'/>
+            <input type="number" min="0" name="copies" id="copies" autocomplete="given-name" class="block w-5 rounded-md border-1 py-1.4 
+            text-gray-900 shadow-sm ring-1 ring-inset ring-black placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
+            focus:ring-indigo-100 sm:text-sm sm:leading-6"placeholder='1' style={{width: '30px'}}/>
           </div>     
           <p class="text-xl text-[#a3a3a3] font-bold ml-10">Cài đặt</p>
           <div className='ml-10'><ChoosePrintStyle/></div>

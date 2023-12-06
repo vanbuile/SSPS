@@ -18,15 +18,14 @@ export default function StudentLogin() {
     const handleLoginSuccess = (userData) => {
         const expirationTime = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
         const cookieId = userData.hasOwnProperty('ID') ? userData.ID : userData.MSSV;
-        document.cookie = `Student_cookie_id=${cookieId}; expires=${expirationTime.toUTCString()}; path=/`;
-      
+        document.cookie = `Student_cookie_id=${cookieId}; expires=${expirationTime.toUTCString()}; domain=localhost; path=/;`;
         window.location.href = 'http://localhost:3000';
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { id, pass } = formData;
         try {
-            const response = await axios.post(APIs.APILogin + '/login', {
+            const response = await axios.post(APIs.APILogin + '/Login', {
                 id: id,
                 pass: pass,
                 role: 'student'
