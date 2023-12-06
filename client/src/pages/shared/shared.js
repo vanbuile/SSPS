@@ -11,8 +11,8 @@ export default function Shared() {
   const [dataFromServer, setDataFromServer] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchResults, setSearchResults] = useState([]); 
-  const [filterKeyword, setFilterKeyword] = useState([]); 
-
+  const [filterKeyword, setFilterKeyword] = useState(""); 
+  const uid = document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1];
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -57,9 +57,11 @@ export default function Shared() {
       } else {
         url = `${APIs.APIshareFile}/?sort=${value}`;
       }
+      if (value === 'mssv') {
+        url += `&mssv=${uid}`;
+      }
       const response = await axios.get(url);
       setSearchResults(response.data.data);
-      //console.log(response.data);
     } catch (error) {
       if (error.response) {
         console.log(error.response.data.message);
@@ -166,59 +168,60 @@ export default function Shared() {
     }
     window.location.href = 'http://localhost:3000/login';
   }
-  if(handleAuthorization('Student_cookie_id') == true) {
-    return (
-      <div style={{ display: "block", justifyContent: "center" }}>
-        <div style={styles.topframe}>
-          <div style={styles.search}>
-            <FaSearch style={styles.searchIcon} />
-            <input
-              style={styles.searchInput}
-              placeholder="Tìm kiếm tài liệu bạn cần ..."
-              onFocus={handleInputFocus}
-              onBlur={handleInputBlur}
-              value={searchKeyword}
-              onChange={(e) => setSearchKeyword(e.target.value)}
-              onKeyDown={handleKeyPress} 
-            />
-            
-          </div>
-          <div style={styles.filterButton}>
-          <FaFilter isOpen={isFilterOpen} onClick={() => setIsFilterOpen(!isFilterOpen)} /> Filter
-          </div>
+  if(handleAuthorization('Student_cookie_id') == true)
+  return (
+    <div style={{ display: "block", justifyContent: "center" }}>
+      <div style={styles.topframe}>
+        <div style={styles.search}>
+          <FaSearch style={styles.searchIcon} />
+          <input
+            style={styles.searchInput}
+            placeholder="Tìm kiếm tài liệu bạn cần ..."
+            onFocus={handleInputFocus}
+            onBlur={handleInputBlur}
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            onKeyDown={handleKeyPress} 
+          />
+          
         </div>
-        <div style={styles.filterDialog}>
-          <select
-            style={styles.select}
-            value={selectedFilter}
-            onChange={(e) => handleFilterSelect(e.target.value)}
-          >
-            <option value="star_desc">Đánh giá cao</option>
-            <option value="star_asc">Đánh giá thấp</option>
-          </select>
+        <div style={styles.filterButton} isOpen={isFilterOpen} onClick={() => setIsFilterOpen(!isFilterOpen)}>
+        <FaFilter  /> Filter
         </div>
-        <div style={styles.content}>
-        {searchResults.length > 0 ? (
-    searchResults.map((article, index) => (
-      <div key={index} style={styles.article}>
-        <h2 style={{ color: "#0F6CBF", fontSize: "120%", paddingBottom: "5px" }}>
-          <Link to={`/detail/${article.id}`}>{article.name}</Link>
-        </h2>
-        <p style={{ color: "gray" }}>{article.description}</p>
       </div>
-    ))
-  ) : (
-    dataFromServer.map((article, index) => (
-      <div key={index} style={styles.article}>
-        <h2 style={{ color: "#0F6CBF", fontSize: "120%", paddingBottom: "5px" }}>
-          <Link to={`detail/${article.ID}`}>{article.name}</Link>
-        </h2>
-        <p style={{ color: "gray" }}>{article.description}</p>
+      <div style={styles.filterDialog}>
+        <select
+          style={styles.select}
+          value={selectedFilter}
+          onChange={(e) => handleFilterSelect(e.target.value)}
+        >
+          <option value="star_desc">Đánh giá cao</option>
+          <option value="star_asc">Đánh giá thấp</option>
+          <option value="mssv">File của bạn</option>
+        </select>
       </div>
-    ))
-  )}
-      </div>
-      </div>
-    );
-  }
+      <div style={styles.content}>
+        {searchKeyword ||filterKeyword? (
+          searchResults.length>0 ? (
+          searchResults.map((article, index) => (
+          <div key={index} style={styles.article}>
+            <h2 style={{ color: "#0F6CBF", fontSize: "120%", paddingBottom: "5px" }}>
+              <Link to={`/detail/${article.id}`}>{article.name}</Link>
+            </h2>
+            <p style={{ color: "gray" }}>{article.description}</p>
+          </div>
+        ))):(<p>Không có kết quả hiển thị</p>)
+      ) : (
+        dataFromServer.map((article, index) => (
+          <div key={index} style={styles.article}>
+            <h2 style={{ color: "#0F6CBF", fontSize: "120%", paddingBottom: "5px" }}>
+              <Link to={`detail/${article.ID}`}>{article.name}</Link>
+            </h2>
+            <p style={{ color: "gray" }}>{article.description}</p>
+          </div>
+        ))
+      )}
+    </div>
+    </div>
+  );
 }

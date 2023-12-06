@@ -10,10 +10,10 @@ const FileUpload = () => {
     return (
       <div
         style={{
-          marginTop:'10px',
-          height: '1px', // Adjust the height as needed
-          width: '750px',   // Adjust the thickness of the line
-          backgroundColor: 'black', // Adjust the color of the line
+          marginTop: "10px",
+          height: "1px", // Adjust the height as needed
+          width: "750px", // Adjust the thickness of the line
+          backgroundColor: "black", // Adjust the color of the line
         }}
       ></div>
     );
@@ -35,6 +35,9 @@ const FileUpload = () => {
 
   const handleDrop = (e) => {
     e.preventDefault();
+    //call API to get list of permitted file types
+    var permitedType=false;
+    const fileExtension = e.dataTransfer.files[0].name.split(".").pop();
     const file = e.dataTransfer.files[0];
     fetchPermitedType().then((res) => {
       for (var i = 0; i < res.length; i++) {
@@ -61,7 +64,26 @@ const FileUpload = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setSelectedFile(file);
+    const fileExtension = file.name.split(".").pop();
+    var permitedType=false;
+    console.log(fileExtension);
+    fetchPermitedType().then((res) => {
+      for (var i = 0; i < res.length; i++) {
+        //lowercase all file extension
+        if (fileExtension.toLowerCase() === res[i].value.toLowerCase()) {
+          permitedType = true;
+
+        }
+      }
+      if (permitedType === false) {
+        alert("File type is not permitted");
+        
+      }
+      else {
+        setSelectedFile(file);
+      }
+    });
+    
   };
 
   const handleCancel = () => {
@@ -184,6 +206,6 @@ const FileUpload = () => {
     </div>
     </div>
   );
-}
+};
 
 export default FileUpload;
