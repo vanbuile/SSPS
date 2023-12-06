@@ -13,7 +13,7 @@ export default function Shared() {
   const [searchResults, setSearchResults] = useState([]); 
   const [filterKeyword, setFilterKeyword] = useState([]); 
 
-  useEffect(async () => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const url = APIs.APIshareFile + "/";
