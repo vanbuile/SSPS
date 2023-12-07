@@ -25,7 +25,7 @@ export default function MyModal({building}) {
         id_printer: RowID,
         mssv: document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1],
         id_file: document.cookie.split('; ').find((cookie) => cookie.startsWith(`file_id=`)).split('=')[1], 
-        paper: 13,
+        paper: document.cookie.split('; ').find((cookie) => cookie.startsWith(`numPages=`)).split('=')[1],
         date: formattedDateTime
       })
       if (res.status === 200){
@@ -36,7 +36,16 @@ export default function MyModal({building}) {
       console.error("Error printing:", e);
       alert("Error printing: " + e.message);
     }
+    const res = await axios.post(APIs.APIaddFile + "/updatePaper", {
+      id_printer: RowID,
+      mssv: document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1],
+      paper: document.cookie.split('; ').find((cookie) => cookie.startsWith(`numPages=`)).split('=')[1]
+    }
+      )
+    
+
   }
+
   function openModal() {
     setIsOpen(true)
   }
