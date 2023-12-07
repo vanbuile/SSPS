@@ -1,4 +1,5 @@
-const {addNewFile, addPrinting} = require('../../PersistenceLayer/PrintingDAO')
+const {addNewFile, addPrinting, UpdatePrinterPaper} = require('../../PersistenceLayer/PrintingDAO')
+const {IncreasePaper } = require("../../PersistenceLayer/BuyDAO");
 
 const AddNewFile = async (req, res) => {
     let mssv = req.body.mssv
@@ -33,5 +34,13 @@ const AddPrinting = async (req, res) => {
         return res.sendStatus(503)
     }
 }
+const UpdatePaper = async (req, res) => {
+    let id_printer = req.body.id_printer
+    let mssv = req.body.mssv
+    let paper = req.body.paper
+    IncreasePaper(mssv, -paper)
+    UpdatePrinterPaper(id_printer, -paper)
 
-module.exports = {AddNewFile, AddPrinting}
+}
+
+module.exports = {AddNewFile, AddPrinting, UpdatePaper}

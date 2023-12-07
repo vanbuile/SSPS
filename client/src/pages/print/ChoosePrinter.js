@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaBackward } from "react-icons/fa";
 import MyModal from '../../components/Printer'
-
+import {useLocation} from 'react-router-dom';
 function VerticalLine() {
     return (
       <div
@@ -27,6 +27,10 @@ function Bulding({building}){
 }
 
   export default function ChoosePrinter() {
+    const location = useLocation();
+    //console.log(location.state.paper);
+
+
 
     const buildings = ["BKB1", "BKB2", "BKB3", "BKB4", "BKB5", "BKB6","A1", "A2", 
     "A3","A4", "A5", "A6"];
@@ -41,6 +45,8 @@ function Bulding({building}){
         window.location.href = 'http://localhost:3000/login';
       }
       if(handleAuthorization('Student_cookie_id') === true) {
+        // log TestID
+
           return (
               <div>
                   <Link to="/print" ><FaBackward style={{ marginLeft:"80px", }}/></Link>
