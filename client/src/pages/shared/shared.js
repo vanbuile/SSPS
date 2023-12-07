@@ -13,22 +13,26 @@ export default function Shared() {
   const [searchResults, setSearchResults] = useState([]); 
   const [filterKeyword, setFilterKeyword] = useState(""); 
   const uid = document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1];
-  useEffect(async () => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const url = APIs.APIshareFile + "/";
         const response = await axios.get(url);
-        setDataFromServer(response.data.data); 
-        //console.log(response.data);
+        setDataFromServer(response.data.data);
       } catch (error) {
         if (error.response) {
           console.log(error.response.data.message);
         }
       }
     };
-
+  
     fetchData();
+  
+    return () => {
+      
+    };
   }, []);
+  
   const handleSearch = async () => {
     try {
       let url = APIs.APIshareFile + "/";
