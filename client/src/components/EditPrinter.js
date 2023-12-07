@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import {Fragment, useEffect, useState} from 'react'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 import { CheckIcon } from '@heroicons/react/24/outline'
 import APIs from "../util/API";
@@ -25,8 +25,13 @@ export default function EditPrinter({printer, reload}) {
   const [isOpen, setIsOpen] = useState(false)
   const [isCommit, setIsCommit] = useState(false)
   const [isAlert, setIsAlert] = useState(false)
-  let [alertContent, setAlertContent] = useState(["Sửa máy in thành công!", "Bạn có thể xem ngay kết quả!"])
-  let [isSuccess, setIsSuccess] = useState(true)
+  const [alertContent, setAlertContent] = useState(["Sửa máy in thành công!", "Bạn có thể xem ngay kết quả!"])
+  const [isSuccess, setIsSuccess] = useState(true)
+  const [isRefill, setIsRefill] = useState(false)
+  useEffect(() => {
+    setInputs(printer)
+  }, [printer]);
+
   const handleAuthorization = (role) => {
     const cookies = document.cookie.split('; ');
     for (const cookie of cookies) {
@@ -40,11 +45,23 @@ export default function EditPrinter({printer, reload}) {
   function closeModal() {
     if(handleAuthorization('SPSO_cookie_id') == true) {
       setIsOpen(false)
+      setInputs(printer)
     }
   }
   function openModal() {
     if(handleAuthorization('SPSO_cookie_id') == true) {
       setIsOpen(true)
+    }
+  }
+  function closeRefill() {
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsRefill(false)
+      setIsCommit(false)
+    }
+  }
+  function openRefill() {
+    if(handleAuthorization('SPSO_cookie_id') == true) {
+      setIsRefill(true)
     }
   }
   function openCommitModal(){
@@ -75,6 +92,81 @@ export default function EditPrinter({printer, reload}) {
     }
   }
   async function Commit(){
+    if(!inputs.name) {
+      setAlertContent(["Tên máy in không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if(!inputs.name.length > 30) {
+      setAlertContent(["Tên máy in không được quá 30 kí tự", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if (!inputs.brand) {
+      setAlertContent(["Hãng máy in không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if(!inputs.brand.length > 30) {
+      setAlertContent(["Hãng máy in không được quá 30 kí tự", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if(!inputs.model) {
+      setAlertContent(["Model máy in không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if(!inputs.model.length > 30) {
+      setAlertContent(["Hãng máy in không được quá 30 kí tự", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+
+    if (inputs.paper === '') {
+      setAlertContent(["Số lượng giấy không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if (inputs.paper < 0) {
+      setAlertContent(["Số lượng giấy không được nhỏ hơn 0", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if (!inputs.day) {
+      setAlertContent(["Ngày mua không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if(isNaN(Date.parse(inputs.day))) {
+      setAlertContent(["Ngày bị sai cú pháp", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if (!inputs.description) {
+      setAlertContent(["Mô tả không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+
+    if (!inputs.building) {
+      setAlertContent(["Tòa nhà không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if (inputs.floor === '') {
+      setAlertContent(["Tầng không được để trống", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+    if (inputs.floor < 0){
+      setAlertContent(["Tầng không được nhỏ hơn không", "Vui lòng điền lại thông tin"])
+      openRefill()
+      return
+    }
+
+
+
     if(handleAuthorization('SPSO_cookie_id') == true) {
       try {
         const response = await axios.put(APIs.APIadminPrinter + `/edit`, {
@@ -107,7 +199,7 @@ export default function EditPrinter({printer, reload}) {
     const value = event.target.value;
     setInputs(values => ({...values, [name]: value}))
   }
-
+  if (!inputs) return <></>
   return (
       <>
         <button
@@ -258,11 +350,11 @@ export default function EditPrinter({printer, reload}) {
                               <legend class="text-sm font-semibold leading-6 text-gray-900">Tình trạng</legend>
                               <div class="mt-2 space-y-2">
                                 <div class="flex items-center gap-x-3">
-                                  <input checked={inputs.state == 0} onChange={handleChange} value={1} id="state1" name="status" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
+                                  <input checked={inputs.state == 0} onChange={handleChange} value={0} id="state1" name="state" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
                                   <label for="state1" class="block text-sm font-medium leading-6 text-gray-900">Bảo trì</label>
                                 </div>
                                 <div class="flex items-center gap-x-3">
-                                  <input checked={inputs.state == 1} onChange={handleChange} value={2} id="state2" name="status" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
+                                  <input checked={inputs.state == 1} onChange={handleChange} value={1} id="state2" name="state" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
                                   <label for="state2" class="block text-sm font-medium leading-6 text-gray-900">Hoạt động</label>
                                 </div>
                               </div>
@@ -326,7 +418,66 @@ export default function EditPrinter({printer, reload}) {
                                         >
                                           Không
                                         </button>
+                                        <Transition show={isRefill} as={Fragment}>
+                                          <Dialog as="div" className="relative z-10" onClose={setIsAlert}>
+                                            <Transition.Child
+                                                as={Fragment}
+                                                enter="ease-out duration-300"
+                                                enterFrom="opacity-0"
+                                                enterTo="opacity-100"
+                                                leave="ease-in duration-200"
+                                                leaveFrom="opacity-100"
+                                                leaveTo="opacity-0"
+                                            >
+                                              <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                                            </Transition.Child>
 
+                                            <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                                              <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                                                <Transition.Child
+                                                    as={Fragment}
+                                                    enter="ease-out duration-300"
+                                                    enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                                    enterTo="opacity-100 translate-y-0 sm:scale-100"
+                                                    leave="ease-in duration-200"
+                                                    leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                                                    leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                                >
+                                                  <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                                                    <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                                      <div className="sm:flex sm:items-start">
+                                                        <div className={`mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-200 sm:mx-0 sm:h-10 sm:w-10`}>
+
+                                                          <XMarkIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
+
+                                                        </div>
+                                                        <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                                          <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                                                            {alertContent[0]}
+                                                          </Dialog.Title>
+                                                          <div className="mt-2">
+                                                            <p className="text-sm text-gray-500">
+                                                              {alertContent[1]}
+                                                            </p>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                                      <button
+                                                          type="button"
+                                                          className={`border border-red-600 text-red-600 hover:bg-red-600 inline-flex w-full justify-center rounded-md bg-transparent px-3 py-2 text-sm font-semibold  shadow-sm  hover:text-white sm:ml-3 sm:w-auto`}
+                                                          onClick={closeRefill}
+                                                      >
+                                                        Thoát
+                                                      </button>
+                                                    </div>
+                                                  </Dialog.Panel>
+                                                </Transition.Child>
+                                              </div>
+                                            </div>
+                                          </Dialog>
+                                        </Transition>
                                         <Transition show={isAlert} as={Fragment}>
                                           <Dialog as="div" className="relative z-10" onClose={setIsAlert}>
                                             <Transition.Child

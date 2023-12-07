@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS FILE (
     name VARCHAR(255),
     description VARCHAR(255),
     link VARCHAR(255),
-    isShare INT, 
+    isShare INT, -- nếu =0 thì không share -> link = nullptr, nếu =1 thì share -> link != nullptr
     score INT DEFAULT 0,
     FOREIGN KEY (MSSV) REFERENCES STUDENT(MSSV)
 );
@@ -93,6 +93,7 @@ CREATE TABLE IF NOT EXISTS SEMESTER (
 CREATE TABLE IF NOT EXISTS FILETYPE (
     ID INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
+    value VARCHAR(255),
     isUsable INT
 );
 

@@ -121,13 +121,15 @@ VALUES
 ('HK222', '2023-09-01', 8);
 
 -- INSERT INTO FILETYPE
-INSERT INTO FILETYPE (name, isUsable) 
+INSERT INTO FILETYPE (name, value, isUsable) 
 VALUES 
-('Loại 1', 1),
-('Loại 2', 0),
-('Loại 3', 1),
-('Loại 4', 0),
-('Loại 5', 1);
+('.PDF (Portable Document Format)','PDF', 1),
+('.XLSX (Microsoft Excel Spreadsheet)','XLSX', 0),
+('.PPT (Microsoft Powerpoint Presentation)','PPT', 0),
+('.DOCX (Microsoft Word Document)','DOCX', 1),
+('.TXT (Text Document)','TXT', 0),
+('.PNG (Portable Network Graphics)','PNG', 1),
+('.JPEG (Joint Photographic Experts Group)','JPEG', 0);
 
 -- INSERT INTO FILEHAVETYPE
 INSERT INTO FILEHAVETYPE (id_type, id_file) 

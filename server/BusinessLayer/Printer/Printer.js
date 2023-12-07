@@ -187,7 +187,6 @@ const EditOldPrinter = async (req, res) => {
 }
 const DeleteOldPrinter = async (req, res) => {
     let id = req.params.id;
-    console.log(`id=${id}`)
     try {
         let rs = await deletePrinter(id)
         return res.status(200).json({"data":rs})
