@@ -81,7 +81,6 @@ const insertComment = async (fileId, mssv, content, date) => {
         throw error;
     }
 };
-
 const insertRating = async (fileId, mssv, star, date) => {
     try {
         const query = `INSERT INTO RATING (MSSV, id_file, star, date) VALUES (?, ?, ?, ?);`;

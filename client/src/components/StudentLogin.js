@@ -16,17 +16,16 @@ export default function StudentLogin() {
         }));
     };
     const handleLoginSuccess = (userData) => {
-        const expirationTime = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+        const expirationTime = new Date(Date.now() + 60 * 60 * 1000); // 15 minutes
         const cookieId = userData.hasOwnProperty('ID') ? userData.ID : userData.MSSV;
-        document.cookie = `Student_cookie_id=${cookieId}; expires=${expirationTime.toUTCString()}; path=/`;
-      
+        document.cookie = `Student_cookie_id=${cookieId}; expires=${expirationTime.toUTCString()}; domain=localhost; path=/;`;
         window.location.href = 'http://localhost:3000';
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { id, pass } = formData;
         try {
-            const response = await axios.post(APIs.APILogin + '/login', {
+            const response = await axios.post(APIs.APILogin + '/Login', {
                 id: id,
                 pass: pass,
                 role: 'student'
@@ -57,6 +56,7 @@ export default function StudentLogin() {
                         type="text"
                         id="query"
                         name="id"
+                        required
                         placeholder="Tên Đăng Nhập"
                         className="w-full h-full rounded-2xl border border-gray-200 overflow-hidden px-4 text-base font-semibold bg-gray-200 outline-none"
                         value={formData.id}
@@ -75,7 +75,7 @@ export default function StudentLogin() {
                         className="w-full h-full rounded-2xl border border-gray-200 overflow-hidden px-4 text-base font-semibold bg-gray-200 outline-none"
                         />
                 </p>
-                <p className="w-80 h-10 rounded-full overflow-hidden bg-[#0F6CBF] text-[#F5F5F5] cursor-pointer transition duration-300 hover:bg-blue-800 flex items-center justify-center mb-16">
+                <p className="w-80 h-10 rounded-full overflow-hidden bg-[#2563EB] text-[#F5F5F5] cursor-pointer transition duration-300 hover:bg-blue-800 flex items-center justify-center mb-16">
                     <input className="cursor-pointer transition duration-300 hover:bg-blue-800" type="submit" value="Đăng nhập" />
                 </p>
             </form>
