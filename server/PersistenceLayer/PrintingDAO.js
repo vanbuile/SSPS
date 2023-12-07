@@ -54,7 +54,17 @@ const addPrinting = async (id_printer, mssv, id_file, paper, date) => {
         throw new Error(e)
     }
 }
+const UpdatePrinterPaper = async (id_printer, paper) => {
+    try {
+        let q = "UPDATE `printer` SET `paper` = `paper` + ? WHERE `id` = ?";
+        const [result, fields] = await connection.query(q, [paper, id_printer]);
+      } catch (e) {
+        //console.log(e)
+        throw new Error(e);
+      }
+
+}
 module.exports = {GetPrintingInfo, 
                 GetWeekInSemester, 
                 GetPrintInSemester,
-                GetStudentPrintMaxSemester, addNewFile, addPrinting};
+                GetStudentPrintMaxSemester, addNewFile, addPrinting, UpdatePrinterPaper};

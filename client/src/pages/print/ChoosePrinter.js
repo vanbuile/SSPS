@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaBackward } from "react-icons/fa";
 import MyModal from '../../components/Printer'
-
+import {useLocation} from 'react-router-dom';
 function VerticalLine() {
     return (
       <div
@@ -41,6 +41,8 @@ function Bulding({building}){
         window.location.href = 'http://localhost:3000/login';
       }
       if(handleAuthorization('Student_cookie_id') === true) {
+        // log TestID
+
           return (
               <div>
                   <Link to="/print" ><FaBackward style={{ marginLeft:"80px", }}/></Link>
