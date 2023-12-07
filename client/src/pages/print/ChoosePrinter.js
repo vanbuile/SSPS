@@ -27,10 +27,6 @@ function Bulding({building}){
 }
 
   export default function ChoosePrinter() {
-    const location = useLocation();
-    //console.log(location.state.paper);
-
-
 
     const buildings = ["BKB1", "BKB2", "BKB3", "BKB4", "BKB5", "BKB6","A1", "A2", 
     "A3","A4", "A5", "A6"];
