@@ -2,7 +2,7 @@ const connection = require('./DataBase');
 
 const getListSharedFile = async () => {
     try {
-        const query = `SELECT * FROM file WHERE isShare = 1;`;
+        const query = `SELECT * FROM FILE WHERE isShare = 1;`;
         const [result, fields] = await connection.query(query);
         return result;
     } catch (error) {
@@ -12,7 +12,7 @@ const getListSharedFile = async () => {
 const searchByKey = async (key) => {
     try {
         const query = `
-            SELECT * FROM file 
+            SELECT * FROM FILE 
             WHERE isShare = 1 
             AND (LOWER(name) LIKE LOWER(?) OR LOWER(description) LIKE LOWER(?));
         `;
@@ -25,7 +25,7 @@ const searchByKey = async (key) => {
 };
 const sortBy = async (key,mssv) => {
     try {
-        let query = `SELECT * FROM file WHERE isShare = 1`;
+        let query = `SELECT * FROM FILE WHERE isShare = 1`;
         if (key === 'star_asc') {
             query += ` ORDER BY score ASC`;
         } else if (key === 'star_desc') {
@@ -45,7 +45,7 @@ const sortBy = async (key,mssv) => {
 
 const getDetailbyID = async (fileid) => {
     try {
-        const query = 'SELECT * FROM file WHERE ID = ? AND isShare=1;';
+        const query = 'SELECT * FROM FILE WHERE ID = ? AND isShare=1;';
         const [result, fields] = await connection.query(query, [fileid]);
         if (result.length > 0) return result[0];
         else return false;
@@ -56,7 +56,7 @@ const getDetailbyID = async (fileid) => {
 };
 const getCommentList = async (fileid) => {
     try {
-        const query = `SELECT * FROM comment WHERE id_file = ?;`; 
+        const query = `SELECT * FROM COMMENT WHERE id_file = ?;`; 
         const result = await connection.query(query, [fileid]);
         return result[0];
     } catch (error) {

@@ -12,6 +12,7 @@ const navigation = [
   { key: 'Print', label: 'In ấn', path: '/print'},
   { key: 'Buy', label: 'Mua', path: '/buy'},
   { key: 'Share', label: 'Chia sẻ', path: '/shared'},
+  { key: 'History', label: 'Lịch sử in', path:'/history'}
 ]
 
 
