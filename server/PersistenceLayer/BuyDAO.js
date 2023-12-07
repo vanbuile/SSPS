@@ -34,7 +34,7 @@ const mailOptions = {
     from: "hcmutprintservice@gmail.com",
     to: email,
     subject: "Giao dịch thanh toán giấy in đã được xác nhận",
-    html: "<h1>Chào bạn</h1><p>Giao dịch thanh toán giấy in đã được xác nhận. Số giấy in đã được cộng vào tài khoản của bạn là: " + paper + "</p>"
+    html: "<h3>Chào bạn</h3><p>Giao dịch thanh toán giấy in đã được xác nhận. Số giấy in đã được cộng vào tài khoản của bạn là: " + paper + "</p>"
 
 }
 
