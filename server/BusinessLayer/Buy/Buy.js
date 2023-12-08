@@ -1,6 +1,6 @@
 const moment = require("moment");
 const express = require("express");
-const { InsertTransaction,IncreasePaper, SendMail } = require("../../PersistenceLayer/BuyDAO");
+const { InsertTransaction,IncreasePaper, SendMail, GetTransaction } = require("../../PersistenceLayer/BuyDAO");
 const CreatePaymentUrl = async (req, res) => {
   process.env.TZ = "Asia/Ho_Chi_Minh";
   console.log(req.body);
@@ -96,6 +96,13 @@ const VnpayReturn = async (req, res) => {
     res.redirect("http://localhost:3000");
   }
 };
+const GetPaymentHistory = async (req,res) =>{
+  
+
+  let data = await GetTransaction(req.body.MSSV);
+  console.log(data);
+  res.send(data);
+}
 
 function sortObject(obj) {
   let sorted = {};
@@ -116,4 +123,5 @@ function sortObject(obj) {
 module.exports = {
   CreatePaymentUrl,
   VnpayReturn,
+  GetPaymentHistory
 };
