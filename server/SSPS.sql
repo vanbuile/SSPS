@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS PRINTING (
     id_file INT,
     paper INT,
     date DATETIME,
-    PRIMARY KEY (id_printer, MSSV, id_file),
+    PRIMARY KEY (id_printer, MSSV, id_file, date),
     FOREIGN KEY (id_printer) REFERENCES PRINTER(id),
     FOREIGN KEY (MSSV) REFERENCES STUDENT(MSSV),
     FOREIGN KEY (id_file) REFERENCES FILE(id)

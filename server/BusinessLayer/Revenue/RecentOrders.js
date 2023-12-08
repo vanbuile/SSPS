@@ -3,6 +3,8 @@ const {GetRecentOrdersInfo}= require("../../PersistenceLayer/RevernueDAO");
 
 const RecentOrders = async (req, res) =>{
 	const data = await GetRecentOrdersInfo();
+
+    console.log(data.length);
     data.map(item =>{
         const dateTimeObject = new Date(item.date);
         const datePart = dateTimeObject.toISOString().split('T')[0];

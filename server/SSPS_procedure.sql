@@ -74,35 +74,35 @@ END //
 CREATE PROCEDURE GetStudentPrintMaxSemester()
 BEGIN
 
-   --  DECLARE dateVar DATE;
---     DECLARE weekVar INT;
+    DECLARE dateVar DATE;
+    DECLARE weekVar INT;
 
---     SELECT date,week INTO dateVar, weekVar FROM Semester 
---     ORDER BY date DESC LIMIT 1;
+    SELECT date,week INTO dateVar, weekVar FROM Semester 
+    ORDER BY date DESC LIMIT 1;
 
---     SELECT
---         S.MSSV AS id,
---         S.name AS student,
---         P.paper AS number_pager_printer,
---         s.paper AS number_pager_remaining,
---         P.number_file_share as number_file_share,
---         P.number_file as number_file
---     FROM
---         (SELECT 
---             sum(P.paper) as paper, 
---             P.MSSV,
---             sum(F.isShare) as number_file_share,
---             count(F.isShare) as number_file
---         FROM 
---             PRINTING P
---         JOIN
---             FILE F ON P.id_file = F.ID
---         WHERE 
---              FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 <= weekVar and FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 > 0
---         GROUP BY P.MSSV) AS P
---     JOIN
---         STUDENT S ON P.MSSV = S.MSSV
---     GROUP BY number_pager_printer DESC LIMIT 10;
+    SELECT
+        S.MSSV AS id,
+        S.name AS student,
+        P.paper AS number_pager_printer,
+        s.paper AS number_pager_remaining,
+        P.number_file_share as number_file_share,
+        P.number_file as number_file
+    FROM
+        (SELECT 
+            sum(P.paper) as paper, 
+            P.MSSV,
+            sum(F.isShare) as number_file_share,
+            count(F.isShare) as number_file
+        FROM 
+            PRINTING P
+        JOIN
+            FILE F ON P.id_file = F.ID
+        WHERE 
+             FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 <= weekVar and FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 > 0
+        GROUP BY P.MSSV) AS P
+    JOIN
+        STUDENT S ON P.MSSV = S.MSSV
+    GROUP BY number_pager_printer DESC LIMIT 10;
 END //
 
 CREATE PROCEDURE GetStudentCourseRevenue()
