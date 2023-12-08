@@ -28,12 +28,43 @@ const GetStudentPrintMaxSemester = async()=>
 {
     const query = `CALL GetStudentPrintMaxSemester()`;
     const [result, fields] = await connection.query(query)
-
 	return result[0];
 }
 
+const addNewFile = async(mssv, name, description, link, isShare) => {
+    try {
+        let q = `SELECT addFile(?,?,?,?,?) AS lastID;`
+        const [rows, fields] = await connection.query(q,[mssv, name, description, link, isShare])
+        return rows
+    }
+    catch (e) {
+        console.log(e)
+        throw new Error(e)
+    }
+}
 
+const addPrinting = async (id_printer, mssv, id_file, paper, date) => {
+    try {
+        let q = 'CALL aPrinting(?, ?, ? ,? ,?)'
+        const [result, fields] = await connection.query(q, [id_printer, mssv, id_file, paper, date])
+        return result
+    }
+    catch (e) {
+        console.log(e)
+        throw new Error(e)
+    }
+}
+const UpdatePrinterPaper = async (id_printer, paper) => {
+    try {
+        let q = "UPDATE `printer` SET `paper` = `paper` + ? WHERE `id` = ?";
+        const [result, fields] = await connection.query(q, [paper, id_printer]);
+      } catch (e) {
+        //console.log(e)
+        throw new Error(e);
+      }
+
+}
 module.exports = {GetPrintingInfo, 
                 GetWeekInSemester, 
-                GetPrintInSemester, 
-                GetStudentPrintMaxSemester};
+                GetPrintInSemester,
+                GetStudentPrintMaxSemester, addNewFile, addPrinting, UpdatePrinterPaper};

@@ -39,13 +39,13 @@ export default function Login() {
 				<h1 className="text-gray-700 text-2xl font-bold">Đăng nhập</h1>
 				<div className="text-[20px] justify-between mb-8 mt-4">
 					<button
-						className={`w-80 h-10 rounded-full overflow-hidden bg-[#0F6CBF] text-[#F5F5F5] cursor-pointer flex items-center justify-center mb-4 ${activeComponent === 'StudentLogin' ? 'bg-gray-500' : ''}`}
+						className={`w-80 h-10 rounded-full overflow-hidden bg-[#2563EB] text-[#F5F5F5] cursor-pointer flex items-center justify-center mb-4 ${activeComponent === 'StudentLogin' ? 'bg-blue-800' : ''}`}
 						onClick={() => scrollToComponent("StudentLogin")}
 					>
 							Sinh viên
 					</button>
 					<button
-						className={`w-80 h-10 rounded-full overflow-hidden bg-[#0F6CBF] text-[#F5F5F5] cursor-pointer flex items-center justify-center ${activeComponent === 'SPSOLogin' ? 'bg-gray-500' : ''}`}
+						className={`w-80 h-10 rounded-full overflow-hidden bg-[#2563EB] text-[#F5F5F5] cursor-pointer flex items-center justify-center ${activeComponent === 'SPSOLogin' ? 'bg-blue-800' : ''}`}
 						onClick={() => scrollToComponent("SPSOLogin")}
 						>
 							Quản trị viên

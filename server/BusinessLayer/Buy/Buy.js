@@ -1,6 +1,6 @@
 const moment = require("moment");
 const express = require("express");
-const { InsertTransaction,IncreasePaper } = require("../../PersistenceLayer/BuyDAO");
+const { InsertTransaction,IncreasePaper, SendMail } = require("../../PersistenceLayer/BuyDAO");
 const CreatePaymentUrl = async (req, res) => {
   process.env.TZ = "Asia/Ho_Chi_Minh";
   console.log(req.body);
@@ -73,18 +73,21 @@ const VnpayReturn = async (req, res) => {
   let hmac = crypto.createHmac("sha512", secretKey);
   let signed = hmac.update(new Buffer(signData, "utf-8")).digest("hex");
 
-  if (secureHash === signed) {
+  if (secureHash === signed && vnp_Params["vnp_ResponseCode"] === "00" && vnp_Params["vnp_TransactionStatus"] === "00") {
     //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
     //InsertTransaction(req.body.MSSV, moment().format("YYYY-MM-DD HH:mm:ss"), req.body.amount/2000)
     console.log(vnp_Params["vnp_OrderInfo"]);
     let MSSV = vnp_Params["vnp_OrderInfo"];
     let amount = vnp_Params["vnp_Amount"];
+  
     InsertTransaction(
       MSSV,
       moment().format("YYYY-MM-DD HH:mm:ss"),
       amount / 200000
     );
     IncreasePaper(MSSV, amount / 200000);
+    SendMail("luuchanhung123@gmail.com", amount / 200000);
+
 
     res.redirect("http://localhost:3000/buy/paymentcheck");
 

@@ -35,8 +35,10 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="print" element={<Print />} />
           <Route path='print/ChoosePrinter' element={< ChoosePrinter/>} />
-          <Route path="shared" element={<Shared />} />
-          <Route path="detail" element={<Detail />} />
+          <Route path="shared" >
+            <Route index element={<Shared />} />
+            <Route path="detail/:id" element={<Detail />} />
+          </Route>
           <Route path="buy" element={<Buy />} />
           <Route path="buy/paymentcheck" element={<PaymentCheck />} />
         </Route>

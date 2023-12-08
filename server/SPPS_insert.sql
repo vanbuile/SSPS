@@ -1,3 +1,6 @@
+
+USE SSPS;
+
 -- INSERT INTO PRINTER
 INSERT INTO PRINTER (name, model, brand, day, description, paper, building, floor, state)
 VALUES 
@@ -49,17 +52,17 @@ INSERT INTO STUDENT_BUYPAGE (MSSV, date, paper) VALUES
 ('2118972', '2023-11-12 14:30:00', 8),
 ('1918972', '2023-11-13 14:30:00', 10),
 ('2113928', '2023-11-11 14:30:00', 5),
-('2113927', '2023-11-12 14:30:00', 8),
+('2313925', '2023-11-12 14:30:00', 8),
 ('2223928', '2023-11-13 14:30:00', 10),
 ('2355555', '2023-11-14 14:30:00', 3),
 ('2018972', '2023-11-15 14:30:00', 7),
 ('1918972', '2023-11-16 14:30:00', 2),
 ('1818972', '2023-11-17 14:30:00', 6),
 ('2113928', '2023-11-18 14:30:00', 4),
-('2113927', '2023-11-19 14:30:00', 9),
+('2313925', '2023-11-19 14:30:00', 9),
 ('2223928', '2023-11-20 14:30:00', 1),
 ('2113928', '2023-11-21 14:30:00', 3),
-('2113927', '2023-11-22 14:30:00', 8),
+('2313925', '2023-11-22 14:30:00', 8),
 ('2223928', '2023-11-23 14:30:00', 5),
 ('2355555', '2023-11-24 14:30:00', 2),
 ('2018972', '2023-11-25 14:30:00', 6),
@@ -78,13 +81,18 @@ INSERT INTO STUDENT_BUYPAGE (MSSV, date, paper) VALUES
 
 
 -- INSERT INTO FILE
-INSERT INTO FILE (name, description, link, isShare) 
+INSERT INTO FILE (MSSV, name, description, link, isShare) 
 VALUES 
-('Tệp 1', 'Mô tả 1', 'Liên kết 1', 1),
-('Tệp 2', 'Mô tả 2', 'Liên kết 2', 0),
-('Tệp 3', 'Mô tả 3', 'Liên kết 3', 1),
-('Tệp 4', 'Mô tả 4', 'Liên kết 4', 0),
-('Tệp 5', 'Mô tả 5', 'Liên kết 5', 1);
+('1818972','Lập trình Java', 'File về lập trình Java từ cơ bản đến nâng cao.', 'https://drive.google.com/file/d/1xDVYbTvGXPx3n_WxFuKuLQMkTjSz-Qlb/view?usp=sharing', 1),
+('1818972','Toán cao cấp', 'Tài liệu về toán cao cấp, bao gồm các chương từ 1 đến 5.', 'https://drive.google.com/file/d/1xDVYbTvGXPx3n_WxFuKuLQMkTjSz-Qlb/view?usp=sharing', 1),
+('1818972','Kỹ thuật lập trình', 'Tài liệu về kỹ thuật lập trình, giới thiệu về các ngôn ngữ lập trình.', 'https://drive.google.com/file/d/1xDVYbTvGXPx3n_WxFuKuLQMkTjSz-Qlb/view?usp=sharing', 1),
+('1818972','Quản trị mạng', 'Tài liệu hướng dẫn về quản trị mạng, các chương từ 1 đến 10.', 'https://drive.google.com/file/d/1xDVYbTvGXPx3n_WxFuKuLQMkTjSz-Qlb/view?usp=sharing', 1),
+('1818972','Tiếng Anh giao tiếp', 'Tài liệu học tiếng Anh giao tiếp, từ vựng và ngữ pháp.', 'https://drive.google.com/file/d/1xDVYbTvGXPx3n_WxFuKuLQMkTjSz-Qlb/view?usp=sharing', 1),
+('1818972','Mạng máy tính', 'File bao gồm chương 1, chương 2 và chương 3 về mạng máy tính.', 'https://drive.google.com/file/d/1xDVYbTvGXPx3n_WxFuKuLQMkTjSz-Qlb/view?usp=sharing', 1),
+('1818972','Hóa đại cương', 'File chứa nâng cao và cơ bản về hóa đại cương.', 'https://drive.google.com/file/d/1xDVYbTvGXPx3n_WxFuKuLQMkTjSz-Qlb/view?usp=sharing', 0),
+('1818972','Mạng máy tính', 'File bao gồm chương 1, chương 2 và chương 3 về mạng máy tính.', 'https://drive.google.com/file/d/1xDVYbTvGXPx3n_WxFuKuLQMkTjSz-Qlb/view?usp=sharing', 0),
+('1818972','Hóa đại cương', 'File chứa nâng cao và cơ bản về hóa đại cương.', 'https://drive.google.com/file/d/1xDVYbTvGXPx3n_WxFuKuLQMkTjSz-Qlb/view?usp=sharing', 1);
+
 
 -- INSERT INTO PRINTING
 INSERT INTO PRINTING (id_printer, MSSV, id_file, paper, date) 
@@ -113,7 +121,7 @@ VALUES
 INSERT INTO RATING (MSSV, id_file, star, date) 
 VALUES 
 ('2113928', 1, 5, '2023-11-10 14:30:00'),
-('2113927', 2, 4, '2023-11-11 14:30:00'),
+('2113928', 2, 4, '2023-11-11 14:30:00'),
 ('2223928', 3, 3, '2023-11-12 14:30:00'),
 ('2355555', 4, 2,  '2023-11-13 14:30:00'),
 ('2018972', 5, 1, '2023-11-14 14:30:00');
@@ -122,10 +130,10 @@ VALUES
 INSERT INTO COMMENT (MSSV, id_file, Content, date) 
 VALUES 
 ('2113928', 1, 'Bình luận 1', '2023-11-10 14:30:00'),
-('2113927', 2, 'Bình luận 2', '2023-11-11 14:30:00'),
-('2223928', 3, 'Bình luận 3', '2023-11-12 14:30:00'),
+('2018972', 2, 'Bình luận 2', '2023-11-11 14:30:00'),
+('2018972', 3, 'Bình luận 3', '2023-11-12 14:30:00'),
 ('2355555', 4, 'Bình luận 4',  '2023-11-13 14:30:00'),
-('2018972', 5, 'Bình luận 5', '2023-11-14 14:30:00');
+('2113928', 5, 'Bình luận 5', '2023-11-14 14:30:00');
 
 -- INSERT INTO SEMESTER
 INSERT INTO SEMESTER (Semester, date, week) 
