@@ -79,6 +79,7 @@ export default function ChoosePtintStyle() {
       document.cookie = `page=4; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
   }
   }, [selected]);
+
   //box2
   const [selected1, setSelected1] = useState(Printside[0])
   const [query1, setQuery1] = useState('')
@@ -86,13 +87,13 @@ export default function ChoosePtintStyle() {
   const filteredpage1 = query === ''? Printside: Printside.filter((page) => page.name.toLowerCase().replace(/\s+/g, '').includes(query.toLowerCase().replace(/\s+/g, '')))
 
   useEffect(() => {
-    if (selected === Printside[0]) {
+    if (selected1 === Printside[0]) {
       document.cookie = `side=1; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`;
     }
       else {
         document.cookie = `side=2; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
     }
-    }, [selected]);
+    }, [selected1]);
   //box3
   const [selected2, setSelected2] = useState(Printcollated[0])
   const [query2, setQuery2] = useState('')
@@ -159,24 +160,25 @@ export default function ChoosePtintStyle() {
             .includes(query.toLowerCase().replace(/\s+/g, ''))
         )
   useEffect(() => {
-    if (selected === Printsheet[0]) {
+    if (selected6 === Printsheet[0]) {
       document.cookie = `sheet=1; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`;
-    } else if (selected === Printsheet[1] ) {
+    } else if (selected6 === Printsheet[1] ) {
       document.cookie = `sheet=2; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
     }
-      else if (selected === Printsheet[2] ){
+      else if (selected6 === Printsheet[2] ){
         document.cookie = `sheet=4; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
     }
-      else if(selected === Printsheet[3] ){
+      else if(selected6 === Printsheet[3] ){
         document.cookie = `sheet=6; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
     }
-    else if(selected === Printsheet[4] ){
+    else if(selected6 === Printsheet[4] ){
       document.cookie = `sheet=8; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
     }
     else  {
       document.cookie = `sheet=16; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
    }
-    }, [selected]);
+    }, [selected6]);
+
   return (
     <div className="">
       <Combobox value={selected} onChange={setSelected}>

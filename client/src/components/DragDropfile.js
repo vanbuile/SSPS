@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DocumentTextIcon, CloudArrowUpIcon } from '@heroicons/react/20/solid';
 import ShareModal from './ShareForm';
@@ -117,7 +117,7 @@ const FileUpload = ({copies}) => {
       if (response.status === 200) {
         document.cookie = `file_id=${response.data["file_id"]}; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`
         document.cookie= `numPages=${pageNumber}; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`
-        document.cookie= `copies=${copies}; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`
+        // document.cookie= `copies=${copies}; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`
         navigate('/print/ChoosePrinter');
       }
     }
@@ -126,6 +126,11 @@ const FileUpload = ({copies}) => {
       alert("Error uploading file: " + e.message); 
     }
   };
+
+  useEffect(() => {
+      document.cookie = `copies=${copies}; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`;
+  }, [copies]);
+  
   const handleInputChange = (e) => {
     const value = e.target.value;
     if (/^\d*$/.test(value)) {

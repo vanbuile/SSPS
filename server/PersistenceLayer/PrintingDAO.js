@@ -58,7 +58,7 @@ const UpdatePrinterPaper = async (mssv, id_printer, paper) => {
     const [studentPaperRows] = await connection.query("SELECT `paper` FROM `SSPS`.`STUDENT` WHERE `MSSV` = ?",[mssv]);    
     const studentPaper = studentPaperRows[0]?.paper || 0;
     if (studentPaper < -paper) {
-        return
+        return -1
     }
     try {
         let q = "UPDATE `PRINTER` SET `paper` = `paper` + ? WHERE `id` = ?";
