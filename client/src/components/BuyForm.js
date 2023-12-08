@@ -16,7 +16,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import axios from "axios";
 import APIs from "../util/API";
-const data = [{ name: "Sinh viên 1", MSSV: "2113928" }];
+const data = [{ name: "Sinh viên 1", MSSV:"2113928" }];
 BuyForm.propTypes = {
   onSubmit: PropTypes.func,
 };
@@ -174,7 +174,7 @@ function BuyForm(props) {
                   }}
                   style={{ width: 200 }}
                   helperText={<>1 tờ A4 = 1 đơn vị giấy</>}
-                  defaultValue={1}
+                  defaultValue={10}
                   width={200}
                   form={form}
                 />
@@ -212,6 +212,7 @@ function BuyForm(props) {
                   />
                 </RadioGroup>
               </div>
+              <a href="buy/paymenthistory" className="text-sky-500">Xem lịch sử giao dịch</a>
               <div className="flex flex-col">
                 <Button
                   variant="contained"
@@ -223,6 +224,7 @@ function BuyForm(props) {
                 >
                   Mua thêm
                 </Button>
+
               </div>
             </div>
           </div>

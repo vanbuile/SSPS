@@ -17,6 +17,7 @@ import InfoAdmin from "./pages/admin/infoAdmin";
 import RevenueStatistics from "./pages/admin/RevenueStatistics";
 import PaymentCheck from "./pages/buy/paymentcheck";
 import History from "./pages/print/history";
+import PaymentHistory from "./pages/buy/paymenthistory";
 
 
 export default function App() {
@@ -44,6 +45,7 @@ export default function App() {
           </Route>
           <Route path="buy" element={<Buy />} />
           <Route path="buy/paymentcheck" element={<PaymentCheck />} />
+          <Route path="buy/paymenthistory" element={<PaymentHistory />} />
         </Route>
         <Route path="*" element={<Error />} />
       </Routes>
