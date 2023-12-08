@@ -399,9 +399,6 @@ DELIMITER ;
 
 
 
-
-+
-
 -- INSERT INTO PRINTER
 INSERT INTO PRINTER (name, model, brand, day, description, paper, building, floor, state)
 VALUES 
@@ -434,11 +431,10 @@ VALUES
 ('2355555', 'Sinh viên 4', 40, '2355555'),
 ('2018972', 'Sinh viên 5', 60, '2018972'),
 ('1918972', 'Sinh viên 7', 60, '1918972'),
-
 ('2155555', 'Sinh viên 4', 40, '2355555'),
 ('2118972', 'Sinh viên 5', 60, '2018972'),
 ('1928972', 'Sinh viên 7', 60, '1918972'),
-
+('2313925', 'Sinh viên 9', 60, '1918972'),
 ('1818972', 'Sinh viên 8', 60, '1818972');
 
 -- INSERT INTO SPSO
