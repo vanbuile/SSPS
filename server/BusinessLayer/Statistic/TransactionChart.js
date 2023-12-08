@@ -14,7 +14,8 @@ const WeekInSemester = async (req, res) =>{
       {
         listPrinter.push(item.name);
       }
-      Maxweek = Math.max( Maxweek, item.totalWeek);
+      console.log(item.week)
+      Maxweek = Math.max( Maxweek, item.week);
   });
   // listPrinter.push("total");
   
@@ -30,9 +31,9 @@ const WeekInSemester = async (req, res) =>{
       for(let j = 0; j < listPrinter.length; j++)
       {
         result[i][listPrinter[j]] = data.reduce((total, obj) =>{
-          if (obj.totalWeek == i+1 && obj.name === listPrinter[j]) {
+          if (obj.week == i+1 && obj.name === listPrinter[j]) {
 
-            total += obj.paper;
+            total += Number(obj.totalPaper);
           }
           return total;
         }, 0)
@@ -40,7 +41,7 @@ const WeekInSemester = async (req, res) =>{
       }
       result[i]["Tổng"] = sum;      
   }
-
+  console.log(Maxweek)
   return res.status(200).json(result);
 }
 
