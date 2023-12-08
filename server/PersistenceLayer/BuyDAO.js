@@ -14,7 +14,7 @@ const InsertTransaction = async (MSSV, date, paper) => {
 
 const IncreasePaper = async (MSSV, paper) => {
   try {
-    let q = "UPDATE `student` SET `paper` = `paper` + ? WHERE `MSSV` = ?";
+    let q = "UPDATE `STUDENT` SET `paper` = `paper` + ? WHERE `MSSV` = ?";
     const [result, fields] = await connection.query(q, [paper, MSSV]);
   } catch (e) {
     //console.log(e)

@@ -21,29 +21,65 @@ export default function MyModal({building}) {
     const currentDate = moment().tz('Asia/Ho_Chi_Minh');
     const formattedDateTime = currentDate.format('YYYY-MM-DD HH:mm:ss');
     try{
+      let pageUpdate = document.cookie.split('; ').find((cookie) => cookie.startsWith(`numPages=`)).split('=')[1]
+      let pageCookie = document.cookie.split('; ').find((cookie) => cookie.startsWith(`page=`)).split('=')[1]
+      let sideCookie = document.cookie.split('; ').find((cookie) => cookie.startsWith(`side=`)).split('=')[1]
+      let sheetCookie = document.cookie.split('; ').find((cookie) => cookie.startsWith(`sheet=`)).split('=')[1]
+      let copies = document.cookie.split('; ').find((cookie) => cookie.startsWith(`copies=`)).split('=')[1]
+      if (pageCookie == 1) {
+      }
+      else if (pageCookie == 2){
+        pageUpdate = 1
+      }
+      else {
+        pageUpdate = (pageUpdate + 1) / 2
+      }
+      let x = Math.floor(pageUpdate / sheetCookie);
+      if (sheetCookie*x < pageUpdate) {
+        pageUpdate = x +1
+      }
+      else {
+        pageUpdate = x
+      }
+      if (sideCookie == 2){
+        if (pageUpdate % 2 == 1) {
+          pageUpdate = (pageUpdate+1) / 2
+        }
+        else {
+          pageUpdate = pageUpdate / 2
+        }
+      }
+      pageUpdate = pageUpdate * copies
       const res = await axios.post(APIs.APIaddFile + "/addprinting", {
         id_printer: RowID,
         mssv: document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1],
         id_file: document.cookie.split('; ').find((cookie) => cookie.startsWith(`file_id=`)).split('=')[1], 
-        paper: document.cookie.split('; ').find((cookie) => cookie.startsWith(`numPages=`)).split('=')[1],
+        paper: pageUpdate,
         date: formattedDateTime
       })
       if (res.status === 200){
+        console.log("addprinting")
+      }
+      else{
+        console.log("error in addprinting")
+      }
+      
+      const respo = await axios.post(APIs.APIaddFile + "/updatePaper", {
+        id_printer: RowID,
+        mssv: document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1],
+        paper: pageUpdate
+      })
+      if (respo.status === 200){
         alert("Printing....")
+      }
+      else{
+        alert("Update Paper Fail")
       }
     }
     catch (e) {
       console.error("Error printing:", e);
       alert("Error printing: " + e.message);
     }
-    const res = await axios.post(APIs.APIaddFile + "/updatePaper", {
-      id_printer: RowID,
-      mssv: document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1],
-      paper: document.cookie.split('; ').find((cookie) => cookie.startsWith(`numPages=`)).split('=')[1]
-    }
-      )
-    
-
   }
 
   function openModal() {

@@ -38,9 +38,15 @@ const UpdatePaper = async (req, res) => {
     let id_printer = req.body.id_printer
     let mssv = req.body.mssv
     let paper = req.body.paper
-    IncreasePaper(mssv, -paper)
-    UpdatePrinterPaper(id_printer, -paper)
-
+    try{
+        let rs = await IncreasePaper(mssv, -paper)
+        let rsp = await UpdatePrinterPaper(mssv, id_printer, -paper)
+        return res.status(200).json({"data": rsp})
+    }
+    catch(e) {
+        console.log(e)
+        return res.sendStatus(503)
+    }
 }
 
 module.exports = {AddNewFile, AddPrinting, UpdatePaper}

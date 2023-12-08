@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState}from 'react';
 import ChoosePrintStyle from '../../components/ChoosePrintStyle';
 import FileUpload from '../../components/DragDropfile'
 
@@ -16,6 +16,8 @@ function VerticalLine() {
 }
 
 export default function Print() {
+  const [numCopies, setCopies] = useState('1');
+
   const handleAuthorization = (role) => {
     const cookies = document.cookie.split('; ');
     for (const cookie of cookies) {
@@ -25,7 +27,13 @@ export default function Print() {
       }
     }
     window.location.href = 'http://localhost:3000/login';
-  }
+  } 
+  const handleCopies = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      setCopies(value);
+    }
+  };
   if(handleAuthorization('Student_cookie_id') === true) {
     return (
       <div className="flex flex-1"
@@ -46,16 +54,16 @@ export default function Print() {
               </i>
             </div>
             <p>Số lượng:</p>
-            <input type="number" min="0" name="copies" id="copies" autocomplete="given-name" class="block w-5 rounded-md border-1 py-1.4 
+            <input type="number" min="1" name="copies" id="copies" value = {numCopies} autocomplete="given-name" class="block w-5 rounded-md border-1 py-1.4 
             text-gray-900 shadow-sm ring-1 ring-inset ring-black placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
-            focus:ring-indigo-100 sm:text-sm sm:leading-6"placeholder='1' style={{width: '30px'}}/>
+            focus:ring-indigo-100 sm:text-sm sm:leading-6" onChange={handleCopies} placeholder='1' style={{width: '30px'}}/>
           </div>     
           <p class="text-xl text-[#a3a3a3] font-bold ml-10">Cài đặt</p>
           <div className='ml-10'><ChoosePrintStyle/></div>
         </div>
         <div className='ml-20'><VerticalLine /></div>
         <div className="w-4/5">
-        <div className='ml-10'><FileUpload/></div>
+        <div className='ml-10'><FileUpload copies = {numCopies}/></div>
         </div>
       </div>
     );

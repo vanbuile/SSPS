@@ -5,7 +5,7 @@ import ShareModal from './ShareForm';
 import APIs from "../util/API";
 import axios from "axios";
 
-const FileUpload = () => {
+const FileUpload = ({copies}) => {
   function Line() {
     return (
       <div
@@ -31,7 +31,7 @@ const FileUpload = () => {
       console.error("Error fetching data:", error);
     }
   };
-  const [numPages, setNumPages] = useState('');
+  const [numPages, setNumPages] = useState('1');
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -56,7 +56,7 @@ const FileUpload = () => {
       }
     });
  
-  };
+  };  
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -98,9 +98,12 @@ const FileUpload = () => {
       alert('Please select a file first.');
       return;
     }
+    if (!numPages){
+      alert('Please add the number of page.');
+      return;
+    }
     try{
       const pageNumber = parseInt(numPages, 10); //so trang kieu INT
-      
       const mssv = document.cookie.split('; ').find((cookie) => cookie.startsWith(`Student_cookie_id=`)).split('=')[1]
       let isShare = 0
       if (description !== '')  isShare = 1
@@ -112,9 +115,9 @@ const FileUpload = () => {
         isShare: isShare
       })
       if (response.status === 200) {
-        console.log("abasbcjsbcasjk")
         document.cookie = `file_id=${response.data["file_id"]}; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`
         document.cookie= `numPages=${pageNumber}; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`
+        document.cookie= `copies=${copies}; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`
         navigate('/print/ChoosePrinter');
       }
     }
@@ -129,6 +132,7 @@ const FileUpload = () => {
       setNumPages(value);
     }
   };
+
   return (
     <div>
       <div
@@ -187,12 +191,8 @@ const FileUpload = () => {
             <label>
               Number of Pages:
               <input
-                type="number"
-                value={numPages}
-                onChange={handleInputChange}
-                placeholder="  Page..."
-                style={{width: '40px', marginLeft: '10px', height: '30px'}}
-                class="rounded-md text-sm border-1 ring-1 ring-black"
+                type="number" min= "1" value={numPages} onChange={handleInputChange} placeholder="  Page..."
+                style={{width: '40px', marginLeft: '10px', height: '30px'}} class="rounded-md text-sm border-1 ring-1 ring-black"
               />
             </label>
           </form>

@@ -16,6 +16,8 @@ import PaperAdmin from "./pages/admin/paperAdmin";
 import InfoAdmin from "./pages/admin/infoAdmin";
 import RevenueStatistics from "./pages/admin/RevenueStatistics";
 import PaymentCheck from "./pages/buy/paymentcheck";
+import History from "./pages/print/history";
+
 
 export default function App() {
   return (
@@ -35,6 +37,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="print" element={<Print />} />
           <Route path='print/ChoosePrinter' element={< ChoosePrinter/>} />
+          <Route path='history' element={< History/>}/>
           <Route path="shared" >
             <Route index element={<Shared />} />
             <Route path="detail/:id" element={<Detail />} />
