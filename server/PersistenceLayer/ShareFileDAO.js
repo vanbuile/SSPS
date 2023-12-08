@@ -67,8 +67,10 @@ const getStar = async (fileid,mssv) => {
     try {
         const query = `SELECT star FROM RATING WHERE id_file = ? AND MSSV = ?;`; 
         const [result,field] = await connection.query(query, [fileid,mssv]);
-        //console.log(result[0]);
-        return result[0];
+        if (result.length === 0) {
+            return -1;
+        }
+        return result[0].star;
     } catch (error) {
         throw error;
     }

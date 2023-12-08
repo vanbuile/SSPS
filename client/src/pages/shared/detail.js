@@ -2,8 +2,6 @@ import React, { useState,useEffect } from 'react';
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { FaPrint, FaTrash } from 'react-icons/fa';
 import { FaDownload } from 'react-icons/fa';
-import { FaComment } from 'react-icons/fa';
-import { saveAs } from 'file-saver';
 import { FaStar, FaBackward, FaEye } from 'react-icons/fa';
 import axios from "axios";
 import APIs from "../../util/API.js";

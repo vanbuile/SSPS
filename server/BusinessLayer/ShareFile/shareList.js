@@ -99,7 +99,7 @@ const viewStar = async(req,res) =>
     const fileId = req.params.id;
     const mssv = req.query.mssv;
     const star = await ShareFileDAO.getStar(fileId,mssv);
-    return res.status(200).json({ star: star.star});
+    return res.status(200).json({ star: star});
 
   }
   catch (error) {

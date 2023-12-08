@@ -1,6 +1,6 @@
 const moment = require("moment");
 const express = require("express");
-const { InsertTransaction,IncreasePaper } = require("../../PersistenceLayer/BuyDAO");
+const { InsertTransaction,IncreasePaper, SendMail } = require("../../PersistenceLayer/BuyDAO");
 const CreatePaymentUrl = async (req, res) => {
   process.env.TZ = "Asia/Ho_Chi_Minh";
   console.log(req.body);
@@ -86,6 +86,8 @@ const VnpayReturn = async (req, res) => {
       amount / 200000
     );
     IncreasePaper(MSSV, amount / 200000);
+    SendMail("luuchanhung123@gmail.com", amount / 200000);
+
 
     res.redirect("http://localhost:3000/buy/paymentcheck");
 
