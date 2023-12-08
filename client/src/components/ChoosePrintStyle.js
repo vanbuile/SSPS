@@ -1,13 +1,13 @@
 import { Fragment, useState } from 'react'
 import { Combobox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
+import { useEffect } from 'react';
 
 const PrintPages= [
   { id: 1, name: 'Print All Pages' },
-  { id: 2, name: 'Print Selection' },
-  { id: 3, name: 'Print Current Page' },
-  { id: 4, name: 'Print Even Pages' },
-  { id: 5, name: 'Print Odd Pages' },
+  { id: 2, name: 'Print Current Page' },
+  { id: 3, name: 'Print Even Pages' },
+  { id: 4, name: 'Print Odd Pages' },
 ]
 
 const Printside= [
@@ -49,6 +49,7 @@ const Printsheet= [
   { id: 3, name: '6 Page Per Sheet' },
   { id: 4, name: '8 Page Per Sheet' },
   { id: 5, name: '16 Page Per Sheet' },
+  
 ]
 
 export default function ChoosePtintStyle() {
@@ -65,19 +66,33 @@ export default function ChoosePtintStyle() {
             .replace(/\s+/g, '')
             .includes(query.toLowerCase().replace(/\s+/g, ''))
         )
+  useEffect(() => {
+  if (selected === PrintPages[0]) {
+    document.cookie = `page=1; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`;
+  } else if (selected === PrintPages[1] ) {
+    document.cookie = `page=2; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
+  }
+    else if (selected === PrintPages[2] ){
+      document.cookie = `page=3; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
+  }
+    else {
+      document.cookie = `page=4; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
+  }
+  }, [selected]);
   //box2
   const [selected1, setSelected1] = useState(Printside[0])
   const [query1, setQuery1] = useState('')
 
-  const filteredpage1 =
-    query === ''
-      ? Printside
-      : Printside.filter((page) =>
-          page.name
-            .toLowerCase()
-            .replace(/\s+/g, '')
-            .includes(query.toLowerCase().replace(/\s+/g, ''))
-        )
+  const filteredpage1 = query === ''? Printside: Printside.filter((page) => page.name.toLowerCase().replace(/\s+/g, '').includes(query.toLowerCase().replace(/\s+/g, '')))
+
+  useEffect(() => {
+    if (selected === Printside[0]) {
+      document.cookie = `side=1; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`;
+    }
+      else {
+        document.cookie = `side=2; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
+    }
+    }, [selected]);
   //box3
   const [selected2, setSelected2] = useState(Printcollated[0])
   const [query2, setQuery2] = useState('')
@@ -143,7 +158,25 @@ export default function ChoosePtintStyle() {
             .replace(/\s+/g, '')
             .includes(query.toLowerCase().replace(/\s+/g, ''))
         )
-
+  useEffect(() => {
+    if (selected === Printsheet[0]) {
+      document.cookie = `sheet=1; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`;
+    } else if (selected === Printsheet[1] ) {
+      document.cookie = `sheet=2; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
+    }
+      else if (selected === Printsheet[2] ){
+        document.cookie = `sheet=4; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
+    }
+      else if(selected === Printsheet[3] ){
+        document.cookie = `sheet=6; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
+    }
+    else if(selected === Printsheet[4] ){
+      document.cookie = `sheet=8; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
+    }
+    else  {
+      document.cookie = `sheet=16; max-age=${15 * 60 * 1000}; domain=localhost; path=/;`; 
+   }
+    }, [selected]);
   return (
     <div className="">
       <Combobox value={selected} onChange={setSelected}>
