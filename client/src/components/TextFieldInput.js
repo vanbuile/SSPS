@@ -20,7 +20,7 @@ function TextFieldInput(props) {
           type={prop.type}
           InputProps={{
             inputProps: {
-              min: 1,
+              min: 10,
             },
           }}
           helperText={prop.helperText}

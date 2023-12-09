@@ -425,7 +425,7 @@ VALUES
 -- INSERT INTO STUDENT
 INSERT INTO STUDENT (MSSV, name, paper, pass) 
 VALUES 
-('2113928', 'Đào Duy Long', 50, '2113928'),
+('2113928', 'Sinh viên 1', 50, '2113928'),
 ('2113927', 'Sinh viên 2', 30, '2113927'),
 ('2223928', 'Sinh viên 3', 70, '2223928'),
 ('2355555', 'Sinh viên 4', 40, '2355555'),

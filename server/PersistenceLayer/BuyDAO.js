@@ -48,4 +48,17 @@ transporter.sendMail(mailOptions, function (error, info, SendMail) {
 
 
 };
-module.exports = { InsertTransaction, IncreasePaper, SendMail };
+
+const GetTransaction = async (MSSV) => {
+  try {
+    
+    let q = "SELECT * FROM `student_buypage` WHERE `MSSV` = ?";
+    const [result, fields] = await connection.query(q, [MSSV]);
+    
+    return result;
+  } catch (e) {
+    //console.log(e)
+    throw new Error(e);
+  }
+};
+module.exports = { InsertTransaction, IncreasePaper, SendMail, GetTransaction };
