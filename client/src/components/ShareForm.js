@@ -1,9 +1,10 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 
-export default function ShareModal({ onTextareaChange}) {
+export default function ShareModal({ onTextareaChange, onTextareaChange1}) {
   let [isOpen, setIsOpen] = useState(false)
   const [localTextareaValue, setLocalTextareaValue] = useState('');
+  const [localTextareaValue1, setLocalTextareaValue1] = useState('');
   function closeModal() {
     setIsOpen(false)
   }
@@ -15,9 +16,15 @@ export default function ShareModal({ onTextareaChange}) {
     const value = event.target.value;
     setLocalTextareaValue(value);
   }
+  function handleTextareaChange1(event) {
+    const value = event.target.value;
+    setLocalTextareaValue1(value);
+  }
   function handleShare() {  
     setIsOpen(false)   
     onTextareaChange(localTextareaValue)
+    onTextareaChange1(localTextareaValue1)
+
   }
   function Showmodal(){
     return(
@@ -47,6 +54,19 @@ export default function ShareModal({ onTextareaChange}) {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Title
+                    as="h3"
+                    className="text-lg font-bold leading-6 text-gray-900"
+                  >
+                    Đường liên kết đến file
+                  </Dialog.Title>
+                  <div className="mt-2">
+                    <div> 
+                      <textarea style={{ width: "350px", borderRadius: "15px", padding: "15px 0 15px 15px", margin: "20px 0 20px 20px", border: "1px solid gray",}}
+                        placeholder="Link...." value={localTextareaValue1} onChange={handleTextareaChange1}
+                      />
+                    </div>
+                  </div>
                   <Dialog.Title
                     as="h3"
                     className="text-lg font-bold leading-6 text-gray-900"

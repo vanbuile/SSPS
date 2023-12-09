@@ -77,8 +77,9 @@ export default function MyModal({building}) {
       }
     }
     catch (e) {
+      if (e.response.status == 501) alert("You dont have enough paper, buy more?")
+      else{      alert("Error printing: " + e.message); }
       console.error("Error printing:", e);
-      alert("Error printing: " + e.message);
     }
   }
 

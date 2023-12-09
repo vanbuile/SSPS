@@ -90,8 +90,12 @@ const FileUpload = ({copies}) => {
     setSelectedFile(null);
   };
   let description = ""
+  let link = ""
   const handleTextareaChange = (value) => {
     description = value
+  };
+  const handleTextareaChange1 = (value) => {
+    link = value
   };
   const handleSaveChanges = async () => {
     if (!selectedFile) {
@@ -111,7 +115,7 @@ const FileUpload = ({copies}) => {
         mssv: mssv,
         name: selectedFile.name,
         description: description,
-        link: 'lien ket 3',
+        link: link,
         isShare: isShare
       })
       if (response.status === 200) {
@@ -209,7 +213,7 @@ const FileUpload = ({copies}) => {
       <div style={{marginLeft:'30px'}}>
         <button onClick={handleCancel}  class="rounded-md bg-mainRed px-3 py-2 text-sm font-semibold text-white ">Hủy</button>
       </div>
-      <ShareModal onTextareaChange={handleTextareaChange}/>
+      <ShareModal onTextareaChange={handleTextareaChange} onTextareaChange1 = {handleTextareaChange1}/>
     </div>
     </div>
   );

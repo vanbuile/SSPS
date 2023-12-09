@@ -27,6 +27,7 @@ const AddPrinting = async (req, res) => {
 
     try{
         let rs = await addPrinting(id_printer, mssv, id_file, paper, date)
+        if (rs == -1) return res.status(501).json({"data": rs})
         return res.status(200).json({"data": rs})
     }
     catch (e) {
@@ -39,8 +40,8 @@ const UpdatePaper = async (req, res) => {
     let mssv = req.body.mssv
     let paper = req.body.paper
     try{
+        let rsp = await UpdatePrinterPaper(id_printer, -paper)
         let rs = await IncreasePaper(mssv, -paper)
-        let rsp = await UpdatePrinterPaper(mssv, id_printer, -paper)
         return res.status(200).json({"data": rsp})
     }
     catch(e) {

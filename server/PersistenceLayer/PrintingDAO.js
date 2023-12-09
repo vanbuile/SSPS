@@ -44,31 +44,32 @@ const addNewFile = async(mssv, name, description, link, isShare) => {
 }
 
 const addPrinting = async (id_printer, mssv, id_file, paper, date) => {
-    try {
-        let q = 'CALL aPrinting(?, ?, ? ,? ,?)'
-        const [result, fields] = await connection.query(q, [id_printer, mssv, id_file, paper, date])
-        return result
-    }
-    catch (e) {
-        console.log(e)
-        throw new Error(e)
-    }
-}
-const UpdatePrinterPaper = async (mssv, id_printer, paper) => {
     const [studentPaperRows] = await connection.query("SELECT `paper` FROM `SSPS`.`STUDENT` WHERE `MSSV` = ?",[mssv]);    
     const studentPaper = studentPaperRows[0]?.paper || 0;
-    if (studentPaper < -paper) {
+    if (studentPaper < paper) {
         return -1
     }
+    else{
+        try {
+            let q = 'CALL aPrinting(?, ?, ? ,? ,?)'
+            const [result, fields] = await connection.query(q, [id_printer, mssv, id_file, paper, date])
+            return result
+        }
+        catch (e) {
+            console.log(e)
+            throw new Error(e)
+        }
+    }
+}
+const UpdatePrinterPaper = async (id_printer, paper) => {
     try {
         let q = "UPDATE `PRINTER` SET `paper` = `paper` + ? WHERE `id` = ?";
         const [result, fields] = await connection.query(q, [paper, id_printer]);
         return result
-      } catch (e) {
+        } catch (e) {
         //console.log(e)
         throw new Error(e);
-      }
-
+    }
 }
 module.exports = {GetPrintingInfo, 
                 GetWeekInSemester, 
