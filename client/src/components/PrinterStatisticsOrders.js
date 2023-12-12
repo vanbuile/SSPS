@@ -55,7 +55,7 @@ export default function RecentOrders(props) {
 	
 	return (
 		<div className="bg-white px-4 pt-3 pb-4 rounded-sm border border-gray-200 flex-1">
-			<strong className="text-gray-700 font-medium">Sinh Viên In nhiều nhất tháng</strong>
+			<strong className="text-gray-700 font-medium">Sinh Viên In nhiều nhất học kì</strong>
 			<button
 				className="=bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
 				onClick={handleDownloadExcel}

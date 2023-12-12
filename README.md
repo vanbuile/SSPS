@@ -1,11 +1,11 @@
   
  # Thành viên nhóm
-Đào Duy Long - 2113928 (L01)
-Nguyễn Ngọc Bảo Châu - 2110842 (L01)  
-Đỗ Ngọc Ánh - 2110029 (L01)  
-Bùi Lê Văn - 2115257 (L01)  
-Lưu Chấn Hưng - 2111401 (L01)  
-Lìu Ngọc Yến - 2115373 (L01)
+- Đào Duy Long - 2113928 (L01)
+- Nguyễn Ngọc Bảo Châu - 2110842 (L01)  
+- Đỗ Ngọc Ánh - 2110029 (L01)  
+- Bùi Lê Văn - 2115257 (L01)  
+- Lưu Chấn Hưng - 2111401 (L01)  
+- Lìu Ngọc Yến - 2115373 (L01)
 
 # Các Phần
 - Task 1: Requirement elicitation

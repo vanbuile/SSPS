@@ -105,8 +105,8 @@ const paperPrintedSemester = async (data, dateSemester) => {
 	result = 
 		{
 			name: 'Tổng số giấy sử dụng HK231',
-			total: totalPaperSemester,
-			incTotal: totalPaperSemester - totalPaperPreSemester,
+			total: totalPaperPreSemester,
+			incTotal: -(totalPaperSemester - totalPaperPreSemester),
 		};
 	return result
 }

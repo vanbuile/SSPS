@@ -215,39 +215,39 @@ BEGIN
 END //
 
 
--- CREATE PROCEDURE GetStudentPrintMaxSemester()
--- BEGIN
+CREATE PROCEDURE GetStudentPrintMaxSemester()
+BEGIN
 
---     DECLARE dateVar DATE;
---     DECLARE weekVar INT;
+    DECLARE dateVar DATE;
+    DECLARE weekVar INT;
 
---     SELECT date,week INTO dateVar, weekVar FROM Semester 
---     ORDER BY date DESC LIMIT 1;
+    SELECT date,week INTO dateVar, weekVar FROM Semester 
+    ORDER BY date DESC LIMIT 1;
 
---     SELECT
---         S.MSSV AS id,
---         S.name AS student,
---         P.paper AS number_pager_printer,
---         s.paper AS number_pager_remaining,
---         P.number_file_share as number_file_share,
---         P.number_file as number_file
---     FROM
---         (SELECT 
---             sum(P.paper) as paper, 
---             P.MSSV,
---             sum(F.isShare) as number_file_share,
---             count(F.isShare) as number_file
---         FROM 
---             PRINTING P
---         JOIN
---             FILE F ON P.id_file = F.ID
---         WHERE 
---              FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 <= weekVar and FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 > 0
---         GROUP BY P.MSSV) AS P
---     JOIN
---         STUDENT S ON P.MSSV = S.MSSV
---     GROUP BY number_pager_printer DESC LIMIT 10;
--- END //
+    SELECT
+        S.MSSV AS id,
+        S.name AS student,
+        P.paper AS number_pager_printer,
+        s.paper AS number_pager_remaining,
+        P.number_file_share as number_file_share,
+        P.number_file as number_file
+    FROM
+        (SELECT 
+            sum(P.paper) as paper, 
+            P.MSSV,
+            sum(F.isShare) as number_file_share,
+            count(F.isShare) as number_file
+        FROM 
+            PRINTING P
+        JOIN
+            FILE F ON P.id_file = F.ID
+        WHERE 
+             FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 <= weekVar and FLOOR(DATEDIFF(P.date, dateVar)/7) + 1 > 0
+        GROUP BY P.MSSV) AS P
+    JOIN
+        STUDENT S ON P.MSSV = S.MSSV
+    GROUP BY number_pager_printer DESC LIMIT 10;
+END //
 
 
 CREATE PROCEDURE GetStudentCourseRevenue()
@@ -425,7 +425,7 @@ VALUES
 -- INSERT INTO STUDENT
 INSERT INTO STUDENT (MSSV, name, paper, pass) 
 VALUES 
-('2113928', 'Sinh viên 1', 50, '2113928'),
+('2113928', 'Đào Duy Long', 50, '2113928'),
 ('2113927', 'Sinh viên 2', 30, '2113927'),
 ('2223928', 'Sinh viên 3', 70, '2223928'),
 ('2355555', 'Sinh viên 4', 40, '2355555'),
@@ -469,7 +469,7 @@ INSERT INTO STUDENT_BUYPAGE (MSSV, date, paper) VALUES
 ('2113927', '2023-11-29 14:30:00', 1),
 ('2223928', '2023-12-30 14:30:00', 10),
 ('2018972', '2023-12-15 14:30:00', 7),
-('1918972', '2023-12-16 14:30:00', 2),
+('1918972', '2023-12-9 14:30:00', 2),
 ('1818972', NOW(), 6),
 ('2113928', NOW(), 4),
 ('2113927', NOW(), 9),
@@ -510,7 +510,7 @@ VALUES
 (5, '2223928', 1, 30, NOW()),
 (4, '2355555', 1, 40, NOW()),
 (2, '2018972', 1, 50, NOW()),
-(2, '2113927', 2, 20, '2023-11-25 15:30:00'),
+(2, '2113927', 2, 20, '2023-12-9 15:30:00'),
 (4, '2355555', 4, 40, '2023-11-25 15:30:00'),
 (5, '2018972', 5, 50, '2023-11-25 15:30:00');
 
